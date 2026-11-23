@@ -1,57 +1,57 @@
 {
- "when": "2026-11-23T14:06:00.370089Z",
+ "when": "2026-11-23T14:07:26.102765Z",
  "targets": {
   "stats.nba.com leaguegamelog": {
    "status": null,
    "error": "ReadTimeout",
-   "sec": 25.07
+   "sec": 25.11
   },
   "cdn.nba.com schedule": {
    "status": 403,
-   "bytes": 425,
+   "bytes": 423,
    "sec": 0.08,
    "type": "text/html"
   },
   "cdn.nba.com boxscore 0022600200": {
    "status": 403,
    "bytes": 443,
-   "sec": 0.03,
+   "sec": 0.08,
    "type": "text/html"
   },
   "cdn.nba.com playbyplay 0022600200": {
    "status": 403,
    "bytes": 447,
-   "sec": 0.03,
+   "sec": 0.06,
    "type": "text/html"
   },
   "pbpstats get-games 2026-27": {
    "status": 200,
    "bytes": 57222,
-   "sec": 8.27,
+   "sec": 1.32,
    "type": "application/json"
   },
   "basketball-reference 2027 games": {
    "status": 200,
    "bytes": 478391,
-   "sec": 0.09,
+   "sec": 0.08,
    "type": "text/html"
   },
   "official.nba.com referee": {
    "status": 200,
    "bytes": 48530,
-   "sec": 0.08,
+   "sec": 0.2,
    "type": "text/html; charset=UTF-8"
   },
   "official.nba.com injury page": {
    "status": 200,
-   "bytes": 218078,
-   "sec": 0.14,
+   "bytes": 218030,
+   "sec": 0.18,
    "type": "text/html; charset=utf-8"
   },
   "espn scoreboard": {
    "status": 200,
    "bytes": 167254,
-   "sec": 0.04,
+   "sec": 0.08,
    "type": "application/json;charset=UTF-8"
   }
  },
@@ -113,6 +113,11 @@
    "06PM",
    "01PM"
   ],
-  "2026-01-15": []
+  "2026-01-15": [
+   "05_00PM",
+   "05_30PM",
+   "06_00PM",
+   "01_00PM"
+  ]
  }
 }
