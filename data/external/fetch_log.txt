@@ -1,42 +1,10 @@
-probe: data/external/probe.json
-2014: 1432 partite ESPN (1231 di stagione regolare concluse); quote per 99.9% delle partite, 9 fornitori
-2015: 1428 partite ESPN (1231 di stagione regolare concluse); quote per 99.9% delle partite, 14 fornitori
-2016: 1415 partite ESPN (1231 di stagione regolare concluse); quote per 99.9% delle partite, 13 fornitori
-2017: 1391 partite ESPN (1232 di stagione regolare concluse); quote per 99.8% delle partite, 11 fornitori
-2018: 1382 partite ESPN (1232 di stagione regolare concluse); quote per 99.8% delle partite, 11 fornitori
-2019: 1194 partite ESPN (1061 di stagione regolare concluse); quote per 99.8% delle partite, 15 fornitori
-2020: 1250 partite ESPN (1081 di stagione regolare concluse); quote per 99.9% delle partite, 17 fornitori
-2021: 1401 partite ESPN (1231 di stagione regolare concluse); quote per 100.0% delle partite, 16 fornitori
-2022: 1390 partite ESPN (1231 di stagione regolare concluse); quote per 100.0% delle partite, 19 fornitori
-2023: 1395 partite ESPN (1232 di stagione regolare concluse); quote per 100.0% delle partite, 16 fornitori
-2024: 1402 partite ESPN (1234 di stagione regolare concluse); quote per 99.9% delle partite, 2 fornitori
-2025: 1400 partite ESPN (1235 di stagione regolare concluse); quote per 99.7% delle partite, 4 fornitori
-2026: 315 partite ESPN (248 di stagione regolare concluse); quote per 100.0% delle partite, 2 fornitori
-2013 advanced: 612 righe
-2013 per_game: 612 righe
-2014 advanced: 652 righe
-2014 per_game: 652 righe
-2015 advanced: 579 righe
-2015 per_game: 579 righe
-2016 advanced: 596 righe
-2016 per_game: 596 righe
-2017 advanced: 665 righe
-2017 per_game: 665 righe
-2018 advanced: 709 righe
-2018 per_game: 709 righe
-2019 advanced: 652 righe
-2019 per_game: 652 righe
-2020 advanced: 706 righe
-2020 per_game: 706 righe
-2021 advanced: 813 righe
-2021 per_game: 813 righe
-2022 advanced: 680 righe
-2022 per_game: 680 righe
-2023 advanced: 736 righe
-2023 per_game: 736 righe
-2024 advanced: 736 righe
-2024 per_game: 736 righe
-2025 advanced: 734 righe
-2025 per_game: 734 righe
-2026 advanced: 479 righe
-2026 per_game: 479 righe
+2018: 54 report nell'indice (44 dalla pagina), 6 giorni
+2019: 44 report nell'indice (44 dalla pagina), 1 giorni
+2020: 45 report nell'indice (44 dalla pagina), 2 giorni
+2021: 91 report nell'indice (45 dalla pagina), 6 giorni
+2022: 74 report nell'indice (45 dalla pagina), 4 giorni
+2023: 46 report nell'indice (45 dalla pagina), 2 giorni
+2024: 47 report nell'indice (45 dalla pagina), 2 giorni
+2025: 45 report nell'indice (45 dalla pagina), 1 giorni
+2026: 45 report nell'indice (45 dalla pagina), 1 giorni
+campioni: Injury-Report_2026-11-23_11_00AM.pdf
