@@ -154,7 +154,8 @@ def predict_season(season: int, P: dict | None = None, step: int = 7, minutes: p
             hp = (f.mu + h / 2 + hh["ow"] * hs - aa["dw"] * as_ + f.team_o.get(r.home, 0) - f.team_d.get(r.away, 0)) * k
             ap = (f.mu - h / 2 + aa["ow"] * as_ - hh["dw"] * hs + f.team_o.get(r.away, 0) - f.team_d.get(r.home, 0)) * k
             rows.append({"game_id": r.game_id, "season": season, "date": r.date.strftime("%Y-%m-%d"), "home": r.home,
-                         "away": r.away, "margin_pred": per100 * k + corr, "total_pred": hp + ap, "hpts": r.hpts, "apts": r.apts,
+                         "away": r.away, "margin_pred": per100 * k + corr, "total_pred": hp + ap,
+                         "pm_mu": f.mu, "pm_pace": f.pace, "eff_sum": (hp + ap) / k, "eff_diff": per100, "hpts": r.hpts, "apts": r.apts,
                          "cutoff": c.strftime("%Y-%m-%d")})
     return pd.DataFrame(rows)
 
