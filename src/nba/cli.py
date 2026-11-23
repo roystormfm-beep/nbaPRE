@@ -125,7 +125,7 @@ def main(argv=None):
     pq = sub.add_parser("qc", help="controlli di qualità sui dati elaborati")
     pq.set_defaults(func=cmd_qc)
     pr = sub.add_parser("fetch-remote", help="quote e calendario ESPN, BPM Basketball-Reference, prova delle fonti")
-    pr.add_argument("--task", choices=["probe", "espn", "bref", "all", "injuries-index", "injuries-fetch", "injuries", "officials"],
+    pr.add_argument("--task", choices=["probe", "live-probe", "espn", "bref", "all", "injuries-index", "injuries-fetch", "injuries", "officials"],
                     default="all")
     pr.add_argument("--seasons", default="2014-2026", help="es. 2014-2026 oppure 2018,2025")
     pr.add_argument("--no-odds", action="store_true", help="solo calendario e risultati ESPN, senza quote")
