@@ -171,6 +171,7 @@ def fetch(s: int) -> str:
     urls = sorted(need["url"].unique())
 
     def one(u):
+        time.sleep(0.6)                 # piano: l'archivio blocca chi scarica troppo in fretta
         r = get(u, timeout=60)
         if r is None or r.content[:4] != b"%PDF":
             return None
@@ -179,7 +180,7 @@ def fetch(s: int) -> str:
         except Exception as e:  # noqa: BLE001
             return f"errore: {type(e).__name__}: {e}"
 
-    res = pmap(one, urls, workers=6)
+    res = pmap(one, urls, workers=1)
     parts, bad = [], 0
     for u, v in res.items():
         if isinstance(v, pd.DataFrame):
