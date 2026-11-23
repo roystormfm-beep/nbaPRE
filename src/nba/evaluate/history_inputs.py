@@ -62,8 +62,11 @@ class SeasonInputs:
     def days(self) -> list[str]:
         return sorted(self.games["date"].unique())
 
-    def raw_for_day(self, d: str) -> tuple[dict, pd.DataFrame]:
-        """Ingressi del mattino del giorno d (stringa YYYY-MM-DD) e partite da pronosticare quel giorno."""
+    def raw_for_day(self, d: str, reports: pd.DataFrame | None = None) -> tuple[dict, pd.DataFrame]:
+        """Ingressi del mattino del giorno d (stringa YYYY-MM-DD) e partite da pronosticare quel giorno.
+
+        reports: righe dell'injury report pre-partita (game_id, team, player_name, status, reason). Se date,
+        le assenze vengono da lì (versione realistica) invece che da "chi ha giocato"."""
         past = self.games[self.games["date"] < d]
         today = self.games[self.games["date"] == d]
         results = [f"{r.date}|{r.away}|{int(r.apts)}|{r.home}|{int(r.hpts)}|" for r in past.itertuples()]
@@ -88,6 +91,14 @@ class SeasonInputs:
                     roster.setdefault(r.team, []).append((r.player, r.name))
         # assenze "chi ha giocato": del roster di oggi, chi non è entrato in campo
         injuries = []
+        if reports is not None:
+            r = reports[reports["game_id"].isin(today["game_id"])]
+            r = r[r["status"].str.lower().isin(["out", "doubtful", "questionable", "probable"])]
+            injuries = [f"{t}|{n.replace('|', ' ')}|{st}||{str(rs)[:40].replace('|', ' ')}"
+                        for t, n, st, rs in zip(r["team"], r["player_name"], r["status"], r["reason"])]
+            raw = {"schedule": self.schedule, "results": results, "pergame": pergame, "advanced": adv,
+                   "prev": self.prev, "injuries": injuries, "extra": []}
+            return raw, today
         played = set(zip(self.pg.loc[self.pg["game_id"].isin(today["game_id"]), "team"],
                          self.pg.loc[self.pg["game_id"].isin(today["game_id"]), "player"]))
         for t in set(today["home"]) | set(today["away"]):

@@ -48,6 +48,7 @@ def test_bref_table_parsing(monkeypatch):
 
     class R:
         text = html
+        content = html.encode("utf-8")
     monkeypatch.setattr(bref, "get", lambda *a, **k: R())
     t = bref.season_table(2025)
     assert list(t["Player"]) == ["Nikola Jokić", "Jalen Brunson"] and t["season"].iat[0] == 2025

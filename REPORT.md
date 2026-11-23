@@ -4,96 +4,87 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
-# Fase 2: baseline — completata
+# Fase 2: baseline — completata (numeri corretti il 23/11 sera)
 
-*23 novembre 2026. Mi fermo qui e aspetto il tuo via libera per la fase 3.*
+*23 novembre 2026.*
+
+> **Correzione.** Nella prima versione di questa fase i nomi con accenti scaricati da Basketball-Reference erano stati letti con la codifica sbagliata (per esempio "JokiÄ‡" invece di "Jokić"). Per circa 27 giocatori a stagione il modello non trovava quindi il BPM della stagione precedente, e fra questi c'erano Jokić, Dončić, Vučević e Şengün. Ho corretto la lettura e rifatto backtest e ritaratura. I numeri qui sotto sono quelli corretti: il baseline migliora di circa 0,1 punti per partita.
 
 ## In sintesi
 
-- **Il modello della pagina è stato riscritto in Python senza differenze.** Sugli stessi dati, la versione Python e quella JavaScript danno gli stessi rating, punti, probabilità e correzioni per le assenze, con scarti dell'ordine di 0,0000000000001 punti. Il confronto copre 101 partite con i dati della pagina e 3 giornate storiche, ed è diventato un test automatico.
-- **Ho misurato il baseline su tutte le 14.439 partite dal 2014-15 al 2025-26, giorno per giorno.** Ogni pronostico usa solo quello che si sapeva la mattina della partita. Un test automatico lo verifica: se si stravolgono i risultati e le statistiche dal giorno stesso in poi, il pronostico non cambia.
-- **Il mercato è più preciso del baseline in tutte e 12 le stagioni.** Nel 2025-26 la linea di chiusura sbaglia lo scarto di 10,88 punti in media. Il baseline sbaglia di 11,38 senza considerare le assenze e di 11,02 se sa in anticipo chi scende in campo. Nel 2025-26 le assenze spiegano circa tre quarti del distacco dal mercato, nelle stagioni di sviluppo circa il 40%.
-- **Contro lo spread** il baseline indovina il 48-51% delle partite. A quota -110 per andare in pari servirebbe il 52,4%: nessun vantaggio, come previsto.
+- **Il modello della pagina è stato riscritto in Python senza differenze.** Sugli stessi dati, Python e JavaScript danno gli stessi rating, punti, probabilità e correzioni per le assenze, con scarti dell'ordine di 0,0000000000001 punti. Il confronto copre 101 partite con i dati della pagina e 3 giornate storiche, ed è un test automatico.
+- **Backtest giorno per giorno su tutte le 14.439 partite dal 2014-15 al 2025-26.** Ogni pronostico usa solo quello che si sapeva la mattina della partita, e un test automatico lo verifica.
+- **Il mercato è più preciso del baseline in tutte e 12 le stagioni.** Nel 2025-26 la linea di chiusura sbaglia lo scarto di 10,88 punti in media. Il baseline sbaglia di 11,28 senza considerare le assenze e di 10,93 se sa in anticipo chi scende in campo.
 
 ## I numeri da battere (stagione di test 2025-26, 1.230 partite)
 
 | | Baseline senza assenze | Baseline che sa chi gioca (ottimistico) | Mercato (chiusura) |
 |---|---|---|---|
-| Errore medio sullo scarto | 11,38 | 11,02 | **10,88** |
-| Errore quadratico medio sullo scarto (RMSE) | 14,47 | 14,06 | **13,92** |
+| Errore medio sullo scarto | 11,28 | 10,93 | **10,88** |
+| Errore quadratico medio sullo scarto (RMSE) | 14,42 | 14,00 | **13,92** |
 | Errore medio sul totale | 15,08 | 15,08 | **14,58** |
-| Brier (probabilità di vittoria) | 0,2038 | 0,1977 | **0,1947** |
-| Log loss | 0,594 | 0,578 | **0,571** |
-| Calibrazione (ECE, più basso è meglio) | 0,014 | 0,022 | 0,026 |
-| Vincitori indovinati | 68,4% | 70,2% | 69,3% |
-| Contro lo spread di chiusura | 47,9% [45,1; 50,7] | 51,2% [48,5; 53,9] | — |
-| ROI a -110 | -8,6% [-13,9; -3,5] | -2,2% [-7,5; +3,1] | — |
+| Brier (probabilità di vittoria) | 0,2013 | 0,1952 | **0,1947** |
+| Log loss | 0,589 | 0,573 | 0,571 |
+| Calibrazione (ECE, più basso è meglio) | 0,030 | 0,028 | 0,026 |
+| Vincitori indovinati | 69,1% | 71,1% | 69,3% |
+| Contro lo spread di chiusura | 49,3% [46,6; 52,2] | 50,8% [48,0; 53,7] | — |
+| ROI a -110 | -5,8% [-10,9; -0,7] | -3,0% [-8,3; +2,3] | — |
 
 Differenze con il mercato, con intervallo di confidenza al 95% (bootstrap appaiato; positivo = il mercato è più preciso):
-- **Senza assenze:** errore medio +0,51 [0,32; 0,70]; Brier +0,009 [0,004; 0,014]. Il mercato è più preciso con margine sicuro.
-- **Sapendo chi gioca:** errore medio +0,14 [0,00; 0,28]; Brier +0,003 [-0,0005; 0,006]. Il distacco è al limite della significatività: con l'informazione perfetta sulle presenze il baseline si avvicina molto al mercato.
+- **Senza assenze:** errore medio +0,41 [0,22; 0,60]; Brier +0,007 [0,002; 0,012]. Il mercato è più preciso con margine sicuro.
+- **Sapendo chi gioca:** errore medio +0,05 [-0,08; +0,19]; Brier +0,0005 [-0,003; +0,004]. Differenza non significativa: con l'informazione perfetta sulle presenze il baseline è alla pari del mercato. Quell'informazione però prima della palla a due non c'è, e la fase 3 misura quanta se ne può avere davvero.
 
-**Come leggere le due versioni.** Prima della partita non si sa con certezza chi gioca, quindi il dato realistico sta fra le due colonne. In fase 3 rimisurerò il baseline anche con gli injury report ufficiali (dal 2018-19), così il confronto con il nuovo modello sarà ad armi pari.
-
-## Per stagione (errore medio sullo scarto: baseline meno mercato)
+## Per stagione (errore medio sullo scarto)
 
 | Stagione | Mercato | Baseline senza assenze | Baseline che sa chi gioca |
 |---|---|---|---|
-| 2014-15 | 9,05 | +0,38 | +0,24 |
-| 2015-16 | 9,08 | +0,24 | +0,18 |
-| 2016-17 | 9,71 | +0,29 | +0,20 |
-| 2017-18 | 9,45 | +0,47 | +0,33 |
-| 2018-19 | 9,93 | +0,31 | +0,19 |
-| 2019-20 | 9,91 | +0,21 | +0,13 |
-| 2020-21 | 10,71 | +0,50 | +0,17 |
-| 2021-22 | 10,64 | +0,49 | +0,28 |
-| 2022-23 | 9,76 | +0,45 | +0,28 |
-| 2023-24 | 10,54 | +0,51 | +0,28 |
-| 2024-25 | 10,51 | +0,45 | +0,25 |
-| 2025-26 | 10,88 | +0,51 | +0,14 |
+| 2014-15 | 9,05 | 9,47 | 9,32 |
+| 2015-16 | 9,08 | 9,29 | 9,23 |
+| 2016-17 | 9,71 | 9,99 | 9,91 |
+| 2017-18 | 9,45 | 9,91 | 9,77 |
+| 2018-19 | 9,93 | 10,23 | 10,09 |
+| 2019-20 | 9,91 | 10,10 | 10,03 |
+| 2020-21 | 10,71 | 11,16 | 10,83 |
+| 2021-22 | 10,64 | 11,12 | 10,90 |
+| 2022-23 | 9,76 | 10,18 | 10,01 |
+| 2023-24 | 10,54 | 10,95 | 10,74 |
+| 2024-25 | 10,51 | 10,95 | 10,74 |
+| 2025-26 | 10,88 | 11,28 | 10,93 |
 
-Dal 2020-21, senza assenze, il distacco sale da circa 0,3 a circa 0,5 punti. Con le assenze resta fra 0,14 e 0,28: nelle stagioni recenti contano di più le assenze, anche quelle per riposo. È la conferma più netta della lezione n. 1 del 18 novembre, e fissa la priorità della fase 3. Intervalli di confidenza per ogni stagione in `reports/baseline_fase2.md`.
+Il distacco senza assenze passa da circa 0,3 punti (2014-15 → 2019-20) a circa 0,4-0,5 (dal 2020-21): nelle stagioni recenti le assenze contano di più. Intervalli di confidenza per stagione in `reports/baseline_fase2.md`.
 
 ## Ritaratura sulle sole stagioni di sviluppo
 
-I commenti del modello v2 dicevano che alcuni parametri erano stati tarati sul 2025-26, che qui è la stagione di test. Per avere un confronto pulito ho ritarato il baseline solo sul periodo 2014-15 → 2024-25: un parametro alla volta, scegliendo l'errore quadratico più basso.
+Alcuni parametri del modello v2 erano stati tarati sul 2025-26, che qui è la stagione di test. Per un confronto pulito ho ritarato il baseline solo sul periodo 2014-15 → 2024-25, un parametro alla volta.
 
 | Parametro | Pagina | Ritarato |
 |---|---|---|
 | Emivita dei risultati | 30 giorni | 60 giorni |
 | Peso del rating di partenza dai roster | 1,25 | 0,75 |
 | Peso delle assenze | 0,6 | 0,8 |
-| Deviazione standard di una partita | 10,5 | 10,75 |
+| Soglia degli scarti contati a metà | 20 | 15 |
+| Deviazione standard di una partita | 10,5 | 10,25 |
 
-**Sul test i risultati restano quasi uguali:** errore medio 10,99 invece di 11,02 con le assenze, 11,38 senza. Il timore che la taratura sul 2025-26 gonfiasse i numeri della pagina si è rivelato piccolo. Uso comunque la versione ritarata come riferimento pulito. Due dei valori scelti (60 giorni e 0,75) sono ai bordi della griglia provata: il miglioramento possibile oltre quei valori è comunque minimo (l'errore quadratico scende da 12,99 a 12,94).
+Sulle stagioni di sviluppo il baseline ritarato è un po' più preciso (10,12 contro 10,14 con le assenze; 10,28 contro 10,30 senza). Sul test fa un po' peggio della pagina (10,98 contro 10,93; 11,36 contro 11,28). Il timore che la taratura sul 2025-26 gonfiasse i numeri della pagina era quindi fondato, ma l'effetto è piccolo. Dalla fase 3 in poi il riferimento pulito è il baseline ritarato.
 
 ## Approssimazioni dichiarate
 
-- **BPM della stagione in corso.** Per il passato non esiste il BPM di Basketball-Reference "alla data", quindi il modello usa la propria stima dal box score, già prevista nel codice. Sui dati attuali della pagina questo sposta il pronostico di 0,11 punti in media (massimo 0,76).
-- **Assenze.** Ci sono due versioni: nessuna correzione, oppure assente chiunque del roster non sia sceso in campo. La seconda è ottimistica per costruzione.
-- **Test di equivalenza.** Nel piano era previsto sulle 26 partite congelate dalla pagina. Però il registro salva solo i pronostici, non i dati in ingresso di quel momento (per esempio l'injury report di quell'ora), quindi ho fatto il confronto sugli stessi ingressi: dati della pagina e giornate storiche ricostruite.
-- **Quote mancanti:** 118 partite non hanno la linea (73 nel 2014-15, 44 nel 2016-17, una nel 2024-25) e sono escluse dal confronto.
+- **BPM della stagione in corso:** nel passato si usa la stima dal box score già prevista nel modello. Sui dati attuali della pagina il pronostico cambia di 0,11 punti in media (massimo 0,76).
+- **Assenze:** due versioni, nessuna correzione oppure "chi ha giocato" (ottimistica). Dalla fase 3 c'è anche la versione con l'injury report vero.
+- **Test di equivalenza:** fatto sugli stessi ingressi, perché il registro della pagina salva solo i pronostici e non i dati di quel momento.
+- **Partite senza linea:** 118 (73 nel 2014-15, 44 nel 2016-17, una nel 2024-25), escluse dal confronto.
 
 ## Un segnale da approfondire (non un vantaggio)
 
-Nella versione senza assenze il baseline ha un valore rispetto alla chiusura (CLV) positivo: scegliendo il lato contro la linea d'apertura, la linea si sposta poi verso quel lato di 0,34 punti in media nello sviluppo e di 0,19 nel test, con intervalli che escludono lo zero. Però alla chiusura il vantaggio sparisce (circa 50% contro lo spread). Vuol dire che l'apertura incorpora meno informazione del modello, e il mercato la recupera prima della palla a due. Nella versione "sa chi gioca" il CLV di 0,8 punti non significa nulla: conosce le formazioni in anticipo. Ci torno in fase 5, con il modello "consapevole del mercato".
+Senza assenze, il baseline sceglie spesso il lato verso cui la linea si sposta tra apertura e chiusura: in media 0,34 punti nello sviluppo e 0,15 nel test, con intervalli che escludono lo zero. Alla chiusura però il vantaggio sparisce. Ci torno in fase 5.
 
 ## Dal vivo 2026-27 (registro della pagina)
 
-Sulle 26 partite congelate prima della palla a due (19-22 novembre) il baseline ha un errore medio di 7,60 punti contro 7,04 del mercato e indovina 20 vincitori su 26, come il mercato. Il campione è troppo piccolo per conclusioni; servirà come confronto affiancato quando il nuovo modello sarà in funzione.
+Sulle 26 partite congelate prima della palla a due (19-22 novembre): errore medio 7,60 punti contro 7,04 del mercato, 20 vincitori su 26 come il mercato. Il campione è troppo piccolo per conclusioni.
 
 ## Come rifarlo
 
-- `nba backtest` rifà il backtest del baseline (pagina e ritarato) su 2014-15 → 2025-26: circa 2 minuti. Con `--retune` ripete anche la ritaratura: circa 7 minuti.
-- `nba report` rigenera le tabelle in `reports/baseline_fase2.md` e `.json`.
-- `uv run pytest` lancia 12 test: equivalenza JS/Python, anti-leakage, quintetti, formati esterni.
-
-## Prossimo passo: fase 3 (giocatori + minuti + disponibilità)
-
-1. Rating dei giocatori per possesso (RAPM) sugli stint della fase 1, separati per attacco e difesa, con prior dal box score e correzione per la fortuna al tiro.
-2. Disponibilità prima della partita dagli injury report ufficiali (2018-19 → oggi), con l'orario di pubblicazione.
-3. Proiezione dei minuti e probabilità di riposo nei back-to-back.
-4. Baseline rimisurato con gli stessi injury report, per il confronto alla pari.
+`nba backtest` (circa 2 minuti; con `--retune` anche la ritaratura, circa 10 minuti), poi `nba report`. `uv run pytest` lancia i test.
 
 ---
 
