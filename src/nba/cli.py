@@ -31,6 +31,28 @@ def cmd_qc(args):
     run_qc()
 
 
+def cmd_backtest(args):
+    import json
+    from nba.config import path
+    from nba.evaluate import backtest_baseline
+    seasons = parse_range(args.seasons)
+    backtest_baseline.run(seasons)
+    if args.retune:
+        from nba.evaluate import tune_baseline
+        out = tune_baseline.run()
+        print("parametri ritarati:", out["scelti"])
+    p = path("processed") / "baseline_retuned_params.json"
+    if p.exists():
+        backtest_baseline.run(seasons, opts=json.load(open(p)), name="baseline_retuned_predictions")
+    cmd_report(args)
+
+
+def cmd_report(args):
+    from nba.evaluate.report_baseline import write
+    write()
+    print("scritto reports/baseline_fase2.md")
+
+
 def parse_range(s: str) -> list[int]:
     """'2014-2026' -> [2014..2026]; '2018,2025' -> [2018, 2025]."""
     out = []
@@ -78,9 +100,15 @@ def main(argv=None):
     pr.add_argument("--seasons", default="2014-2026", help="es. 2014-2026 oppure 2018,2025")
     pr.add_argument("--no-odds", action="store_true", help="solo calendario e risultati ESPN, senza quote")
     pr.set_defaults(func=cmd_fetch_remote)
-    for name in ("backtest", "predict", "report"):
-        sp = sub.add_parser(name, help="disponibile nelle fasi successive")
-        sp.set_defaults(func=lambda a, n=name: sys.exit(f"'{n}' arriva nelle fasi successive"))
+    pb = sub.add_parser("backtest", help="backtest walk-forward (fase 2: baseline della pagina)")
+    pb.add_argument("--model", default="baseline", choices=["baseline"])
+    pb.add_argument("--retune", action="store_true", help="ritara il baseline sulle stagioni di sviluppo e rifà il backtest")
+    pb.add_argument("--seasons", default="2014-2025")
+    pb.set_defaults(func=cmd_backtest)
+    prp = sub.add_parser("report", help="tabelle di confronto con il mercato (reports/)")
+    prp.set_defaults(func=cmd_report)
+    sp = sub.add_parser("predict", help="disponibile in fase 6")
+    sp.set_defaults(func=lambda a: sys.exit("'predict' arriva in fase 6 (pipeline dal vivo)"))
     args = p.parse_args(argv)
     args.func(args)
 
