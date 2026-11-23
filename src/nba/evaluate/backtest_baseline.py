@@ -14,8 +14,9 @@ from nba.evaluate.history_inputs import SeasonInputs
 from nba.models import baseline as B
 
 
-def run_season(season: int, opts: dict | None = None, with_reports: bool = False) -> pd.DataFrame:
-    si = SeasonInputs(season)
+def run_season(season: int, opts: dict | None = None, with_reports: bool = False, include_unplayed: bool = False,
+               max_date: str | None = None) -> pd.DataFrame:
+    si = SeasonInputs(season, include_unplayed=include_unplayed, max_date=max_date)
     reports = None
     if with_reports:
         from nba.features.availability import pregame_reports

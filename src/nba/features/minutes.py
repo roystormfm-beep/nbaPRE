@@ -95,13 +95,15 @@ def _rescale(m: np.ndarray, total: float, cap: float) -> np.ndarray:
 
 
 def project_season(season: int, injuries: pd.DataFrame | None = None, P: dict | None = None,
-                   status_p: dict | None = None) -> pd.DataFrame:
+                   status_p: dict | None = None, max_date: str | None = None) -> pd.DataFrame:
     """Minuti proiettati per tutte le partite della stagione. injuries: righe dell'injury report pre-partita
     (game_id, team, player_name, status), oppure None se non disponibile."""
     from nba.config import path
     pg = pd.read_parquet(path("processed") / f"player_games_{season}.parquet")
     g = pd.read_parquet(path("processed") / f"games_{season}.parquet").dropna(subset=["date"])
     mp = MinutesProjector(pg, g, P, status_p)
+    if max_date is not None:
+        g = g[g["date"] <= max_date]
     inj = {k: v for k, v in injuries.groupby(["game_id", "team"])} if injuries is not None and len(injuries) else {}
     out = []
     for r in g.sort_values("date").itertuples():

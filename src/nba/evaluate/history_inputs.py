@@ -27,12 +27,17 @@ def _fmt(x) -> str:
 
 
 class SeasonInputs:
-    def __init__(self, season: int):
+    def __init__(self, season: int, include_unplayed: bool = False, max_date: str | None = None):
+        """include_unplayed / max_date servono alla stagione in corso: il calendario comprende anche le partite
+        non ancora giocate, i risultati solo quelle giocate."""
         self.season = season
+        self.max_date = max_date
         proc = path("processed")
         g = pd.read_parquet(proc / f"games_{season}.parquet")
         self.games = g.dropna(subset=["date", "hpts"]).sort_values(["date", "game_id"]).reset_index(drop=True)
-        self.schedule = [f"{r.date},{r.away},{r.home}" for r in self.games.itertuples()]
+        allg = g.dropna(subset=["date"]) if include_unplayed else self.games
+        self.all_games = allg.sort_values(["date", "game_id"]).reset_index(drop=True)
+        self.schedule = [f"{r.date},{r.away},{r.home}" for r in self.all_games.itertuples()]
         pg = pd.read_parquet(proc / f"player_games_{season}.parquet")
         pg = pg.merge(self.games[["game_id", "date"]], on="game_id", how="inner")
         pg["name"] = pg["name"].fillna(pg["player"].astype(str)).str.replace(",", "", regex=False)
@@ -60,7 +65,8 @@ class SeasonInputs:
                                            for r in b.itertuples()]
 
     def days(self) -> list[str]:
-        return sorted(self.games["date"].unique())
+        d = sorted(self.all_games["date"].unique())
+        return [x for x in d if self.max_date is None or x <= self.max_date]
 
     def raw_for_day(self, d: str, reports: pd.DataFrame | None = None) -> tuple[dict, pd.DataFrame]:
         """Ingressi del mattino del giorno d (stringa YYYY-MM-DD) e partite da pronosticare quel giorno.
@@ -68,7 +74,7 @@ class SeasonInputs:
         reports: righe dell'injury report pre-partita (game_id, team, player_name, status, reason). Se date,
         le assenze vengono da lì (versione realistica) invece che da "chi ha giocato"."""
         past = self.games[self.games["date"] < d]
-        today = self.games[self.games["date"] == d]
+        today = self.all_games[self.all_games["date"] == d]
         results = [f"{r.date}|{r.away}|{int(r.apts)}|{r.home}|{int(r.hpts)}|" for r in past.itertuples()]
         sub = self.pg[self.pg["date"] < d]
         pergame, adv = [PERGAME_HEADER], [ADV_HEADER]

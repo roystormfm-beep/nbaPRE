@@ -19,21 +19,25 @@ from nba.models import elo as ELO
 from nba.models.team_ratings import game_table, predict_games
 
 SEASONS = list(range(2014, 2026))
+LIVE = 2026          # stagione in corso: file *_live_2026 prodotti da nba.live.predict
 COLS = ["game_id", "season", "date", "home", "away", "hpts", "apts", "margin_pred", "total_pred", "pm_mu", "pm_pace",
         "eff_sum", "eff_diff"]
 
 
-def _player_base() -> pd.DataFrame:
+def _player_base(max_season: int = 2025) -> pd.DataFrame:
     proc = path("processed")
     parts = [pd.read_parquet(proc / "player_model_noreport_2014_2017.parquet")[COLS].assign(has_report=False),
              pd.read_parquet(proc / "player_model_report_predictions.parquet")[COLS].assign(has_report=True)]
     t = proc / "player_model_report_test_2025.parquet"
     if t.exists():
         parts.append(pd.read_parquet(t)[COLS].assign(has_report=True))
+    lv = proc / f"player_model_report_live_{LIVE}.parquet"
+    if max_season >= LIVE and lv.exists():
+        parts.append(pd.read_parquet(lv)[COLS].assign(has_report=True))
     base = pd.concat(parts, ignore_index=True)
     # il 2018-19 ha l'injury report solo da metà dicembre
     has = set()
-    for s in range(2018, 2026):
+    for s in range(2018, max_season + 1):
         f = path("external") / "injury" / f"needed_{s}.csv"
         if f.exists():
             has |= set(pd.read_csv(f, dtype={"game_id": str})["game_id"].str.zfill(10))
@@ -42,18 +46,23 @@ def _player_base() -> pd.DataFrame:
     return base.merge(ctx, on="game_id", how="inner")
 
 
-def team_ratings() -> pd.DataFrame:
+def team_ratings(max_season: int = 2025) -> pd.DataFrame:
     f = path("processed") / "team_ratings_predictions.parquet"
     tr = pd.read_parquet(f)
+    seasons = list(range(2014, max_season + 1))
     missing = [s for s in SEASONS if s not in set(tr["season"])]
     if missing:
         g = game_table(SEASONS)
         tr = pd.concat([tr, predict_games(g, missing, cfg()["models"]["team_ratings"])], ignore_index=True)
         tr.to_parquet(f, index=False)
+    tr = tr[tr["season"] < LIVE]
+    if max_season >= LIVE:        # stagione in corso: si ricalcola sempre, comprese le partite non ancora giocate
+        g = game_table(seasons, include_unplayed=True)
+        tr = pd.concat([tr, predict_games(g, [LIVE], cfg()["models"]["team_ratings"])], ignore_index=True)
     return tr
 
 
-def baseline() -> pd.DataFrame:
+def baseline(max_season: int = 2025) -> pd.DataFrame:
     proc = path("processed")
     b = pd.read_parquet(proc / "baseline_retuned_predictions.parquet")
     pre = b[(b["variant"] == "senza") & (b["season"] < 2018)]
@@ -62,6 +71,10 @@ def baseline() -> pd.DataFrame:
     t = proc / "baseline_report_test_2025.parquet"
     if t.exists():
         tt = pd.read_parquet(t)
+        parts.append(tt[tt["variant"] == "injury_report"])
+    lv = proc / f"baseline_report_live_{LIVE}.parquet"
+    if max_season >= LIVE and lv.exists():
+        tt = pd.read_parquet(lv)
         parts.append(tt[tt["variant"] == "injury_report"])
     x = pd.concat(parts, ignore_index=True)
     return x[["game_id", "margin_pred", "total_pred"]].rename(columns={"margin_pred": "m_base", "total_pred": "t_base"})
@@ -79,10 +92,10 @@ def players_open() -> pd.DataFrame:
     return x[["game_id", "margin_pred"]].rename(columns={"margin_pred": "m_players_open"})
 
 
-def build() -> pd.DataFrame:
+def build(max_season: int = 2025) -> pd.DataFrame:
     M = cfg()["models"]
-    df = _player_base()
-    tr = team_ratings()
+    df = _player_base(max_season)
+    tr = team_ratings(max_season)
     df = df.merge(tr.drop(columns=["season"]), on="game_id", how="left")
     seasons = sorted(df["season"].unique())
     # scarto: modello giocatori + contesto essenziale (seconda fase ridge sulle stagioni precedenti)
@@ -96,8 +109,8 @@ def build() -> pd.DataFrame:
     out = out.merge(pt[["game_id", "pred"]].rename(columns={"pred": "t_players"}), on="game_id")
     out = out.rename(columns={"margin_team": "m_team", "total_team": "t_team", "margin_pred": "m_players_raw",
                               "total_pred": "t_players_raw"})
-    out = out.merge(baseline(), on="game_id", how="left").merge(players_open(), on="game_id", how="left")
-    e = ELO.run(ELO.games(SEASONS), M["elo"])
+    out = out.merge(baseline(max_season), on="game_id", how="left").merge(players_open(), on="game_id", how="left")
+    e = ELO.run(ELO.games(list(range(2014, max_season + 1)), include_unplayed=max_season >= LIVE), M["elo"])
     out = out.merge(e[["game_id", "elo_diff", "margin_elo", "p_elo"]].rename(columns={"margin_elo": "m_elo"}),
                     on="game_id", how="left")
     # gradient boosting sulle feature di squadra e di contesto (si allena dalle stagioni precedenti)

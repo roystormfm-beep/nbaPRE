@@ -15,16 +15,18 @@ from nba.config import path
 
 
 def team_records(g: pd.DataFrame) -> pd.DataFrame:
-    """Vittorie e sconfitte di ogni squadra prima di ogni partita (stessa stagione)."""
+    """Vittorie e sconfitte di ogni squadra prima di ogni partita (stessa stagione). Le partite non ancora
+    giocate (punteggio vuoto) ricevono il record di tutte le partite giocate prima."""
     rows = []
+    played = g["hpts"].notna() & g["apts"].notna()
     for side, opp in (("home", "away"), ("away", "home")):
         w = (g["hpts"] > g["apts"]) if side == "home" else (g["apts"] > g["hpts"])
         rows.append(pd.DataFrame({"game_id": g["game_id"], "season": g["season"], "date": g["date"], "team": g[side],
-                                  "win": w.astype(int)}))
+                                  "win": (w & played).astype(int), "played": played.astype(int)}))
     t = pd.concat(rows).sort_values(["team", "season", "date", "game_id"])
     grp = t.groupby(["team", "season"])
     t["w_before"] = grp["win"].cumsum() - t["win"]
-    t["g_before"] = grp.cumcount()
+    t["g_before"] = grp["played"].cumsum() - t["played"]
     t["wpct"] = np.where(t["g_before"] > 0, t["w_before"] / t["g_before"].clip(lower=1), 0.5)
     return t[["game_id", "team", "wpct", "g_before"]]
 
@@ -37,7 +39,7 @@ def build(seasons: list[int]) -> pd.DataFrame:
     sc["games_last7"] = sc.groupby(["season", "team"])["d"].transform(
         lambda x: x.apply(lambda d: ((x < d) & (x >= d - pd.Timedelta(days=7))).sum()))
     games = pd.concat([pd.read_parquet(path("processed") / f"games_{s}.parquet").assign(season=s) for s in seasons])
-    games = games.dropna(subset=["date", "hpts"])
+    games = games.dropna(subset=["date"])
     rec = team_records(games)
     sc = sc.merge(rec, on=["game_id", "team"], how="left")
     # giorni alla fine della stagione regolare (calendario noto in anticipo)

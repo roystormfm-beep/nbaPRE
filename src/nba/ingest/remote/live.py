@@ -177,9 +177,18 @@ def injuries(s: int, days_back: int = 2) -> str:
     g = pd.read_parquet(path("processed") / f"games_{s}.parquet", columns=["date", "tip_utc_espn"]).dropna()
     now = pd.Timestamp.now(tz=INJ.ET)
     tips = pd.to_datetime(g["tip_utc_espn"], utc=True).dt.tz_convert(INJ.ET)
-    tips = tips[(tips >= now - pd.Timedelta(days=days_back)) & (tips <= now + pd.Timedelta(hours=30))]
+    tips = tips[tips <= now + pd.Timedelta(hours=30)]
     known = set(old["url"]) | {x["url"] for x in rows}
-    for target in sorted({min(t - pd.Timedelta(minutes=45), now).floor("15min") for t in tips}):
+    # fasce già provate (per le partite passate basta una volta); quelle di oggi si riprovano a ogni esecuzione
+    pf = path("external") / "injury" / f"probed_{s}.txt"
+    probed = set(pf.read_text().split()) if pf.exists() else set()
+    targets = sorted({min(t - pd.Timedelta(minutes=45), now).floor("15min") for t in tips})
+    for target in targets:
+        tag = target.strftime("%Y-%m-%dT%H:%M")
+        if tag in probed:
+            continue
+        if target < now - pd.Timedelta(hours=1):
+            probed.add(tag)
         for d, t in INJ._slot_candidates(target):
             u = INJ.PDF.format(d=d, t=t)
             if u in known:
@@ -189,6 +198,7 @@ def injuries(s: int, days_back: int = 2) -> str:
                 rows.append({"url": u, "date": dd, "time_et": tt, "src": "prova", "season": s})
                 known.add(u)
                 break
+    pf.write_text("\n".join(sorted(probed)) + "\n")
     ix = pd.concat([old, pd.DataFrame(rows)], ignore_index=True).drop_duplicates("url")
     ix = ix.sort_values(["date", "time_et"]).reset_index(drop=True)
     ix.to_csv(ixf, index=False)
@@ -216,13 +226,20 @@ def injuries(s: int, days_back: int = 2) -> str:
 
 
 def run(s: int) -> list[str]:
+    import time
     from nba.live import build
-    log = []
+    log, t0 = [], time.time()
+
+    def note(msg):
+        line = f"[{time.time() - t0:5.0f} s] {msg}"
+        print(line, flush=True)
+        log.append(line)
+
     sb = schedule(s)
-    log.append(f"calendario {s}: {len(regular(sb))} partite di stagione regolare, {int(regular(sb)['completed'].sum())} concluse")
-    log.append(games(s))
-    log.append(json.dumps(build.build(s)))
-    log.append(odds(s))
-    log.append(injuries(s))
-    log.append(json.dumps(build.lines(s)))
+    note(f"calendario {s}: {len(regular(sb))} partite di stagione regolare, {int(regular(sb)['completed'].sum())} concluse")
+    note(games(s))
+    note(json.dumps(build.build(s)))
+    note(odds(s))
+    note(injuries(s))
+    note(json.dumps(build.lines(s)))
     return log

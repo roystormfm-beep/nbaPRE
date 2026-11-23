@@ -71,7 +71,7 @@ def cmd_predict(args):
 def cmd_live(args):
     if args.azione in ("update", "all"):
         from nba.ingest.remote import live
-        print("\n".join(live.run(args.season)), flush=True)
+        live.run(args.season)
     if args.azione in ("predict", "all"):
         cmd_predict(args)
     if args.azione == "compare":

@@ -16,9 +16,9 @@ from nba.features.players import priors
 from nba.models import rapm as R
 
 
-def season_games(season: int) -> pd.DataFrame:
+def season_games(season: int, include_unplayed: bool = False) -> pd.DataFrame:
     g = pd.read_parquet(path("processed") / f"games_{season}.parquet")
-    g = g.dropna(subset=["date", "hpts"]).copy()
+    g = g.dropna(subset=["date"] if include_unplayed else ["date", "hpts"]).copy()
     g["date"] = pd.to_datetime(g["date"])
     return g.sort_values(["date", "game_id"]).reset_index(drop=True)
 
@@ -93,22 +93,32 @@ def team_residuals(past: pd.DataFrame, cutoff: pd.Timestamp, lam: float, hl: flo
     return {t: float(x[ix[t]]) for t in teams}
 
 
-def predict_season(season: int, P: dict | None = None, step: int = 7, minutes: pd.DataFrame | None = None) -> pd.DataFrame:
+def predict_season(season: int, P: dict | None = None, step: int = 7, minutes: pd.DataFrame | None = None,
+                   max_date: str | None = None, extra_cutoffs: list | None = None,
+                   include_unplayed: bool = False) -> pd.DataFrame:
+    """max_date / extra_cutoffs / include_unplayed servono alla stagione in corso: partite fino a max_date
+    (anche non ancora giocate) e una stima dei rating proprio al giorno da pronosticare."""
     P = {**R.DEFAULTS, "res_lam": 0.0, "res_hl": 45.0, **(P or {})}
-    g = season_games(season)
+    g = season_games(season, include_unplayed)
+    if max_date is not None:
+        g = g[g["date"] <= pd.Timestamp(max_date)].reset_index(drop=True)
     act = actual_minutes(season)
     mins = act if minutes is None else minutes
     st = R.load_stints([s for s in range(season - 2, season + 1) if s >= 2014])
     pr = priors(season, P)
     pgb = season_box(season) if P.get("box_w") else None
     cuts = cutoffs(g["date"], step)
+    if extra_cutoffs:
+        cuts = sorted(set(cuts) | {pd.Timestamp(c) for c in extra_cutoffs})
     rows = []
+    predict_season.fits = {}
     for i, c in enumerate(cuts):
         nxt = cuts[i + 1] if i + 1 < len(cuts) else c + pd.Timedelta(days=step)
         gg = g[(g["date"] >= c) & (g["date"] < nxt)]
         if gg.empty:
             continue
         f = R.fit(st, c, box_priors(pgb, c, pr, P) if pgb is not None else pr, P, season)
+        predict_season.fits[c] = f
         net = dict(zip(f.players.tolist(), (f.O + f.D).tolist()))
         oo = dict(zip(f.players.tolist(), f.O.tolist()))
         dd = dict(zip(f.players.tolist(), f.D.tolist()))
@@ -156,6 +166,7 @@ def predict_season(season: int, P: dict | None = None, step: int = 7, minutes: p
             rows.append({"game_id": r.game_id, "season": season, "date": r.date.strftime("%Y-%m-%d"), "home": r.home,
                          "away": r.away, "margin_pred": per100 * k + corr, "total_pred": hp + ap,
                          "pm_mu": f.mu, "pm_pace": f.pace, "eff_sum": (hp + ap) / k, "eff_diff": per100, "hpts": r.hpts, "apts": r.apts,
+                         "hca": h, "h_str": hh["nw"] * hs, "a_str": aa["nw"] * as_, "team_adj": th - ta,
                          "cutoff": c.strftime("%Y-%m-%d")})
     return pd.DataFrame(rows)
 

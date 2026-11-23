@@ -16,10 +16,11 @@ from nba.config import TEAMS, path
 DEFAULTS = dict(k=20.0, hca=100.0, carry=0.75, mean=1505.0, per_point=28.0)
 
 
-def games(seasons: list[int]) -> pd.DataFrame:
+def games(seasons: list[int], include_unplayed: bool = False) -> pd.DataFrame:
     parts = []
     for s in seasons:
-        g = pd.read_parquet(path("processed") / f"games_{s}.parquet").dropna(subset=["date", "hpts"])
+        g = pd.read_parquet(path("processed") / f"games_{s}.parquet")
+        g = g.dropna(subset=["date"] if include_unplayed else ["date", "hpts"])
         g["season"] = s
         parts.append(g)
     g = pd.concat(parts, ignore_index=True)
@@ -46,6 +47,8 @@ def run(g: pd.DataFrame, P: dict | None = None) -> pd.DataFrame:
                         "elo_diff": diff, "margin_elo": diff / P["per_point"],
                         "p_elo": 1 / (1 + 10 ** (-diff / 400))})
         for r, diff in rows:
+            if pd.isna(r.hpts) or pd.isna(r.apts):          # partita non ancora giocata: nessun aggiornamento
+                continue
             exp_h = 1 / (1 + 10 ** (-diff / 400))
             mov = r.hpts - r.apts
             res = 1.0 if mov > 0 else 0.0

@@ -19,10 +19,11 @@ DEFAULTS = dict(hl_team=60.0, hl_league=30.0, lam_eff=15.0, lam_pace=15.0, lam_h
 TIX = {t: i for i, t in enumerate(TEAMS)}
 
 
-def game_table(seasons: list[int]) -> pd.DataFrame:
+def game_table(seasons: list[int], include_unplayed: bool = False) -> pd.DataFrame:
     parts = []
     for s in seasons:
-        g = pd.read_parquet(path("processed") / f"games_{s}.parquet").dropna(subset=["date", "hpts"])
+        g = pd.read_parquet(path("processed") / f"games_{s}.parquet")
+        g = g.dropna(subset=["date"] if include_unplayed else ["date", "hpts"])
         pg = pd.read_parquet(path("processed") / f"player_games_{s}.parquet",
                              columns=["game_id", "team", "fga", "oreb", "tov", "fta"])
         t = pg.groupby(["game_id", "team"])[["fga", "oreb", "tov", "fta"]].sum()
