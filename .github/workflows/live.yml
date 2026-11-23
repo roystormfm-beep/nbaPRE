@@ -5,9 +5,10 @@
 name: live
 
 on:
-  schedule:
-    - cron: "30 14 * * *"
-    - cron: "20 22 * * *"
+  # orari automatici attivati a fine fase 6, dopo la verifica dei pronostici
+  # schedule:
+  #   - cron: "30 14 * * *"
+  #   - cron: "20 22 * * *"
   workflow_dispatch:
     inputs:
       step:
