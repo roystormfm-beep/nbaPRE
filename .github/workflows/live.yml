@@ -1,0 +1,52 @@
+# Pipeline dal vivo della stagione in corso: due volte al giorno scarica calendario, partite giocate, quote e
+# injury report, ricalcola i pronostici e pubblica predictions/latest.json e predictions/AAAA-MM-GG.json.
+# Orari (UTC): 14:30 (mattina negli USA, dopo le partite della notte) e 22:20 (circa un'ora prima delle prime
+# partite serali, con l'injury report più recente).
+name: live
+
+on:
+  schedule:
+    - cron: "30 14 * * *"
+    - cron: "20 22 * * *"
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "update | predict | all"
+        default: all
+      date:
+        description: "data USA AAAA-MM-GG da pronosticare (vuoto = oggi)"
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live
+  cancel-in-progress: false
+
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Ambiente Python
+        run: uv sync --extra remote --python 3.12
+      - name: Aggiornamento dati
+        if: ${{ github.event_name == 'schedule' || inputs.step == 'all' || inputs.step == 'update' }}
+        run: uv run nba live update
+      - name: Pronostici
+        if: ${{ github.event_name == 'schedule' || inputs.step == 'all' || inputs.step == 'predict' }}
+        run: |
+          if [ -n "${{ inputs.date }}" ]; then uv run nba predict --date "${{ inputs.date }}"; else uv run nba predict; fi
+      - name: Salva nel repository
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/external data/processed predictions 2>/dev/null || true
+          if git diff --cached --quiet; then echo "niente di nuovo"; exit 0; fi
+          git commit -m "Dal vivo: dati e pronostici $(date -u +%Y-%m-%dT%H:%MZ)"
+          git checkout -- . 2>/dev/null || true
+          for i in 1 2 3 4; do git pull --rebase --autostash -X theirs && git push && break; sleep 7; done

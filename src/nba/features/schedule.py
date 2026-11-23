@@ -77,3 +77,23 @@ def team_schedule(games: pd.DataFrame) -> pd.DataFrame:
     s["tz_shift_h"] = (s["utc_off"] - grp["utc_off"].shift(1)).fillna(0)
     s["first_game"] = plat.isna()
     return s.drop(columns=["d"])
+
+
+def update(seasons: list[int]) -> pd.DataFrame:
+    """Ricalcola le righe di calendario delle stagioni indicate (anche le partite non ancora giocate)
+    e le sostituisce in data/processed/schedule.parquet."""
+    from nba.config import path
+    f = path("processed") / "schedule.parquet"
+    old = pd.read_parquet(f) if f.exists() else pd.DataFrame()
+    parts = []
+    for s in seasons:
+        g = pd.read_parquet(path("processed") / f"games_{s}.parquet")
+        g["season"] = s
+        parts.append(team_schedule(g))
+    new = pd.concat(parts, ignore_index=True)
+    if len(old):
+        old = old[~old["season"].isin(seasons)]
+    out = pd.concat([old, new], ignore_index=True)
+    out = out[old.columns] if len(old) else out
+    out.to_parquet(f, index=False)
+    return out

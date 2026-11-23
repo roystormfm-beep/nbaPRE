@@ -63,6 +63,22 @@ def cmd_report(args):
     print(f"scritto reports/{'baseline_fase2' if fase == 2 else f'fase{fase}'}.md")
 
 
+def cmd_predict(args):
+    from nba.live import predict
+    print(predict.run(args.season, args.date))
+
+
+def cmd_live(args):
+    if args.azione in ("update", "all"):
+        from nba.ingest.remote import live
+        print("\n".join(live.run(args.season)), flush=True)
+    if args.azione in ("predict", "all"):
+        cmd_predict(args)
+    if args.azione == "compare":
+        from nba.live import compare
+        print(compare.run(args.season, args.page))
+
+
 def parse_range(s: str) -> list[int]:
     """'2014-2026' -> [2014..2026]; '2018,2025' -> [2018, 2025]."""
     out = []
@@ -140,8 +156,16 @@ def main(argv=None):
                      help="2: baseline della pagina; 4: contesto e totali; 5: ensemble e test (la fase 3 si rifà con evaluate.phase3)")
     prp.add_argument("--solo-sviluppo", action="store_true", help="fase 5: solo le stagioni di sviluppo, senza il test")
     prp.set_defaults(func=cmd_report)
-    sp = sub.add_parser("predict", help="disponibile in fase 6")
-    sp.set_defaults(func=lambda a: sys.exit("'predict' arriva in fase 6 (pipeline dal vivo)"))
+    sp = sub.add_parser("predict", help="pronostici di un giorno della stagione in corso (usa i dati già aggiornati)")
+    sp.add_argument("--date", help="data USA AAAA-MM-GG (predefinita: oggi a New York)")
+    sp.add_argument("--season", type=int, default=2026)
+    sp.set_defaults(func=cmd_predict)
+    pl = sub.add_parser("live", help="pipeline dal vivo: update (scarica e costruisce), predict, compare, all")
+    pl.add_argument("azione", choices=["update", "predict", "compare", "all"])
+    pl.add_argument("--date", help="data USA AAAA-MM-GG (predefinita: oggi a New York)")
+    pl.add_argument("--season", type=int, default=2026)
+    pl.add_argument("--page", help="compare: file JSON esportato dal registro della pagina (documenti nba/predlog-*)")
+    pl.set_defaults(func=cmd_live)
     args = p.parse_args(argv)
     args.func(args)
 
