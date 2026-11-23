@@ -48,9 +48,14 @@ def cmd_backtest(args):
 
 
 def cmd_report(args):
-    from nba.evaluate.report_baseline import write
-    write()
-    print("scritto reports/baseline_fase2.md")
+    fase = getattr(args, "fase", 2)
+    if fase == 2:
+        from nba.evaluate.report_baseline import write
+        write()
+    elif fase == 4:
+        from nba.evaluate import report_phase4
+        report_phase4.main()
+    print(f"scritto reports/{'baseline_fase2' if fase == 2 else f'fase{fase}'}.md")
 
 
 def parse_range(s: str) -> list[int]:
@@ -122,6 +127,7 @@ def main(argv=None):
     pb.add_argument("--seasons", default="2014-2025")
     pb.set_defaults(func=cmd_backtest)
     prp = sub.add_parser("report", help="tabelle di confronto con il mercato (reports/)")
+    prp.add_argument("--fase", type=int, default=4, choices=[2, 4], help="2: baseline della pagina; 4: contesto e totali (la fase 3 si rifà con evaluate.phase3)")
     prp.set_defaults(func=cmd_report)
     sp = sub.add_parser("predict", help="disponibile in fase 6")
     sp.set_defaults(func=lambda a: sys.exit("'predict' arriva in fase 6 (pipeline dal vivo)"))

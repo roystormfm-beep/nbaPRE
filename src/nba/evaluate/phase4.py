@@ -47,3 +47,28 @@ def margin_eval(groups_list: dict, P: dict | None = None) -> pd.DataFrame:
                      "MAE_base": (y - x["base"]).abs().mean(), "MAE_mercato": (y + x["close_spread_home"]).abs().mean(),
                      "RMSE": np.sqrt(((y - x["pred"]) ** 2).mean())})
     return pd.DataFrame(rows)
+
+
+def officials() -> pd.DataFrame:
+    """Arbitri per partita (game_id, official), dagli id ESPN."""
+    parts = []
+    for s in range(2014, 2026):
+        f = path("external") / "espn" / f"officials_{s}.parquet"
+        g = path("processed") / f"games_{s}.parquet"
+        if not f.exists() or not g.exists():
+            continue
+        o = pd.read_parquet(f)
+        m = pd.read_parquet(g, columns=["game_id", "espn_id"]).dropna()
+        m["espn_id"] = m["espn_id"].astype(str)
+        parts.append(o.merge(m, on="espn_id")[["game_id", "official"]])
+    return pd.concat(parts, ignore_index=True).dropna()
+
+
+def total_table() -> pd.DataFrame:
+    proc = path("processed")
+    tr = pd.read_parquet(proc / "team_ratings_predictions.parquet")
+    df = base_table().merge(tr.drop(columns=["season"]), on="game_id", how="inner")
+    df["y"] = df["hpts"] + df["apts"]
+    # ritmo di squadra x (media recente della lega + scostamento di efficienza dai giocatori disponibili)
+    df["base"] = df["pace_pred"] * (2 * df["lg_eff"] + (df["eff_sum"] - 2 * df["pm_mu"])) / 100
+    return df

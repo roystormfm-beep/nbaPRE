@@ -4,6 +4,110 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
+# Fase 4: contesto e totali — completata
+
+*23 novembre 2026, notte. Mi fermo qui e aspetto il tuo via libera per la fase 5.*
+
+## In sintesi
+
+- **Il contesto aiuta poco, e quasi tutto il guadagno viene dal riposo.** Sullo scarto l'errore medio scende da 10,46 a 10,43 (−0,03 punti a partita, IC 95% [−0,05; −0,01]): piccolo ma significativo. Il distacco dal mercato passa da +0,17 a +0,14 [0,09; 0,20].
+- **Il totale dei punti migliora molto.** L'errore medio scende da 15,60 (modello giocatori della fase 3) a 14,60, contro 14,28 del mercato: il distacco passa da +1,31 a +0,31 [0,24; 0,39]. Ora il modello batte sul totale anche il baseline della pagina (14,8).
+- **Vantaggio del campo per squadra, viaggi, fusi orari, altura e arbitri non migliorano nulla** in modo misurabile: li ho tolti per tenere il modello semplice.
+- **Punti di casa e ospiti ora sono coerenti tra loro:** punti casa = (totale + scarto) / 2, punti ospiti = (totale − scarto) / 2. Errore medio sui punti di una squadra: 9,05 contro 8,90 del mercato.
+- **La stagione di test 2025-26 è ancora intatta.** Tutto è misurato sulle 7.747 partite di sviluppo con injury report (2018-19 → 2024-25), come nella fase 3.
+
+## Scarto: cosa conta del contesto
+
+Ogni correzione è stimata solo sulle stagioni precedenti a quella pronosticata, sopra il modello giocatori della fase 3. Per capire cosa conta ho tolto un gruppo alla volta.
+
+| Variante | Errore medio | vs fase 3 [IC 95%] | vs mercato [IC 95%] |
+|---|---|---|---|
+| Fase 3 (nessun contesto) | 10,458 | — | +0,174 [0,117; 0,231] |
+| Contesto completo | 10,427 | −0,032 [−0,051; −0,012] | +0,142 [0,088; 0,197] |
+| … senza riposo e calendario fitto | 10,456 | −0,002 [−0,010; +0,005] | +0,172 |
+| … senza fine stagione | 10,431 | −0,027 | +0,147 |
+| … senza vantaggio campo per squadra | 10,426 | −0,032 | +0,142 |
+| … senza viaggi e fusi orari | 10,427 | −0,032 | +0,142 |
+| … senza altura | 10,426 | −0,032 | +0,142 |
+| **Scelto: campo + riposo + fine stagione** | **10,427** | **−0,032 [−0,052; −0,013]** | **+0,142 [0,088; 0,195]** |
+| Mercato (chiusura) | 10,284 | | |
+
+Togliere il riposo cancella quasi tutto il guadagno; togliere viaggi, fusi, altura o il vantaggio per squadra non cambia nulla. Probabilmente quello che resta di questi effetti è già dentro i rating dei giocatori e il vantaggio campo generale.
+
+**Effetti stimati** (modello usato per il 2024-25, allenato fino al 2023-24), in punti di scarto, al netto di quanto il modello giocatori già sapeva:
+
+| Situazione | Effetto |
+|---|---|
+| Squadra in back-to-back (avversario riposato) | −1,0 |
+| … e in trasferta | altri −0,4 |
+| Terza partita in quattro notti | −0,4 |
+| Ogni partita in più negli ultimi 7 giorni rispetto all'avversario | −0,3 |
+| Ultime 5 settimane, squadra con meno del 35% di vittorie | −0,7 |
+| Ultima settimana, squadra con più del 65% di vittorie (spesso fa riposare i titolari) | −0,4 |
+| Vantaggio del campo (ricalibrazione rispetto alla fase 3) | −0,1 |
+
+## Totale punti: il ritmo delle squadre
+
+Il modello giocatori stimava i punti dai minuti e dall'efficienza dei giocatori, ma non il ritmo di ogni squadra. Ora il totale si costruisce in tre pezzi, tutti stimati giorno per giorno con le sole partite precedenti:
+
+1. **Possessi attesi** = ritmo medio recente della lega + ritmo della squadra di casa + ritmo degli ospiti.
+2. **Punti per 100 possessi** = media recente della lega, corretta con l'efficienza dei giocatori che saranno in campo (dal modello della fase 3, quindi tiene conto degli assenti).
+3. **Correzione di livello**: una costante stimata sulle stagioni precedenti, che tiene conto per esempio dei supplementari.
+
+| Variante | Errore medio | vs mercato [IC 95%] |
+|---|---|---|
+| Fase 3: solo giocatori | 15,60 | +1,31 [1,16; 1,47] |
+| Solo squadre: ritmo × efficienza di squadra | 14,83 | +0,54 [0,45; 0,64] |
+| Ritmo di squadra × efficienza dei giocatori disponibili | 14,71 | +0,43 [0,34; 0,52] |
+| **+ correzione di livello (scelto)** | **14,60** | **+0,31 [0,24; 0,39]** |
+| + contesto (riposo, viaggi, altura, momento della stagione) | 14,61 | +0,33 |
+| + arbitri (128 arbitri, effetto con shrinkage) | 14,59 | +0,31 |
+| Mercato (chiusura) | 14,28 | |
+
+- **Arbitri:** gli effetti stimati sono minuscoli (deviazione standard 0,05 punti sul totale). Il miglioramento di 0,002 è rumore, quindi non li uso.
+- **Taratura:** l'unico parametro ritoccato è quanto "tirare verso la media" il ritmo di ogni squadra. L'errore passa da 14,66 a 14,60. L'ho scelto sulle stesse stagioni di sviluppo, quindi questo numero è leggermente ottimista; la verifica vera sarà sul test.
+
+## Modello della fase 4, tutte le metriche (7.747 partite)
+
+| Metrica | Modello | Mercato | Differenza [IC 95%] |
+|---|---|---|---|
+| Errore medio sullo scarto | 10,43 | 10,28 | +0,14 [0,09; 0,20] |
+| Errore medio sul totale | 14,59 | 14,28 | |
+| Errore medio sui punti di una squadra | 9,05 | 8,90 | |
+| Brier (probabilità di vittoria) | 0,2099 | 0,2066 | +0,0033 [0,0017; 0,0048] |
+| Log loss | 0,607 | 0,600 | +0,007 [0,004; 0,011] |
+| Calibrazione (ECE, più basso è meglio) | 0,010 | 0,007 | |
+| Vincitori indovinati | 67,0% | 67,9% | |
+
+Rispetto alla fase 3 il Brier migliora di 0,0008 [0,0003; 0,0013]. Le probabilità per ora sono semplicemente la curva normale dello scarto, con l'errore tipico delle tre stagioni precedenti: la vera calibrazione è nella fase 5.
+
+**Per stagione** il modello resta dietro al mercato in tutte e 7 le stagioni, sia sullo scarto (da 0,05 a 0,19 punti) sia sul totale (da 0,18 a 0,66). Tabella completa in `reports/fase4.md`.
+
+## Cosa resta debole
+
+- **I cambi di livello improvvisi dei punti.** Il caso peggiore è il 2023-24: i punti per partita sono scesi da 234 a dicembre a 223 a marzo. Il mercato si è adattato in poche settimane (errore sistematico a marzo vicino a zero); il modello ha continuato a sovrastimare il totale di circa 6 punti a febbraio e marzo. La media della lega ha già un'emivita di 30 giorni, e accorciarla non aiuta nel complesso. È un punto a favore di un modello che usi anche la linea d'apertura (fase 5).
+- **2019-20:** con la ripresa nella "bolla" il calendario è cambiato a stagione in corso, quindi le variabili di fine stagione sono approssimate. L'effetto è trascurabile: sono poche partite.
+- **Distacco dal mercato:** sullo scarto resta 0,14 punti a partita. Da qui in poi i guadagni attesi sono piccoli: ensemble, calibrazione e, se lo vorrai, l'uso della linea d'apertura.
+
+## Controlli anti-leakage aggiunti
+
+Tre nuovi test, che si aggiungono ai 30 esistenti (33 test, tutti verdi):
+
+- il record vittorie/sconfitte usato per la fine stagione non cambia se si alterano i risultati dal giorno della partita in poi;
+- ritmo ed efficienza di squadra stimati a una data non cambiano se si alterano le partite da quella data in poi;
+- la correzione di contesto di una stagione non cambia se si alterano i risultati di quella stagione e delle successive.
+
+Comando per rifare le tabelle: `nba report --fase 4`.
+
+## Prossimo passo: fase 5 (ensemble, calibrazione, test finale)
+
+1. Ensemble dei modelli (giocatori + contesto, squadre, baseline) con pesi stimati solo sul passato.
+2. Calibrazione delle probabilità di vittoria e degli intervalli di punteggio.
+3. Prima e unica valutazione sulla stagione di test 2025-26, con ablation completa e un report HTML.
+4. Versione che usa anche la linea d'apertura del mercato e misura del valore rispetto alla chiusura (CLV), tenuta separata dal modello "puro".
+
+---
+
 # Fase 3: giocatori, minuti, disponibilità — completata
 
 *23 novembre 2026, sera. Mi fermo qui e aspetto il tuo via libera per la fase 4.*
