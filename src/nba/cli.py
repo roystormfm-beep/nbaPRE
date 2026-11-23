@@ -29,6 +29,39 @@ def cmd_qc(args):
     run_qc()
 
 
+def parse_range(s: str) -> list[int]:
+    """'2014-2026' -> [2014..2026]; '2018,2025' -> [2018, 2025]."""
+    out = []
+    for part in str(s).split(","):
+        if "-" in part and len(part.split("-")[1]) == 4:
+            a, b = part.split("-")
+            out += list(range(int(a), int(b) + 1))
+        elif part.strip():
+            out.append(parse_season(part))
+    return out
+
+
+def cmd_fetch_remote(args):
+    """Scaricamenti da siti esterni (da lanciare su GitHub Actions o sul tuo computer)."""
+    seasons = parse_range(args.seasons)
+    tasks = ["probe", "espn", "bref"] if args.task == "all" else [args.task]
+    log = []
+    if "probe" in tasks:
+        from nba.ingest.remote import probe
+        probe.run()
+        log.append("probe: data/external/probe.json")
+    if "espn" in tasks:
+        from nba.ingest.remote import espn
+        log += espn.run(seasons, with_odds=not args.no_odds)
+    if "bref" in tasks:
+        from nba.ingest.remote import bref
+        # anche la stagione prima della prima richiesta: serve come prior "stagione precedente"
+        log += bref.run(list(range(min(seasons) - 1, max(seasons) + 1)))
+    from nba.config import path
+    (path("external") / "fetch_log.txt").write_text("\n".join(log) + "\n", encoding="utf-8")
+    print("\n".join(log))
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="nba")
     sub = p.add_subparsers(dest="cmd", required=True)
@@ -38,6 +71,11 @@ def main(argv=None):
     pi.set_defaults(func=cmd_ingest)
     pq = sub.add_parser("qc", help="controlli di qualità sui dati elaborati")
     pq.set_defaults(func=cmd_qc)
+    pr = sub.add_parser("fetch-remote", help="quote e calendario ESPN, BPM Basketball-Reference, prova delle fonti")
+    pr.add_argument("--task", choices=["probe", "espn", "bref", "all"], default="all")
+    pr.add_argument("--seasons", default="2014-2026", help="es. 2014-2026 oppure 2018,2025")
+    pr.add_argument("--no-odds", action="store_true", help="solo calendario e risultati ESPN, senza quote")
+    pr.set_defaults(func=cmd_fetch_remote)
     for name in ("backtest", "predict", "report"):
         sp = sub.add_parser(name, help="disponibile nelle fasi successive")
         sp.set_defaults(func=lambda a, n=name: sys.exit(f"'{n}' arriva nelle fasi successive"))

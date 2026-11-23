@@ -1,0 +1,56 @@
+# Scaricamenti da siti esterni che non si raggiungono dall'ambiente di sviluppo:
+# prova delle fonti, calendario/risultati/quote ESPN, BPM stagionale Basketball-Reference.
+# Si avvia a mano (Actions → fetch-remote → Run workflow) oppure modificando .github/run-fetch.txt
+# (la prima riga indica il compito, es. "all 2014-2026").
+name: fetch-remote
+
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "probe | espn | bref | all"
+        default: all
+      seasons:
+        description: "stagioni (anno di inizio), es. 2014-2026"
+        default: "2014-2026"
+  push:
+    paths: [".github/run-fetch.txt"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fetch-remote
+  cancel-in-progress: false
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Ambiente Python
+        run: uv sync --extra remote --python 3.12
+      - name: Parametri
+        id: p
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "task=${{ inputs.task }}" >> "$GITHUB_OUTPUT"
+            echo "seasons=${{ inputs.seasons }}" >> "$GITHUB_OUTPUT"
+          else
+            read -r T S < .github/run-fetch.txt
+            echo "task=${T:-all}" >> "$GITHUB_OUTPUT"
+            echo "seasons=${S:-2014-2026}" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Scaricamento
+        run: uv run nba fetch-remote --task "${{ steps.p.outputs.task }}" --seasons "${{ steps.p.outputs.seasons }}"
+      - name: Salva i dati nel repository
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/external
+          if git diff --cached --quiet; then echo "nessun dato nuovo"; exit 0; fi
+          git commit -m "Dati esterni: ${{ steps.p.outputs.task }} ${{ steps.p.outputs.seasons }}"
+          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
