@@ -53,4 +53,5 @@ jobs:
           git add data/external
           if git diff --cached --quiet; then echo "nessun dato nuovo"; exit 0; fi
           git commit -m "Dati esterni: ${{ steps.p.outputs.task }} ${{ steps.p.outputs.seasons }}"
-          for i in 1 2 3; do git pull --rebase && git push && break; sleep 5; done
+          git checkout -- . 2>/dev/null || true
+          for i in 1 2 3; do git pull --rebase --autostash && git push && break; sleep 5; done
