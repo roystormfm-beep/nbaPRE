@@ -4,32 +4,33 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
-# Fase 1: ingestione storica (parte da qui: completata; parte esterna: pronta, in attesa del repository)
+# Fase 1: ingestione storica — completata
 
-*23 novembre 2026. Decisioni prese da te: repository `roystormfm-beep/nbaPRE`, quote gratuite ESPN, baseline = modello attuale della pagina (v2).*
+*23 novembre 2026. Decisioni prese da te: repository `roystormfm-beep/nbaPRE`, quote gratuite ESPN, baseline = modello attuale della pagina (v2). Mi fermo qui e aspetto il tuo via libera per la fase 2.*
 
 ## In sintesi
 
-- **Play-by-play di 12 stagioni pronto e controllato** (2014-15 → 2025-26): 14.439 partite, 444.068 stint (tratti di gioco con gli stessi 10 giocatori in campo), 307.057 righe giocatore-partita, 1.632 giocatori.
-- **I quintetti in campo sono ricostruiti per il 99,99% del tempo di gioco.** Il quintetto di inizio periodo è stato dedotto in 123 casi su 117.316: un giocatore era rimasto in campo tutto il periodo senza tiri, rimbalzi o falli. In 13 casi resta incompleto.
-- **Due fonti indipendenti danno gli stessi numeri.** Nelle cinque stagioni in cui ci sono sia NBA Stats sia cdn.nba.com ho ricostruito tutto due volte. I minuti per giocatore coincidono entro un minuto nel 99,8-99,99% dei casi, i punti nel 99,8-99,98%.
-- **La parte che richiede internet è pronta ma non ancora partita.** Quote e calendario ESPN, BPM di Basketball-Reference e prova delle fonti girano su GitHub Actions. Il repository `nbaPRE` però non è ancora visibile all'app GitHub di Claude (vedi "Cosa manca").
+- **12 stagioni pronte e controllate** (2014-15 → 2025-26): 14.439 partite, 444.068 stint (tratti di gioco con gli stessi 10 giocatori in campo), 307.057 righe giocatore-partita, 1.632 giocatori.
+- **Punteggi finali verificati:** per tutte le 14.439 partite concordano almeno due fonti indipendenti, nel 99,8% dei casi tre o più (eventi, NBA Stats, cdn.nba.com, ESPN).
+- **Quintetti in campo ricostruiti per il 99,99% del tempo di gioco.** Il play-by-play è utilizzabile per i quintetti in 14.412 partite su 14.439; le 27 escluse sono descritte più sotto.
+- **Quote di mercato meglio del previsto:** linea di chiusura per il 99,6% delle partite (14.383) in **tutte** le 12 stagioni, non solo dal 2018-19 come stimato in fase 0. Linea d'apertura per 7.299 partite (2014-15 → 2016-17 e 2023-24 → 2025-26).
+- **Il riferimento da battere ora ha un numero.** Sul 2025-26 (stagione di test) la linea di chiusura sbaglia lo scarto in media di **10,9 punti** e il totale di **14,6**; Brier score sulla vittoria **0,195**.
 
 ## Come è fatta
 
-- `nba ingest --season 2025-26` (oppure `--all`) scarica gli archivi e costruisce in `data/processed/` le tabelle `games_S`, `stints_S`, `player_games_S`, `lineup_issues_S` più `schedule.parquet`. Le 12 stagioni richiedono circa 3 minuti.
-- `nba qc` rifà i controlli e scrive `reports/qc_fase1.md` e `reports/qc_fase1.json`.
-- `nba fetch-remote --task probe|espn|bref|all` raccoglie i dati esterni. Gira sul workflow `.github/workflows/fetch-remote.yml`, avviabile a mano da Actions o modificando `.github/run-fetch.txt`. Salva tutto in `data/external/` e fa il commit nel repository.
-- Fonte degli eventi: NBA Stats v2 per 2014-15 → 2019-20, cdn.nba.com per 2020-21 → 2025-26 (più pulita: 100% di coerenza con il punteggio).
+- `nba ingest --season 2025-26` (oppure `--all`) scarica il play-by-play e costruisce in `data/processed/` le tabelle `games_S`, `stints_S`, `player_games_S`, `lineup_issues_S` e `lines_S` (quote), più `schedule.parquet`. Se ci sono i dati ESPN li unisce da solo. Tempo: circa 4 minuti per 12 stagioni.
+- `nba qc` rifà tutti i controlli e scrive `reports/qc_fase1.md` e `reports/qc_fase1.json`.
+- `nba fetch-remote --task probe|espn|bref|all` raccoglie i dati esterni. Gira su GitHub Actions (workflow `fetch-remote`), salva in `data/external/` e fa il commit da solo. Il primo giro completo (circa 20.000 richieste) ha richiesto 10 minuti.
+- Fonte degli eventi: NBA Stats v2 per 2014-15 → 2019-20, cdn.nba.com per 2020-21 → 2025-26.
 - 6 test automatici (`uv run pytest`): ricostruzione dei quintetti su partite sintetiche e lettura dei formati ESPN e Basketball-Reference.
 
 ## Controlli di qualità
 
-| Stagione | Partite | Eventi = punteggio finale | Minuti di squadra corretti | Tempo con 5 contro 5 | Punti per squadra | Vittorie in casa | Dev. std. dello scarto |
+| Stagione | Partite | Play-by-play coerente col finale | Minuti di squadra corretti | Tempo con 5 contro 5 | Punti per squadra | Vittorie in casa | Dev. std. dello scarto |
 |---|---|---|---|---|---|---|---|
-| 2014-15 | 1.230 | 99,59% | 99,92% | 99,98% | 100,1 | 57,2% | 13,5 |
-| 2015-16 | 1.230 | 100% | 99,84% | 99,96% | 102,7 | 58,9% | 13,3 |
-| 2016-17 | 1.230 | 99,92% | 100% | 100% | 105,6 | 58,4% | 13,7 |
+| 2014-15 | 1.230 | 99,43% | 99,92% | 99,98% | 100,0 | 57,5% | 13,5 |
+| 2015-16 | 1.230 | 99,43% | 99,84% | 99,96% | 102,7 | 58,9% | 13,3 |
+| 2016-17 | 1.230 | 99,35% | 100% | 100% | 105,6 | 58,4% | 13,7 |
 | 2017-18 | 1.230 | 100% | 100% | 100% | 106,3 | 57,9% | 13,7 |
 | 2018-19 | 1.230 | 100% | 99,76% | 99,96% | 111,2 | 59,3% | 14,4 |
 | 2019-20 | 1.059 | 99,72% | 99,91% | 99,98% | 111,8 | 55,1% | 14,1 |
@@ -37,33 +38,62 @@ Diario delle fasi, la più recente in cima.
 | 2021-22 | 1.230 | 100% | 100% | 100% | 110,6 | 54,4% | 15,3 |
 | 2022-23 | 1.230 | 100% | 100% | 100% | 114,7 | 58,0% | 13,7 |
 | 2023-24 | 1.230 | 100% | 100% | 100% | 114,2 | 54,3% | 15,6 |
-| 2024-25 | 1.230 | 100% | 99,96% | 99,99% | 113,8 | 54,4% | 15,9 |
-| 2025-26 | 1.230 | 100% | 100% | 100% | 115,6 | 55,4% | 16,4 |
+| 2024-25 | 1.230 | 99,92% | 99,96% | 99,99% | 113,8 | 54,4% | 15,9 |
+| 2025-26 | 1.230 | 99,92% | 100% | 100% | 115,6 | 55,4% | 16,4 |
 
-Ogni squadra ha 82 partite (72 nel 2020-21). Nel 2019-20 sono da 64 a 75, per l'interruzione Covid e la "bolla". Tabella completa in `reports/qc_fase1.md`.
+Ogni squadra ha 82 partite (72 nel 2020-21; da 64 a 75 nel 2019-20, per l'interruzione Covid e la "bolla"). Nelle cinque stagioni coperte sia da NBA Stats sia da cdn.nba.com ho ricostruito tutto due volte: minuti per giocatore uguali entro un minuto nel 99,8-99,99% dei casi, punti nel 99,8-99,98%. Tabelle complete in `reports/qc_fase1.md`.
 
-**Problemi trovati e corretti:**
-- *Righe ripetute* nell'archivio NBA Stats (118 solo nel 2017-18), che gonfiavano i punti: rimosse.
-- *Sostituzioni registrate fuori sequenza* (un giocatore tira prima che la fonte lo faccia entrare), che creavano un sesto "titolare" e minuti sovrapposti: gli eventi ora sono ordinati per cronometro, e chi entra dopo senza essere mai uscito non viene contato come titolare. In una partita di prova, prima della correzione, 7 minuti e mezzo di gioco risultavano contati due volte; ora i minuti di squadra tornano nel 99,8-100% delle partite.
-- *Punteggio finale preso dall'ultima riga*, che a volte è un evento fuori sequenza con il punteggio vecchio: ora si usa il massimo.
+**Problemi trovati e corretti**
+- **Righe ripetute** nell'archivio NBA Stats (118 solo nel 2017-18), che gonfiavano i punti: rimosse.
+- **Sostituzioni registrate fuori sequenza** (un giocatore tira prima che la fonte lo faccia entrare). Creavano un sesto "titolare" e minuti contati due volte: in una partita di prova 7 minuti e mezzo. Ora gli eventi sono ordinati per cronometro, e chi entra più tardi senza essere mai uscito non conta come titolare.
+- **Punteggio finale letto dall'ultima riga**, che a volte è un evento fuori sequenza con il punteggio vecchio: ora si usa il massimo.
+- **Un errore mio.** Avevo trattato come incompleti i punteggi sotto i 150 punti totali, ma ESPN ha confermato che erano partite vere, per esempio Memphis-Charlotte 71-69 del 1° novembre 2014. Soglia abbassata a 120.
 
-**Ancora da sistemare** (con i dati ESPN, appena il repository è collegato):
-- 9 partite con il play-by-play incompleto. In 6 (2014-15 e 2016-17) la fonte si ferma a metà partita, in 3 della "bolla" 2020 non ci sono eventi. Sono escluse dai quintetti (`pbp_ok = False`); il punteggio finale arriverà da ESPN.
-- 25 partite con il punteggio confermato da una sola fonte, tutte tra il 2014-15 e il 2019-20. Per queste stagioni le due fonti (eventi e campo punteggio) vengono dallo stesso archivio NBA: ESPN farà da controllo davvero indipendente.
+**Partite escluse dai quintetti (27, `pbp_ok = False`).** Il punteggio finale resta valido; non usarle serve a non attribuire punti sbagliati ai quintetti.
+- In 24 partite il play-by-play ha un punto in meno del finale ufficiale (manca un tiro libero): 22 tra il 2014-15 e il 2016-17, una nel 2024-25 e una nel 2025-26.
+- 3 partite della "bolla" 2020 non hanno eventi.
 
-**Un dato da tenere d'occhio:** la deviazione standard dello scarto finale sale da 13,5 (2014-15) a 16,4 (2025-26). Le partite sono diventate più "larghe", e il modello dovrà tenerne conto quando stima l'incertezza (fase 5).
+**Un dato da tenere d'occhio:** la deviazione standard dello scarto finale sale da 13,5 (2014-15) a 16,4 (2025-26). Le partite sono diventate più "larghe" e il modello dovrà tenerne conto quando stima l'incertezza (fase 5).
 
-## Calendario e viaggi
+## Quote di mercato (ESPN)
 
-`schedule.parquet` contiene, per squadra e partita, giorni di riposo, back-to-back, 3 partite in 4 notti, chilometri dalla partita precedente e fusi attraversati. Il calcolo usa una tabella delle arene (`data/external/arenas.csv`: coordinate, fuso, altitudine), compresi i cambi di sede: Warriors a San Francisco dal 2019, Pistons a Detroit dal 2017, Clippers a Inglewood dal 2024, Raptors a Tampa nel 2020-21, "bolla" di Orlando come campo neutro. Controllo di plausibilità: back-to-back passati dal 23,6% delle partite (2014-15) al 17,9% (2025-26), in linea con la riduzione decisa dalla lega. Le altre sedi neutre (Messico, Europa, finale di Coppa) arriveranno dai dati ESPN.
+| Stagione | Linea di chiusura | Linea d'apertura | Bookmaker (mediana) | Errore medio sullo scarto | Errore medio sul totale | Brier |
+|---|---|---|---|---|---|---|
+| 2014-15 | 96,8% | 96,7% | 5 | 9,07 | 13,43 | 0,194 |
+| 2015-16 | 100% | 100% | 7 | 9,08 | 13,58 | 0,195 |
+| 2016-17 | 98,7% | 97,2% | 10 | 9,73 | 13,68 | 0,212 |
+| 2017-18 | 100% | — | 7 | 9,45 | 14,57 | 0,204 |
+| 2018-19 | 100% | — | 7 | 9,93 | 14,50 | 0,204 |
+| 2019-20 | 100% | — | 8 | 9,91 | 14,88 | 0,210 |
+| 2020-21 | 100% | — | 11 | 10,71 | 14,37 | 0,214 |
+| 2021-22 | 100% | — | 12 | 10,64 | 14,12 | 0,209 |
+| 2022-23 | 100% | — | 13 | 9,76 | 14,16 | 0,216 |
+| 2023-24 | 100% | 99,6% | 10 | 10,54 | 14,22 | 0,199 |
+| 2024-25 | 99,9% | 99,9% | 1 | 10,51 | 14,11 | 0,199 |
+| 2025-26 | 100% | 100% | 1 | 10,88 | 14,58 | 0,195 |
 
-## Cosa manca per chiudere la fase 1
+- **Come si calcola:**
+  - la linea di chiusura è la mediana tra i bookmaker dell'ultima linea prima della partita salvata da ESPN;
+  - la probabilità di vittoria è la mediana delle probabilità implicite nelle moneyline, tolto il margine del bookmaker;
+  - sono escluse le linee "live" (durante la partita) e i siti di pronostici (teamrankings, numberfire, accuscore).
+- **Limite:** dal 2024-25 ESPN salva un solo bookmaker (DraftKings). Sul periodo recente il riferimento è quindi una sola casa, non la media del mercato.
+- **Valore rispetto alla chiusura (CLV):** si potrà misurare solo dove c'è l'apertura, cioè 2014-15 → 2016-17 e 2023-24 → 2025-26.
 
-1. **Accesso al repository.** L'app GitHub di Claude vede solo `smartokkio` e `mondocalcio`. Va aggiunto `nbaPRE` tra i repository a cui l'app ha accesso.
-2. Poi, in quest'ordine:
-   - carico il lavoro;
-   - lancio il workflow (prova delle fonti, calendario e quote ESPN 2014-15 → 2026-27, BPM di Basketball-Reference: circa 20.000 richieste lente, 1-2 ore);
-   - unisco i dati (`nba.ingest.external.attach`) e aggiorno questo report con copertura delle quote, punteggi verificati e archivio degli injury report.
+## Altri dati raccolti
+
+- **Basketball-Reference:** statistiche avanzate (BPM, minuti) e medie per partita dal 2013-14 al 2026-27. Il BPM di fine stagione servirà come prior "stagione precedente", che è un'informazione disponibile prima che inizi la stagione successiva.
+- **Archivio degli injury report ufficiali:** i PDF orari esistono almeno da gennaio 2019. Ho provato 12 date tra il 15/01/2019 e il 15/11/2025 e li ho trovati tutti. Quindi la disponibilità "con l'orario" si può ricostruire dal 2018-19 in poi; per le stagioni 2014-15 → 2017-18 servirà l'approssimazione dichiarata in fase 0. Per gennaio 2026 nessuno degli orari provati ha risposto: il formato del nome è cambiato, lo sistemo in fase 3.
+- **Sedi neutre** (dati ESPN): Città del Messico, Parigi, Londra, Berlino, Las Vegas (semifinali e finale di Coppa) e la "bolla" di Orlando. Sono nel calendario con le coordinate giuste, e i viaggi verso l'Europa arrivano a 8.300 km e 7 fusi orari.
+
+## Cosa cambia per le fasi successive
+
+1. **Stagione in corso:** da GitHub Actions cdn.nba.com risponde 403 e stats.nba.com non risponde. Per il play-by-play del 2026-27 userò l'API di pbpstats (risponde: 248 partite al 22/11) oppure ESPN. Risolvo in fase 6.
+2. **Il confronto con il mercato vale su tutte le 12 stagioni**, quindi anche la taratura (2014-15 → 2024-25) potrà essere misurata contro la linea.
+3. **Privacy del repository:** `nbaPRE` è pubblico e ora contiene quote dei bookmaker e tabelle di Basketball-Reference. Consiglio di renderlo privato: i minuti gratuiti di GitHub Actions bastano ampiamente.
+
+## Prossimo passo: fase 2 (baseline)
+
+Riscrivo in Python il modello v2 della pagina e verifico che dia gli stessi numeri della versione JavaScript sulle partite già congelate. Poi lo misuro stagione per stagione accanto alla linea di chiusura: sono i numeri da battere.
 
 ---
 
