@@ -79,6 +79,10 @@ def cmd_fetch_remote(args):
     """Scaricamenti da siti esterni (da lanciare su GitHub Actions o sul tuo computer)."""
     seasons = parse_range(args.seasons)
     tasks = ["probe", "espn", "bref"] if args.task == "all" else [args.task]
+    if args.task == "live-probe":
+        from nba.ingest.remote import live_probe
+        print("\n".join(live_probe.run()))
+        return
     if args.task == "officials":
         from nba.ingest.remote import officials
         log = officials.run(seasons)
