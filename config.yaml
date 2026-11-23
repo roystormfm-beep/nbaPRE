@@ -1,0 +1,23 @@
+# Configurazione del progetto. Le stagioni si indicano con l'anno di inizio (2025 = 2025-26).
+seed: 20261123
+
+seasons:
+  dev: [2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]   # sviluppo e taratura
+  test: [2025]                                                              # test, da non toccare fino alla fine
+  live: [2026]
+
+paths:
+  raw: data/raw              # archivi scaricati (non nel repository: si riscaricano)
+  processed: data/processed  # Parquet elaborati (nel repository)
+  external: data/external    # dati raccolti da GitHub Actions (quote, BPM, injury report)
+  reports: reports
+
+sources:
+  # Dataset play-by-play pubblico (licenza Apache 2.0): https://github.com/shufinskiy/nba_data
+  nba_data_list: https://raw.githubusercontent.com/shufinskiy/nba_data/main/list_data.txt
+  nba_data_raw: https://raw.githubusercontent.com/shufinskiy/nba_data/main/datasets/{name}.tar.xz
+  kinds: [nbastatsv3, nbastats, cdnnba, pbpstats]
+
+qc:
+  min_total_points: 150      # sotto questa soglia un punteggio finale è considerato incompleto
+  minutes_tolerance: 0.5     # minuti di squadra ammessi di scarto rispetto a 240 (+25 per supplementare)

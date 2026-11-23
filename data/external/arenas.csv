@@ -1,0 +1,35 @@
+team,city,lat,lon,tz,alt_m,from_season,to_season,note
+ATL,Atlanta,33.757,-84.396,America/New_York,320,2014,2099,
+BOS,Boston,42.366,-71.062,America/New_York,5,2014,2099,
+BKN,Brooklyn,40.683,-73.975,America/New_York,10,2014,2099,
+CHA,Charlotte,35.225,-80.839,America/New_York,230,2014,2099,
+CHI,Chicago,41.881,-87.674,America/Chicago,180,2014,2099,
+CLE,Cleveland,41.497,-81.688,America/New_York,200,2014,2099,
+DAL,Dallas,32.790,-96.810,America/Chicago,140,2014,2099,
+DEN,Denver,39.749,-105.008,America/Denver,1609,2014,2099,altura
+DET,Auburn Hills,42.697,-83.245,America/Detroit,290,2014,2016,The Palace
+DET,Detroit,42.341,-83.055,America/Detroit,190,2017,2099,Little Caesars Arena
+GSW,Oakland,37.750,-122.203,America/Los_Angeles,5,2014,2018,Oracle Arena
+GSW,San Francisco,37.768,-122.388,America/Los_Angeles,5,2019,2099,Chase Center
+HOU,Houston,29.751,-95.362,America/Chicago,15,2014,2099,
+IND,Indianapolis,39.764,-86.155,America/Indiana/Indianapolis,220,2014,2099,
+LAC,Los Angeles,34.043,-118.267,America/Los_Angeles,80,2014,2023,Crypto.com Arena
+LAC,Inglewood,33.945,-118.343,America/Los_Angeles,30,2024,2099,Intuit Dome
+LAL,Los Angeles,34.043,-118.267,America/Los_Angeles,80,2014,2099,
+MEM,Memphis,35.138,-90.051,America/Chicago,80,2014,2099,
+MIA,Miami,25.781,-80.188,America/New_York,2,2014,2099,
+MIL,Milwaukee,43.045,-87.917,America/Chicago,190,2014,2099,
+MIN,Minneapolis,44.979,-93.276,America/Chicago,260,2014,2099,
+NOP,New Orleans,29.949,-90.082,America/Chicago,2,2014,2099,
+NYK,New York,40.751,-73.993,America/New_York,10,2014,2099,
+OKC,Oklahoma City,35.463,-97.515,America/Chicago,370,2014,2099,
+ORL,Orlando,28.539,-81.384,America/New_York,30,2014,2099,
+PHI,Philadelphia,39.901,-75.172,America/New_York,10,2014,2099,
+PHX,Phoenix,33.446,-112.071,America/Phoenix,330,2014,2099,
+POR,Portland,45.532,-122.667,America/Los_Angeles,15,2014,2099,
+SAC,Sacramento,38.580,-121.500,America/Los_Angeles,8,2014,2099,
+SAS,San Antonio,29.427,-98.438,America/Chicago,200,2014,2099,
+TOR,Toronto,43.643,-79.379,America/Toronto,80,2014,2099,
+TOR,Tampa,27.943,-82.452,America/New_York,5,2020,2020,stagione 2020-21 giocata a Tampa
+UTA,Salt Lake City,40.768,-111.901,America/Denver,1288,2014,2099,altura
+WAS,Washington,38.898,-77.021,America/New_York,20,2014,2099,
