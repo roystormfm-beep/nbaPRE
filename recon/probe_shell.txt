@@ -1,0 +1,46 @@
+stats.nba.com scoreboard           rc=56  000 0 0.280990
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+cdn.nba.com schedule               rc=56  000 0 0.025354
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+cdn.nba.com todaysScoreboard       rc=56  000 0 0.026121
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+api.pbpstats.com                   rc=56  000 0 0.275613
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+basketball-reference               rc=56  000 0 0.286730
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+official.nba.com injury            rc=56  000 0 0.277791
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+ak-static injury pdf               rc=56  000 0 0.275413
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+official.nba.com referees          rc=56  000 0 0.278766
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+espn site api                      rc=56  000 0 0.276193
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+the-odds-api                       rc=56  000 0 0.282152
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+sportsbookreviewsonline            rc=56  000 0 0.275293
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+kaggle api                         rc=56  000 0 0.276043
+head: cannot open '/tmp/probe_body' for reading: No such file or directory
+
+github api                         rc=0   403 378 0.112148
+    {"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already av
+raw.githubusercontent              rc=0   200 11980 0.537339
+    ## Dataset NBA  play-by-play data and shotdetails from 1996/1997 to 2024/25  ## Update 2025-02-26  - Added matchups NBA data from 2017/18 to 2024/25  ### Update
+github releases (objects)          rc=0   403 378 0.268247
+    {"message":"GitHub access to this repository is not enabled for this session. Use add_repo to request access. If add_repo answers that read access is already av
+pypi                               rc=0   200 34799 0.070018
+    <!DOCTYPE html> <html lang="en">   <head>     <meta name="pypi:repository-version" content="1.4"> <meta name="pypi:project-status" content="active">    <title>L
+huggingface                        rc=56  000 0 0.030124
+    <!DOCTYPE html> <html lang="en">   <head>     <meta name="pypi:repository-version" content="1.4"> <meta name="pypi:project-status" content="active">    <title>L
