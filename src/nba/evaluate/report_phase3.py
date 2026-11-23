@@ -31,6 +31,13 @@ def assemble(seasons: list[int]) -> pd.DataFrame:
     bt = b[b["variant"] == "injury_report"][["game_id", "total_pred", "sd"]].rename(columns={"total_pred": "tot_baseline", "sd": "sd_baseline"})
     x = pm.merge(bp.reset_index(), on="game_id").merge(bt, on="game_id")
     x["miscela_report"] = (x["giocatori_report"] + x["baseline_injury_report"]) / 2
+    # solo partite con un injury report pre-partita disponibile (l'archivio del 2018-19 parte da metà dicembre)
+    has = set()
+    for s in seasons:
+        f = path("external") / "injury" / f"needed_{s}.csv"
+        if f.exists():
+            has |= set(pd.read_csv(f, dtype={"game_id": str})["game_id"].str.zfill(10))
+    x = x[x["game_id"].isin(has)]
     x = attach_market(x).dropna(subset=["close_spread_home", "p_home_mkt"])
     return x
 

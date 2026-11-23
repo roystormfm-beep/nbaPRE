@@ -12,6 +12,20 @@ from nba.config import path, team as norm_team
 from nba.ingest.injury_pdf import name_key
 
 
+KNOWN = ["out", "doubtful", "questionable", "probable", "available"]
+
+
+def clean_status(s: str) -> str:
+    """Stato letto dal PDF. Se nella cella finiscono due stati (1-2% delle righe, quando il nome di un giocatore
+    va a capo) la lettura è ambigua: chi ha due stati è sceso in campo solo nel 2-5% dei casi, quindi vale "Out"."""
+    toks = [t for t in str(s).lower().replace("-", " ").split() if t in KNOWN]
+    if not toks:
+        return str(s).strip()
+    if len(toks) > 1:
+        return "Out"
+    return toks[0].capitalize()
+
+
 def pregame_reports(season: int) -> pd.DataFrame:
     """Righe dell'injury report pre-partita: game_id, team, player_name, status, reason, report_ts."""
     d = path("external") / "injury"
@@ -30,7 +44,7 @@ def pregame_reports(season: int) -> pd.DataFrame:
     gd = pd.to_datetime(x["game_date"], format="%m/%d/%Y", errors="coerce").dt.strftime("%Y-%m-%d")
     x = x[(x["m_away"] == x["away"]) & (x["m_home"] == x["home"]) & ((gd == x["date"]) | gd.isna())]
     x = x[(x["team"] == x["home"]) | (x["team"] == x["away"])]
-    x["status"] = x["status"].fillna("").str.strip()
+    x["status"] = x["status"].fillna("").map(clean_status)
     return x[["game_id", "team", "player_name", "status", "reason", "report_ts"]].drop_duplicates(["game_id", "team", "player_name"])
 
 

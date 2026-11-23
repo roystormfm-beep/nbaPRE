@@ -27,22 +27,24 @@ TEAM_NAMES = {
     "Toronto Raptors": "TOR", "Utah Jazz": "UTA", "Washington Wizards": "WAS",
 }
 TEAM_NOSPACE = {k.replace(" ", "").lower(): v for k, v in TEAM_NAMES.items()}
-HEADER_TOKENS = ["GameDate", "GameTime", "Matchup", "Team", "PlayerName", "CurrentStatus", "Reason"]
-COLS = ["game_date", "game_time", "matchup", "team_name", "player", "status", "reason"]
+# Formato 2018-19 → 2020-21: in più "Category" e "Previous Status"; dal 2021-22 solo le 7 colonne principali
+HEADER_TOKENS = ["GameDate", "GameTime", "Matchup", "Team", "PlayerName", "CurrentStatus", "Reason", "Category", "PreviousStatus"]
+COLS = ["game_date", "game_time", "matchup", "team_name", "player", "status", "reason", "category", "prev_status"]
+NC = len(COLS)
 STATUSES = {"out", "doubtful", "questionable", "probable", "available"}
 _SUFFIX = re.compile(r"(jr|sr|iii|ii|iv)$")
 
 
 def name_key(name: str) -> str:
     """Chiave di confronto dei nomi: minuscolo, senza accenti, spazi, punteggiatura e suffissi (Jr., III...)."""
-    s = unicodedata.normalize("NFD", str(name or ""))
+    s = unicodedata.normalize("NFD", "" if name is None or name is pd.NA or (isinstance(name, float) and name != name) else str(name))
     s = re.sub(r"[̀-ͯ]", "", s).lower()
     s = re.sub(r"[^a-z]", "", s)
     return _SUFFIX.sub("", s)
 
 
 PAIRS = {("Game", "Date"): "GameDate", ("Game", "Time"): "GameTime", ("Player", "Name"): "PlayerName",
-         ("Current", "Status"): "CurrentStatus"}
+         ("Current", "Status"): "CurrentStatus", ("Previous", "Status"): "PreviousStatus"}
 
 
 def _header(words):
@@ -112,7 +114,7 @@ def parse_pdf(content: bytes) -> pd.DataFrame:
                 title = t.group(1)
             anchors, loose = [], []
             for y, ln in _lines([w for w in words if w["top"] > hy + 2]):
-                cells = [""] * 7
+                cells = [""] * NC
                 for w in ln:
                     ci = 0
                     for x, idx in bounds:
@@ -135,7 +137,11 @@ def parse_pdf(content: bytes) -> pd.DataFrame:
                 frag[i].append((y, cells))
             for i, (y, cells) in enumerate(anchors):
                 parts = sorted(frag[i] + [(y, cells)], key=lambda z: z[0])
-                merged = [" ".join(p[1][c] for p in parts if p[1][c]).strip() for c in range(7)]
+                merged = [" ".join(p[1][c] for p in parts if p[1][c]).strip() for c in range(NC)]
+                # nome e stato: quelli della riga del giocatore; dai frammenti solo se mancano
+                for c in (4, 5):
+                    if cells[c]:
+                        merged[c] = cells[c]
                 rec = dict(zip(COLS, merged))
                 for c in ("game_date", "game_time", "matchup"):
                     if rec[c]:
@@ -160,4 +166,7 @@ def parse_pdf(content: bytes) -> pd.DataFrame:
     df["player_key"] = df["player_name"].map(name_key)
     df["game_time"] = df["game_time"].str.replace("(ET)", "", regex=False).str.strip()
     df["report"] = title
+    # nel formato vecchio la categoria (es. "G League Team", "Injury/Illness") va davanti al motivo
+    has_cat = df["category"].fillna("") != ""
+    df.loc[has_cat, "reason"] = (df.loc[has_cat, "category"] + " - " + df.loc[has_cat, "reason"]).str.strip(" -")
     return df
