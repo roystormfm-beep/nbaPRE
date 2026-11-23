@@ -1,10 +1,4 @@
-2018: 54 report nell'indice (44 dalla pagina), 6 giorni
-2019: 44 report nell'indice (44 dalla pagina), 1 giorni
-2020: 45 report nell'indice (44 dalla pagina), 2 giorni
-2021: 91 report nell'indice (45 dalla pagina), 6 giorni
-2022: 74 report nell'indice (45 dalla pagina), 4 giorni
-2023: 46 report nell'indice (45 dalla pagina), 2 giorni
-2024: 47 report nell'indice (45 dalla pagina), 2 giorni
-2025: 45 report nell'indice (45 dalla pagina), 1 giorni
-2026: 45 report nell'indice (45 dalla pagina), 1 giorni
-campioni: Injury-Report_2026-11-23_11_00AM.pdf
+2019: 49 report nell'indice (45 dalla pagina), 3 giorni
+2023: 47 report nell'indice (45 dalla pagina), 2 giorni
+2025: 49 report nell'indice (46 dalla pagina), 3 giorni
+campioni: 
