@@ -1,4 +1,13 @@
-2019: 49 report nell'indice (45 dalla pagina), 3 giorni
-2023: 47 report nell'indice (45 dalla pagina), 2 giorni
-2025: 49 report nell'indice (46 dalla pagina), 3 giorni
-campioni: 
+2014: arbitri per 99.9% delle 1231 partite, 72 arbitri
+2015: arbitri per 100.0% delle 1231 partite, 75 arbitri
+2016: arbitri per 100.0% delle 1231 partite, 76 arbitri
+2017: arbitri per 99.9% delle 1232 partite, 76 arbitri
+2018: arbitri per 100.0% delle 1232 partite, 73 arbitri
+2019: arbitri per 100.0% delle 1061 partite, 78 arbitri
+2020: arbitri per 96.9% delle 1081 partite, 79 arbitri
+2021: arbitri per 98.9% delle 1231 partite, 84 arbitri
+2022: arbitri per 99.0% delle 1231 partite, 80 arbitri
+2023: arbitri per 98.5% delle 1232 partite, 80 arbitri
+2024: arbitri per 100.0% delle 1234 partite, 78 arbitri
+2025: arbitri per 100.0% delle 1235 partite, 81 arbitri
+2026: arbitri per 100.0% delle 248 partite, 83 arbitri
