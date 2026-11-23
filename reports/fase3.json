@@ -18,15 +18,15 @@
    "modello": "Baseline con injury report",
    "colonna": "baseline_injury_report",
    "partite": 7747,
-   "MAE": 10.596878729544475,
-   "dMAE": 0.31241377536866527,
-   "dMAE_lo": 0.24805113607845664,
-   "dMAE_hi": 0.3728818011856932,
-   "RMSE": 13.554086509157148,
-   "Brier": 0.21445918880991194,
-   "dBrier": 0.007871047139326688,
-   "dBrier_lo": 0.0061991120143850345,
-   "dBrier_hi": 0.009569806012094863
+   "MAE": 10.563692072432772,
+   "dMAE": 0.27922711825696256,
+   "dMAE_lo": 0.21769672299919213,
+   "dMAE_hi": 0.33928710826125635,
+   "RMSE": 13.52255144410929,
+   "Brier": 0.21378326708100956,
+   "dBrier": 0.007195125410424298,
+   "dBrier_lo": 0.005502148734308026,
+   "dBrier_hi": 0.008840886437201628
   },
   {
    "modello": "Giocatori + minuti, senza injury report",
@@ -46,29 +46,29 @@
    "modello": "Giocatori + minuti con injury report",
    "colonna": "giocatori_report",
    "partite": 7747,
-   "MAE": 10.467459787381689,
-   "dMAE": 0.18299483320587973,
-   "dMAE_lo": 0.12487792414814466,
-   "dMAE_hi": 0.24018778127582296,
-   "RMSE": 13.364350351063619,
-   "Brier": 0.21090002139704728,
-   "dBrier": 0.004311879726462014,
-   "dBrier_lo": 0.0027539317318425495,
-   "dBrier_hi": 0.0059028580288801894
+   "MAE": 10.458330479652686,
+   "dMAE": 0.1738655254768762,
+   "dMAE_lo": 0.11548124754485019,
+   "dMAE_hi": 0.23172294349487785,
+   "RMSE": 13.356067650631703,
+   "Brier": 0.2106927143882881,
+   "dBrier": 0.004104572717702849,
+   "dBrier_lo": 0.0025646161423805245,
+   "dBrier_hi": 0.00569127052948332
   },
   {
    "modello": "Miscela 50/50 (giocatori + baseline, injury report)",
    "colonna": "miscela_report",
    "partite": 7747,
-   "MAE": 10.459072242668846,
-   "dMAE": 0.1746072884930375,
-   "dMAE_lo": 0.12359808021238332,
-   "dMAE_hi": 0.22732421188856228,
-   "RMSE": 13.370228257958408,
-   "Brier": 0.21088601827350834,
-   "dBrier": 0.004297876602923086,
-   "dBrier_lo": 0.0028685307919780146,
-   "dBrier_hi": 0.005772990973247025
+   "MAE": 10.43951852732052,
+   "dMAE": 0.15505357314471066,
+   "dMAE_lo": 0.1050097791540766,
+   "dMAE_hi": 0.2070167341718021,
+   "RMSE": 13.351095071070798,
+   "Brier": 0.2104688703914327,
+   "dBrier": 0.0038807287208474507,
+   "dBrier_lo": 0.0025471371253405362,
+   "dBrier_hi": 0.005247386893426165
   },
   {
    "modello": "Baseline che sa chi gioca (ottimistico)",
@@ -119,20 +119,20 @@
    "partite": 787,
    "mercato": 9.685832274459974,
    "baseline_senza": 10.038421477246692,
-   "baseline_injury_report": 10.299701059832495,
+   "baseline_injury_report": 9.961568985046695,
    "giocatori_senza_report": 9.893599892122317,
-   "giocatori_report": 9.893599892122317,
-   "miscela_report": 10.008351394873962
+   "giocatori_report": 9.817157906254236,
+   "miscela_report": 9.817785610522892
   },
   {
    "stagione": "2019-20",
    "partite": 1041,
    "mercato": 9.915465898174832,
    "baseline_senza": 10.032419215820012,
-   "baseline_injury_report": 10.051685617888985,
+   "baseline_injury_report": 10.060343552770892,
    "giocatori_senza_report": 10.098515099331513,
-   "giocatori_report": 10.011944534796555,
-   "miscela_report": 9.980356348311753
+   "giocatori_report": 9.99925814730504,
+   "miscela_report": 9.97732197899814
   },
   {
    "stagione": "2020-21",
@@ -141,8 +141,8 @@
    "baseline_senza": 11.172801135046099,
    "baseline_injury_report": 11.126464197120738,
    "giocatori_senza_report": 11.031517057636561,
-   "giocatori_report": 10.865668529067873,
-   "miscela_report": 10.924557436959333
+   "giocatori_report": 10.866518686751418,
+   "miscela_report": 10.925170766080706
   },
   {
    "stagione": "2021-22",
@@ -151,8 +151,8 @@
    "baseline_senza": 11.089489506297147,
    "baseline_injury_report": 10.921501362120543,
    "giocatori_senza_report": 10.95859922336863,
-   "giocatori_report": 10.824451077836274,
-   "miscela_report": 10.799289073863045
+   "giocatori_report": 10.824746855843076,
+   "miscela_report": 10.79942817765877
   },
   {
    "stagione": "2022-23",
@@ -161,8 +161,8 @@
    "baseline_senza": 10.159221440115482,
    "baseline_injury_report": 10.032616055739263,
    "giocatori_senza_report": 10.103835821973226,
-   "giocatori_report": 9.975651416020439,
-   "miscela_report": 9.922809647904918
+   "giocatori_report": 9.976920773643954,
+   "miscela_report": 9.92343594859461
   },
   {
    "stagione": "2023-24",
@@ -171,8 +171,8 @@
    "baseline_senza": 10.98063168592598,
    "baseline_injury_report": 10.88930716480733,
    "giocatori_senza_report": 10.85367537005569,
-   "giocatori_report": 10.748469410864454,
-   "miscela_report": 10.743423189720572
+   "giocatori_report": 10.74914765757202,
+   "miscela_report": 10.743748488385258
   },
   {
    "stagione": "2024-25",
@@ -181,90 +181,25 @@
    "baseline_senza": 10.92783459326324,
    "baseline_injury_report": 10.740405493329257,
    "giocatori_senza_report": 10.886736070512764,
-   "giocatori_report": 10.735196363463285,
-   "miscela_report": 10.665801795855439
+   "giocatori_report": 10.734383307616419,
+   "miscela_report": 10.665533873478992
   }
  ],
  "totali_MAE": {
   "mercato": 14.281399251323093,
   "baseline": 14.80068848985621,
-  "giocatori": 15.595277759041918
+  "giocatori": 15.594620077654554
  },
  "tassi_stato": [
   {
-   "st": "",
-   "righe": 16,
-   "in_campo": 0.0
-  },
-  {
    "st": "available",
-   "righe": 9020,
-   "in_campo": 0.837
-  },
-  {
-   "st": "available -",
-   "righe": 5,
-   "in_campo": 0.8
-  },
-  {
-   "st": "available available",
-   "righe": 1,
-   "in_campo": 0.0
-  },
-  {
-   "st": "available doubtful",
-   "righe": 3,
-   "in_campo": 0.333
-  },
-  {
-   "st": "available out",
-   "righe": 171,
-   "in_campo": 0.029
-  },
-  {
-   "st": "available probable",
-   "righe": 189,
-   "in_campo": 0.053
-  },
-  {
-   "st": "available questionable",
-   "righe": 131,
-   "in_campo": 0.015
+   "righe": 9520,
+   "in_campo": 0.832
   },
   {
    "st": "doubtful",
-   "righe": 434,
-   "in_campo": 0.018
-  },
-  {
-   "st": "doubtful -",
-   "righe": 112,
-   "in_campo": 0.0
-  },
-  {
-   "st": "doubtful available",
-   "righe": 11,
-   "in_campo": 0.0
-  },
-  {
-   "st": "doubtful doubtful",
-   "righe": 1,
-   "in_campo": 0.0
-  },
-  {
-   "st": "doubtful out",
-   "righe": 2,
-   "in_campo": 0.0
-  },
-  {
-   "st": "doubtful probable",
-   "righe": 4,
-   "in_campo": 0.0
-  },
-  {
-   "st": "doubtful questionable",
-   "righe": 10,
-   "in_campo": 0.0
+   "righe": 574,
+   "in_campo": 0.024
   },
   {
    "st": "not yet submitted",
@@ -273,112 +208,66 @@
   },
   {
    "st": "out",
-   "righe": 54149,
+   "righe": 60606,
    "in_campo": 0.001
   },
   {
-   "st": "out -",
-   "righe": 5814,
-   "in_campo": 0.0
-  },
-  {
-   "st": "out available",
-   "righe": 259,
-   "in_campo": 0.0
-  },
-  {
-   "st": "out doubtful",
-   "righe": 100,
-   "in_campo": 0.0
-  },
-  {
-   "st": "out out",
-   "righe": 65,
-   "in_campo": 0.0
-  },
-  {
-   "st": "out probable",
-   "righe": 7,
-   "in_campo": 0.0
-  },
-  {
-   "st": "out questionable",
-   "righe": 212,
-   "in_campo": 0.0
-  },
-  {
    "st": "probable",
-   "righe": 1351,
-   "in_campo": 0.906
-  },
-  {
-   "st": "probable -",
-   "righe": 276,
-   "in_campo": 0.043
-  },
-  {
-   "st": "probable available",
-   "righe": 16,
-   "in_campo": 0.0
-  },
-  {
-   "st": "probable doubtful",
-   "righe": 2,
-   "in_campo": 0.0
-  },
-  {
-   "st": "probable out",
-   "righe": 1,
-   "in_campo": 0.0
-  },
-  {
-   "st": "probable probable",
-   "righe": 3,
-   "in_campo": 0.333
-  },
-  {
-   "st": "probable questionable",
-   "righe": 44,
-   "in_campo": 0.045
+   "righe": 1693,
+   "in_campo": 0.895
   },
   {
    "st": "questionable",
-   "righe": 2728,
-   "in_campo": 0.543
-  },
-  {
-   "st": "questionable -",
-   "righe": 498,
-   "in_campo": 0.022
-  },
-  {
-   "st": "questionable available",
-   "righe": 92,
-   "in_campo": 0.011
-  },
-  {
-   "st": "questionable doubtful",
-   "righe": 10,
-   "in_campo": 0.0
-  },
-  {
-   "st": "questionable out",
-   "righe": 8,
-   "in_campo": 0.0
-  },
-  {
-   "st": "questionable probable",
-   "righe": 6,
-   "in_campo": 0.0
-  },
-  {
-   "st": "questionable questionable",
-   "righe": 6,
-   "in_campo": 0.167
+   "righe": 3348,
+   "in_campo": 0.53
   }
  ],
  "minuti_MAE": {
-  "con report": 4.87,
+  "con report": 4.77,
   "senza report": 5.9
- }
+ },
+ "riposo_non_annunciato": [
+  {
+   "season": 2018,
+   "non_gioca": 0.0269,
+   "b2b": 0.0319,
+   "altre": 0.0259
+  },
+  {
+   "season": 2019,
+   "non_gioca": 0.0125,
+   "b2b": 0.0103,
+   "altre": 0.0129
+  },
+  {
+   "season": 2020,
+   "non_gioca": 0.0144,
+   "b2b": 0.0224,
+   "altre": 0.0123
+  },
+  {
+   "season": 2021,
+   "non_gioca": 0.0097,
+   "b2b": 0.0133,
+   "altre": 0.0089
+  },
+  {
+   "season": 2022,
+   "non_gioca": 0.0076,
+   "b2b": 0.0088,
+   "altre": 0.0073
+  },
+  {
+   "season": 2023,
+   "non_gioca": 0.0059,
+   "b2b": 0.0078,
+   "altre": 0.0055
+  },
+  {
+   "season": 2024,
+   "non_gioca": 0.0075,
+   "b2b": 0.0046,
+   "altre": 0.0081
+  }
+ ]
 }

@@ -4,6 +4,83 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
+# Fase 3: giocatori, minuti, disponibilità — completata
+
+*23 novembre 2026, sera. Mi fermo qui e aspetto il tuo via libera per la fase 4.*
+
+## In sintesi
+
+- **Ho un archivio degli injury report ufficiali dal 2018-19 a oggi.** Per ogni partita c'è l'ultimo report pubblicato prima della palla a due, letto e trasformato in tabella: oltre 75.000 righe pre-partita tra il 2018-19 e il 2024-25. Il 2018-19 parte da metà dicembre, perché prima l'archivio non esiste.
+- **Il nuovo modello "giocatori" batte il baseline ad armi pari.** Entrambi usano le stesse informazioni prima della partita, cioè risultati passati più l'injury report. Sulle 7.747 partite di sviluppo con report (2018-19 → 2024-25) l'errore medio sullo scarto è 10,46 contro 10,56 del baseline e 10,28 del mercato.
+- **Il distacco dal mercato scende da 0,28 a 0,17 punti a partita.** Con l'intervallo di confidenza [0,12; 0,23] resta significativo: il mercato è ancora più preciso, ma la distanza si è ridotta di circa il 40%.
+- **Il nuovo modello, con le sole informazioni disponibili prima della partita, arriva allo stesso livello del baseline che sa in anticipo chi gioca:** 10,46 contro 10,45.
+- **La stagione di test 2025-26 non l'ho toccata**, come previsto dal protocollo: il confronto sul test si fa solo a fine fase 5.
+
+## Confronto sulle stagioni di sviluppo con injury report (2018-19 → 2024-25, 7.747 partite)
+
+| Modello | Errore medio sullo scarto | Distacco dal mercato [IC 95%] | Brier |
+|---|---|---|---|
+| Baseline senza assenze | 10,66 | +0,38 [0,31; 0,45] | 0,2162 |
+| Baseline con injury report | 10,56 | +0,28 [0,22; 0,34] | 0,2138 |
+| Giocatori + minuti, senza injury report | 10,58 | +0,30 [0,23; 0,36] | 0,2137 |
+| **Giocatori + minuti, con injury report** | **10,46** | **+0,17 [0,12; 0,23]** | **0,2107** |
+| Miscela 50/50 dei due modelli con report | 10,44 | +0,16 [0,11; 0,21] | 0,2105 |
+| *Baseline che sa chi gioca (ottimistico)* | *10,45* | *+0,17* | *0,2109* |
+| Mercato (chiusura) | 10,28 | — | 0,2066 |
+
+Per stagione, il modello giocatori con report batte il baseline con report in tutte e 7 le stagioni, e la miscela dei due fa ancora un po' meglio in 5 stagioni su 7. Tabelle complete in `reports/fase3.md`.
+
+## Come funziona
+
+1. **Rating dei giocatori per possesso (RAPM).** Per ogni tratto di gioco con gli stessi 10 giocatori in campo si stimano un rating d'attacco e uno di difesa per giocatore. Le osservazioni sono pesate per i possessi e per quanto sono recenti (emivita 180 giorni, finestra di oltre due anni). Si parte da un prior: il BPM offensivo e difensivo della stagione precedente, aggiornato con il box score della stagione in corso. La stima si rifà ogni 7 giorni con i soli dati precedenti.
+2. **Minuti attesi** per ogni giocatore: media recente dei minuti giocati, per la probabilità che scenda in campo, riscalata a 240 minuti di squadra. I minuti di chi manca si redistribuiscono e nessuno supera i 42. Errore medio per giocatore e partita: 4,8 minuti con l'injury report, 5,9 senza.
+3. **Probabilità di giocare per stato del report**, stimata solo sulle stagioni precedenti:
+
+| Stato nel report | Righe | Ha giocato |
+|---|---|---|
+| Out | 60.606 | 0,1% |
+| Doubtful | 574 | 2,4% |
+| Questionable | 3.348 | 53% |
+| Probable | 1.693 | 90% |
+| Available | 9.520 | 83% (spesso giocatori della G League richiamati: per loro si usa la partecipazione recente) |
+
+4. **Forza della squadra in partita** = somma dei rating dei giocatori pesata per i minuti attesi, più il vantaggio campo stimato dai dati.
+
+## Prove e scelte (ablation, su 4 stagioni di sviluppo)
+
+| Scelta | Effetto sull'errore medio | Decisione |
+|---|---|---|
+| Correzione per la fortuna al tiro (tiri da tre e liberi alla media di squadra) | peggiora di 0,03 | **non usata** in questa forma |
+| Prior aggiornato con il box score della stagione | migliora di 0,02 | usata |
+| Componente di squadra dentro il RAPM | nessun effetto | tenuta (innocua) |
+| Correzione di squadra dai risultati recenti | peggiora di 0,04-0,20 | non usata: ci pensa l'ensemble della fase 5 |
+| Forza della regolarizzazione (1.500 / 3.000 / 6.000 / 12.000) | 3.000 è la migliore | 3.000 |
+| Emivita (90 / 180 / 365 / 730 giorni) | 180 e 365 equivalenti | 180 |
+
+- **Riposo non annunciato.** Il prompt chiedeva un modello della probabilità di riposo nei back-to-back. I dati dicono che non serve: un giocatore di rotazione che non compare nell'injury report salta la partita solo nell'1% dei casi circa (2,7% nel 2018-19, 0,6-1,4% dal 2019-20), e nei back-to-back la quota sale al massimo di un punto. I riposi vengono quasi sempre dichiarati nel report.
+- **I "minuti giocati davvero" non sono un buon limite superiore.** Dipendono dal punteggio: nelle partite a senso unico giocano le riserve. Per questo quella versione sbaglia più di quella con i minuti attesi (10,52 contro 10,46).
+
+## Cosa resta debole
+
+- **Il totale dei punti.** Il modello giocatori sbaglia il totale di 15,6 punti in media, contro 14,8 del baseline e 14,3 del mercato, perché non stima il ritmo delle singole squadre. È il lavoro della fase 4 (ritmo, arbitri).
+- **Il contesto:** riposo, viaggi, fusi orari, altitudine, vantaggio campo per squadra. Il calendario è già pronto dalla fase 1 ma non è ancora usato dal modello: fase 4.
+- **Due approssimazioni nell'archivio:**
+  - i report "orari" fino al 2024-25 escono in realtà alla mezz'ora (il file "06PM" è il report delle 18:30), quindi a volte il report usato è di 30 minuti prima della palla a due invece dei 45 previsti;
+  - nel 2018-19 i report mancano fino a metà dicembre.
+
+## Correzioni fatte in questa fase
+
+- **Codifica dei nomi** di Basketball-Reference (vedi la nota nella fase 2): numeri del baseline rifatti.
+- **Lettore dei PDF:** il formato dei report è cambiato tre volte (2018-19 → 2020-21 con "Category" e "Previous Status", poi 7 colonne con spazi, poi 7 colonne senza spazi). Il lettore riconosce tutti e tre i formati ed è verificato da un test su 17 report di esempio dal 2018 al 2026.
+
+## Prossimo passo: fase 4 (contesto e totali)
+
+1. Vantaggio campo per stagione e per squadra (con shrinkage), riposo, viaggi, fusi orari, altitudine, calendario fitto, partite senza obiettivi a fine stagione.
+2. Ritmo delle squadre e arbitri per stimare i possessi, quindi totale e scarto coerenti tra loro.
+3. Misura di quanto ogni elemento migliora il modello, sempre sulle stagioni di sviluppo.
+
+---
+
 # Fase 2: baseline — completata (numeri corretti il 23/11 sera)
 
 *23 novembre 2026.*
