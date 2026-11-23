@@ -41,6 +41,33 @@ def name_key(name: str) -> str:
     return _SUFFIX.sub("", s)
 
 
+PAIRS = {("Game", "Date"): "GameDate", ("Game", "Time"): "GameTime", ("Player", "Name"): "PlayerName",
+         ("Current", "Status"): "CurrentStatus"}
+
+
+def _header(words):
+    """Inizio delle colonne dalla riga di intestazione (con o senza spazi: "Game Date" oppure "GameDate")."""
+    m = [w for w in words if w["text"] == "Matchup"]
+    if not m:
+        return None, None
+    hy = m[0]["top"]
+    line = sorted([w for w in words if abs(w["top"] - hy) < 3], key=lambda w: w["x0"])
+    bounds, i = [], 0
+    while i < len(line):
+        t = line[i]["text"]
+        nxt = line[i + 1]["text"] if i + 1 < len(line) else None
+        if (t, nxt) in PAIRS:
+            bounds.append((line[i]["x0"], HEADER_TOKENS.index(PAIRS[(t, nxt)])))
+            i += 2
+            continue
+        if t in HEADER_TOKENS:
+            bounds.append((line[i]["x0"], HEADER_TOKENS.index(t)))
+        i += 1
+    if len(bounds) < 6:
+        return None, None
+    return sorted(bounds), max(w["top"] for w in line)
+
+
 def _team_code(t: str):
     return TEAM_NOSPACE.get(re.sub(r"[^A-Za-z0-9]", "", t or "").lower())
 
@@ -71,10 +98,9 @@ def parse_pdf(content: bytes) -> pd.DataFrame:
             words = page.extract_words()
             if not words:
                 continue
-            head = [w for w in words if w["text"] in HEADER_TOKENS]
-            if len(head) >= 6:
-                hy = max(w["top"] for w in head)
-                bounds = sorted((w["x0"], HEADER_TOKENS.index(w["text"])) for w in head)
+            b_, hy_ = _header(words)
+            if b_ is not None:
+                bounds, hy = b_, hy_
             elif bounds is not None:
                 # pagine successive senza intestazione: stesse colonne, salto solo il titolo in alto
                 tl = [w["top"] for w in words if w["text"] in ("Injury", "Report:")]
