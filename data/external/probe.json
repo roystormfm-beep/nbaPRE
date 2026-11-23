@@ -1,0 +1,118 @@
+{
+ "when": "2026-11-23T14:06:00.370089Z",
+ "targets": {
+  "stats.nba.com leaguegamelog": {
+   "status": null,
+   "error": "ReadTimeout",
+   "sec": 25.07
+  },
+  "cdn.nba.com schedule": {
+   "status": 403,
+   "bytes": 425,
+   "sec": 0.08,
+   "type": "text/html"
+  },
+  "cdn.nba.com boxscore 0022600200": {
+   "status": 403,
+   "bytes": 443,
+   "sec": 0.03,
+   "type": "text/html"
+  },
+  "cdn.nba.com playbyplay 0022600200": {
+   "status": 403,
+   "bytes": 447,
+   "sec": 0.03,
+   "type": "text/html"
+  },
+  "pbpstats get-games 2026-27": {
+   "status": 200,
+   "bytes": 57222,
+   "sec": 8.27,
+   "type": "application/json"
+  },
+  "basketball-reference 2027 games": {
+   "status": 200,
+   "bytes": 478391,
+   "sec": 0.09,
+   "type": "text/html"
+  },
+  "official.nba.com referee": {
+   "status": 200,
+   "bytes": 48530,
+   "sec": 0.08,
+   "type": "text/html; charset=UTF-8"
+  },
+  "official.nba.com injury page": {
+   "status": 200,
+   "bytes": 218078,
+   "sec": 0.14,
+   "type": "text/html; charset=utf-8"
+  },
+  "espn scoreboard": {
+   "status": 200,
+   "bytes": 167254,
+   "sec": 0.04,
+   "type": "application/json;charset=UTF-8"
+  }
+ },
+ "injury_archive": {
+  "2019-01-15": [
+   "05PM",
+   "01PM"
+  ],
+  "2020-01-15": [
+   "05PM",
+   "01PM"
+  ],
+  "2021-01-15": [
+   "05PM",
+   "01PM"
+  ],
+  "2021-12-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2022-01-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2022-11-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2023-01-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2023-11-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2024-01-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2024-11-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2025-01-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2025-11-15": [
+   "05PM",
+   "06PM",
+   "01PM"
+  ],
+  "2026-01-15": []
+ }
+}
