@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       task:
-        description: "probe | espn | bref | all | injuries-index | injuries-fetch | injuries"
+        description: "probe | espn | bref | all | injuries-index | injuries-fetch | injuries | officials"
         default: all
       seasons:
         description: "stagioni (anno di inizio), es. 2014-2026"
