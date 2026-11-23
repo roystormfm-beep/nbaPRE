@@ -9,7 +9,7 @@ from __future__ import annotations
 import pandas as pd
 
 from nba.config import path, team as norm_team
-from nba.models.baseline import norm_name
+from nba.ingest.injury_pdf import name_key
 
 
 def pregame_reports(season: int) -> pd.DataFrame:
@@ -25,7 +25,8 @@ def pregame_reports(season: int) -> pd.DataFrame:
     mt = rep["matchup"].fillna("").str.extract(r"([A-Z]{2,3})@([A-Z]{2,3})")
     rep = rep.assign(m_away=mt[0].map(norm_team), m_home=mt[1].map(norm_team))
     x = need.merge(rep, on="url", how="inner")
-    x = x[(x["m_away"] == x["away"]) & (x["m_home"] == x["home"])]
+    gd = pd.to_datetime(x["game_date"], format="%m/%d/%Y", errors="coerce").dt.strftime("%Y-%m-%d")
+    x = x[(x["m_away"] == x["away"]) & (x["m_home"] == x["home"]) & ((gd == x["date"]) | gd.isna())]
     x = x[(x["team"] == x["home"]) | (x["team"] == x["away"])]
     x["status"] = x["status"].fillna("").str.strip()
     return x[["game_id", "team", "player_name", "status", "reason", "report_ts"]].drop_duplicates(["game_id", "team", "player_name"])
@@ -34,10 +35,10 @@ def pregame_reports(season: int) -> pd.DataFrame:
 def label_participation(rep: pd.DataFrame, season: int) -> pd.DataFrame:
     """Aggiunge a ogni riga del report se il giocatore è poi sceso in campo e quanti minuti ha giocato."""
     pg = pd.read_parquet(path("processed") / f"player_games_{season}.parquet", columns=["game_id", "team", "player", "name", "sec"])
-    pg["key"] = pg["name"].map(norm_name)
+    pg["key"] = pg["name"].map(name_key)
     played = pg[pg["sec"] > 0].set_index(["game_id", "team", "key"])["sec"]
     rep = rep.copy()
-    rep["key"] = rep["player_name"].map(norm_name)
+    rep["key"] = rep["player_name"].map(name_key)
     idx = list(zip(rep["game_id"], rep["team"], rep["key"]))
     rep["sec"] = [played.get(i, 0.0) for i in idx]
     rep["played"] = rep["sec"] > 0

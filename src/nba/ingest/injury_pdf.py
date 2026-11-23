@@ -1,14 +1,18 @@
-"""Lettura dei PDF degli injury report ufficiali NBA.
+"""Lettura dei PDF degli injury report ufficiali NBA (formato uguale dal 2019 a oggi).
 
-Colonne del report: Game Date | Game Time | Matchup | Team | Player Name | Current Status | Reason.
-Data, ora, partita e squadra compaiono solo sulla prima riga del loro blocco: vanno riportate sulle righe sotto.
-Il motivo può andare a capo: la riga successiva con il solo motivo si unisce a quella sopra.
-Le colonne si riconoscono dalla posizione orizzontale delle intestazioni, pagina per pagina.
+Colonne: GameDate | GameTime | Matchup | Team | PlayerName | CurrentStatus | Reason.
+- Nel PDF le parole non hanno spazi ("LosAngelesLakers", "PorterJr.,Michael"): squadre e nomi si confrontano
+  senza spazi (vedi name_key).
+- Data, ora, partita e squadra compaiono solo sulla prima riga del loro blocco: si riportano sulle righe sotto.
+- Il motivo può andare a capo sopra e sotto la riga del giocatore: ogni frammento si attacca alla riga del
+  giocatore più vicina in verticale.
+- Le colonne si riconoscono dalla posizione delle intestazioni, pagina per pagina.
 """
 from __future__ import annotations
 
 import io
 import re
+import unicodedata
 
 import pandas as pd
 
@@ -22,110 +26,112 @@ TEAM_NAMES = {
     "Phoenix Suns": "PHX", "Portland Trail Blazers": "POR", "Sacramento Kings": "SAC", "San Antonio Spurs": "SAS",
     "Toronto Raptors": "TOR", "Utah Jazz": "UTA", "Washington Wizards": "WAS",
 }
-STATUSES = ["Out", "Doubtful", "Questionable", "Probable", "Available"]
-HEADERS = ["Game Date", "Game Time", "Matchup", "Team", "Player Name", "Current Status", "Reason"]
+TEAM_NOSPACE = {k.replace(" ", "").lower(): v for k, v in TEAM_NAMES.items()}
+HEADER_TOKENS = ["GameDate", "GameTime", "Matchup", "Team", "PlayerName", "CurrentStatus", "Reason"]
 COLS = ["game_date", "game_time", "matchup", "team_name", "player", "status", "reason"]
-DATE_RX = re.compile(r"^\d{2}/\d{2}/\d{4}$")
-TIME_RX = re.compile(r"^\d{1,2}:\d{2}\s*\(?ET\)?$|^\d{1,2}:\d{2}$")
-MATCH_RX = re.compile(r"^[A-Z]{2,3}@[A-Z]{2,3}$")
+STATUSES = {"out", "doubtful", "questionable", "probable", "available"}
+_SUFFIX = re.compile(r"(jr|sr|iii|ii|iv)$")
 
 
-def _header_positions(words):
-    """x di inizio di ogni colonna, dalle parole dell'intestazione."""
-    pos = {}
-    toks = [(w["text"], w["x0"], w["top"]) for w in words]
-    for h in HEADERS:
-        first = h.split()[0]
-        second = h.split()[1] if " " in h else None
-        for i, (t, x, top) in enumerate(toks):
-            if t == first and (second is None or (i + 1 < len(toks) and toks[i + 1][0] == second)):
-                if h == "Team" and i > 0 and toks[i - 1][0] in ("Game",):
-                    continue
-                pos.setdefault(h, (x, top))
-                break
-    return pos
+def name_key(name: str) -> str:
+    """Chiave di confronto dei nomi: minuscolo, senza accenti, spazi, punteggiatura e suffissi (Jr., III...)."""
+    s = unicodedata.normalize("NFD", str(name or ""))
+    s = re.sub(r"[̀-ͯ]", "", s).lower()
+    s = re.sub(r"[^a-z]", "", s)
+    return _SUFFIX.sub("", s)
 
 
-def _lines(words, tol=3.0):
-    """Raggruppa le parole in righe per posizione verticale."""
-    words = sorted(words, key=lambda w: (round(w["top"]), w["x0"]))
-    lines, cur, y = [], [], None
+def _team_code(t: str):
+    return TEAM_NOSPACE.get(re.sub(r"[^A-Za-z0-9]", "", t or "").lower())
+
+
+def _lines(words, tol=2.5):
+    words = sorted(words, key=lambda w: (w["top"], w["x0"]))
+    out, cur, y = [], [], None
     for w in words:
         if y is None or abs(w["top"] - y) <= tol:
             cur.append(w)
-            y = w["top"] if y is None else y
+            if y is None:
+                y = w["top"]
         else:
-            lines.append(cur)
+            out.append((y, cur))
             cur, y = [w], w["top"]
     if cur:
-        lines.append(cur)
-    return lines
+        out.append((y, cur))
+    return out
 
 
 def parse_pdf(content: bytes) -> pd.DataFrame:
     import pdfplumber
-    rows = []
-    report_title = ""
+    rows, title = [], ""
+    last = {c: "" for c in ("game_date", "game_time", "matchup", "team_name")}
+    bounds = None
     with pdfplumber.open(io.BytesIO(content)) as pdf:
-        bounds = None
-        last = {c: "" for c in COLS}
         for page in pdf.pages:
-            words = page.extract_words(keep_blank_chars=False, use_text_flow=False, x_tolerance=1.5, y_tolerance=2)
+            words = page.extract_words()
             if not words:
                 continue
-            text = " ".join(w["text"] for w in words[:12])
-            m = re.search(r"Injury Report:\s*([\d/]+\s+[\d:]+\s*[AP]M)", text)
-            if m:
-                report_title = m.group(1)
-            hp = _header_positions(words)
-            if len(hp) >= 6:
-                xs = sorted((v[0], k) for k, v in hp.items())
-                bounds = [(x, HEADERS.index(k)) for x, k in xs]
-                header_y = max(v[1] for v in hp.values())
+            head = [w for w in words if w["text"] in HEADER_TOKENS]
+            if len(head) >= 6:
+                hy = max(w["top"] for w in head)
+                bounds = sorted((w["x0"], HEADER_TOKENS.index(w["text"])) for w in head)
+            elif bounds is not None:
+                # pagine successive senza intestazione: stesse colonne, salto solo il titolo in alto
+                tl = [w["top"] for w in words if w["text"] in ("Injury", "Report:")]
+                hy = (max(tl) + 5) if tl else -1
             else:
-                header_y = -1
-            if bounds is None:
                 continue
-            for ln in _lines(words):
-                if ln[0]["top"] <= header_y + 2:
-                    continue
+            t = re.search(r"Injury Report:\s*(\S+\s+\S+\s+[AP]M)", " ".join(w["text"] for w in words if w["top"] < hy))
+            if t:
+                title = t.group(1)
+            anchors, loose = [], []
+            for y, ln in _lines([w for w in words if w["top"] > hy + 2]):
                 cells = [""] * 7
                 for w in ln:
                     ci = 0
                     for x, idx in bounds:
-                        if w["x0"] >= x - 2:
+                        if w["x0"] >= x - 3:
                             ci = idx
                     cells[ci] = (cells[ci] + " " + w["text"]).strip()
-                line_text = " ".join(cells)
-                if line_text.startswith("Page ") or "Injury Report:" in line_text:
+                txt = "".join(cells)
+                if re.fullmatch(r"Page\d+of\d+", txt.replace(" ", "")):
                     continue
-                # riga di solo motivo che va a capo: la unisco alla precedente
-                if not any(cells[:6]) and cells[6] and rows:
-                    rows[-1]["reason"] = (rows[-1]["reason"] + " " + cells[6]).strip()
-                    continue
-                rec = dict(zip(COLS, cells))
-                for c in ("game_date", "game_time", "matchup", "team_name"):
+                if cells[4] or "NOTYETSUBMITTED" in txt.replace(" ", ""):
+                    anchors.append([y, cells])
+                else:
+                    loose.append((y, cells))
+            if not anchors:
+                continue
+            # frammenti (motivo a capo, o campi della partita su una riga a sé): alla riga di giocatore più vicina
+            frag = {i: [] for i in range(len(anchors))}
+            for y, cells in loose:
+                i = min(range(len(anchors)), key=lambda k: abs(anchors[k][0] - y))
+                frag[i].append((y, cells))
+            for i, (y, cells) in enumerate(anchors):
+                parts = sorted(frag[i] + [(y, cells)], key=lambda z: z[0])
+                merged = [" ".join(p[1][c] for p in parts if p[1][c]).strip() for c in range(7)]
+                rec = dict(zip(COLS, merged))
+                for c in ("game_date", "game_time", "matchup"):
                     if rec[c]:
                         last[c] = rec[c]
-                        if c in ("game_date", "game_time", "matchup"):
-                            # nuova partita: la squadra va riletta
-                            if c == "matchup":
-                                last["team_name"] = rec["team_name"] or ""
+                        if c == "matchup":
+                            last["team_name"] = ""
                     else:
                         rec[c] = last[c]
                 if rec["team_name"]:
                     last["team_name"] = rec["team_name"]
-                if not rec["player"] and "NOT YET SUBMITTED" in line_text.upper():
-                    rec["status"] = "NOT YET SUBMITTED"
-                if not rec["player"] and rec["status"] != "NOT YET SUBMITTED":
-                    continue
+                else:
+                    rec["team_name"] = last["team_name"]
+                if "NOTYETSUBMITTED" in "".join(merged).replace(" ", ""):
+                    rec["player"], rec["status"] = "", "NOT YET SUBMITTED"
                 rows.append(rec)
     df = pd.DataFrame(rows, columns=COLS)
     if df.empty:
         return df
-    df["team"] = df["team_name"].map(TEAM_NAMES)
+    df["team"] = df["team_name"].map(_team_code)
     df["status"] = df["status"].str.strip()
-    # "Cognome, Nome" -> "Nome Cognome"
     df["player_name"] = df["player"].map(lambda s: " ".join(reversed([p.strip() for p in s.split(",", 1)])) if "," in s else s)
-    df["report"] = report_title
+    df["player_key"] = df["player_name"].map(name_key)
+    df["game_time"] = df["game_time"].str.replace("(ET)", "", regex=False).str.strip()
+    df["report"] = title
     return df

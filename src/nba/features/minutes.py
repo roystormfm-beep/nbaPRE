@@ -14,7 +14,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from nba.models.baseline import norm_name
+from nba.ingest.injury_pdf import name_key
 
 STATUS_P = {"out": 0.0, "doubtful": 0.08, "questionable": 0.55, "probable": 0.94, "available": 0.99}
 DEFAULTS = dict(hl=4.0, recent_n=5, cap=42.0, unlisted_floor=0.0, total=240.0)
@@ -35,7 +35,7 @@ class MinutesProjector:
         x["min"] = x["sec"] / 60
         self.pg = x.sort_values(["player", "date"])
         self.names = pg.drop_duplicates("player").set_index("player")["name"].to_dict() if "name" in pg else {}
-        self.key = {p: norm_name(n) for p, n in self.names.items()}
+        self.key = {p: name_key(n) for p, n in self.names.items()}
 
     def project(self, game_id: str, team: str, date, injuries: pd.DataFrame | None = None) -> pd.DataFrame:
         """injuries: righe dell'injury report per questa squadra (colonne player_name, status), oppure None."""
@@ -64,7 +64,7 @@ class MinutesProjector:
         df["p"] = (df["played_recent"] / n_recent).clip(lower=P["unlisted_floor"])
         df["listed"] = ""
         if injuries is not None and len(injuries):
-            st = {norm_name(n): s for n, s in zip(injuries["player_name"], injuries["status"])}
+            st = {name_key(n): s for n, s in zip(injuries["player_name"], injuries["status"])}
             for i, pid in enumerate(df["player"]):
                 s = st.get(self.key.get(pid, ""))
                 if s:
