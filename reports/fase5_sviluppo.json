@@ -1,0 +1,1063 @@
+{
+ "config": {
+  "team_ratings": {
+   "lam_eff": 5.0,
+   "lam_pace": 5.0
+  },
+  "context_margin_groups": [
+   "base",
+   "riposo",
+   "fine_stagione"
+  ],
+  "context_total_groups": [
+   "base"
+  ],
+  "elo": {
+   "k": 20.0,
+   "hca": 70.0,
+   "carry": 0.75,
+   "per_point": 28.0
+  },
+  "gbm": {
+   "n_estimators": 200,
+   "learning_rate": 0.03,
+   "num_leaves": 7
+  },
+  "ensemble": {
+   "margin_components": [
+    "m_players",
+    "m_team",
+    "m_base",
+    "m_elo",
+    "m_gbm"
+   ],
+   "total_components": [
+    "t_players"
+   ],
+   "hl_seasons": 2.0,
+   "report_only": true,
+   "first_season": 2018
+  },
+  "distribution": {
+   "kind": "t",
+   "window": 4,
+   "hl_seasons": 2.0
+  }
+ },
+ "sviluppo": {
+  "metriche": {
+   "partite": 7747,
+   "MAE_scarto_modello": 10.412216405591986,
+   "MAE_scarto_mercato": 10.28446495417581,
+   "RMSE_scarto_modello": 13.31406247975602,
+   "RMSE_scarto_mercato": 13.20997764657467,
+   "MAE_totale_modello": 14.593239551817273,
+   "MAE_totale_mercato": 14.281399251323093,
+   "Brier_modello": 0.20962264980766074,
+   "Brier_mercato": 0.20658814167058523,
+   "LogLoss_modello": 0.6062986041704345,
+   "LogLoss_mercato": 0.5998106515695518,
+   "ECE_modello": 0.007834217135830907,
+   "ECE_mercato": 0.007423365147209716,
+   "vincitori_modello": 0.6664515296243707,
+   "vincitori_mercato": 0.678843423260617,
+   "dMAE": 0.12775145141617417,
+   "dMAE_lo": 0.07593460958270161,
+   "dMAE_hi": 0.1770935785013732,
+   "dBrier": 0.003034508137075506,
+   "dBrier_lo": 0.001636862538041255,
+   "dBrier_hi": 0.0044018469530862645,
+   "dLogLoss": 0.006487952600882674,
+   "dLogLoss_lo": 0.003335279283830244,
+   "dLogLoss_hi": 0.00979874697074481,
+   "ATS_vinte": 3909,
+   "ATS_perse": 3738,
+   "ATS_push": 100,
+   "ATS_pct": 0.511180855237348,
+   "ATS_lo": 0.5000621158624298,
+   "ATS_hi": 0.5232149862691251,
+   "ROI": -0.024109276365062944,
+   "ROI_lo": -0.04483041477941438,
+   "ROI_hi": -0.0031384856806590785
+  },
+  "per_stagione": [
+   {
+    "stagione": "2018-19",
+    "partite": 787,
+    "MAE": 9.81403079308229,
+    "MAE_mercato": 9.685832274459974,
+    "dMAE": 0.128198518622316,
+    "dMAE_lo": -0.022873912581487677,
+    "dMAE_hi": 0.28959693353721555,
+    "MAE_totale": 14.501457015201863,
+    "MAE_totale_mercato": 14.20330368487929,
+    "Brier": 0.2028456546654511,
+    "Brier_mercato": 0.19831783064545028
+   },
+   {
+    "stagione": "2019-20",
+    "partite": 1041,
+    "MAE": 9.960570208536884,
+    "MAE_mercato": 9.915465898174832,
+    "dMAE": 0.045104310362053514,
+    "dMAE_lo": -0.07964966931918754,
+    "dMAE_hi": 0.17128706898616738,
+    "MAE_totale": 15.044070418087237,
+    "MAE_totale_mercato": 14.857348703170029,
+    "Brier": 0.21093848666469642,
+    "Brier_mercato": 0.2099232010528364
+   },
+   {
+    "stagione": "2020-21",
+    "partite": 1063,
+    "MAE": 10.876468262744469,
+    "MAE_mercato": 10.725070555032925,
+    "dMAE": 0.15139770771154226,
+    "dMAE_lo": 0.011185220275325898,
+    "dMAE_hi": 0.284336712666128,
+    "MAE_totale": 14.673006560138813,
+    "MAE_totale_mercato": 14.385230479774224,
+    "Brier": 0.21959710114446476,
+    "Brier_mercato": 0.21369674322849436
+   },
+   {
+    "stagione": "2021-22",
+    "partite": 1214,
+    "MAE": 10.788005357696452,
+    "MAE_mercato": 10.608731466227347,
+    "dMAE": 0.1792738914691044,
+    "dMAE_lo": 0.033911808550479546,
+    "dMAE_hi": 0.30968833353678743,
+    "MAE_totale": 14.32124037048515,
+    "MAE_totale_mercato": 14.049629324546952,
+    "Brier": 0.2096145320511559,
+    "Brier_mercato": 0.20876277214977038
+   },
+   {
+    "stagione": "2022-23",
+    "partite": 1214,
+    "MAE": 9.92387729555786,
+    "MAE_mercato": 9.775329489291599,
+    "dMAE": 0.14854780626626274,
+    "dMAE_lo": 0.022212944331760683,
+    "dMAE_hi": 0.2776712113241295,
+    "MAE_totale": 14.456810538678049,
+    "MAE_totale_mercato": 14.205518945634267,
+    "Brier": 0.22030219144024613,
+    "Brier_mercato": 0.21628863347436453
+   },
+   {
+    "stagione": "2023-24",
+    "partite": 1215,
+    "MAE": 10.680749720650534,
+    "MAE_mercato": 10.556790123456791,
+    "dMAE": 0.12395959719374205,
+    "dMAE_lo": 0.0022357321131345298,
+    "dMAE_hi": 0.2516080266424652,
+    "MAE_totale": 14.886354554052225,
+    "MAE_totale_mercato": 14.233539094650206,
+    "Brier": 0.2025163161589479,
+    "Brier_mercato": 0.19853747409428146
+   },
+   {
+    "stagione": "2024-25",
+    "partite": 1213,
+    "MAE": 10.62475058362732,
+    "MAE_mercato": 10.515663643858202,
+    "dMAE": 0.10908693976911721,
+    "dMAE_lo": -0.018433914919944606,
+    "dMAE_hi": 0.22766733017162705,
+    "MAE_totale": 14.311147791764713,
+    "MAE_totale_mercato": 14.102638087386644,
+    "Brier": 0.20058716261503634,
+    "Brier_mercato": 0.1990412803000087
+   }
+  ],
+  "per_mese": [
+   {
+    "mese": "2018-12",
+    "partite": 105,
+    "MAE": 9.783605884304508,
+    "MAE_mercato": 9.504761904761905,
+    "MAE_totale": 13.75228943798886,
+    "MAE_totale_mercato": 13.992857142857142
+   },
+   {
+    "mese": "2019-01",
+    "partite": 221,
+    "MAE": 9.865969786255453,
+    "MAE_mercato": 9.697963800904978,
+    "MAE_totale": 14.37473543386268,
+    "MAE_totale_mercato": 14.10180995475113
+   },
+   {
+    "mese": "2019-02",
+    "partite": 158,
+    "MAE": 9.356936834750341,
+    "MAE_mercato": 9.39240506329114,
+    "MAE_totale": 14.998868970168722,
+    "MAE_totale_mercato": 14.507911392405063
+   },
+   {
+    "mese": "2019-03",
+    "partite": 224,
+    "MAE": 10.109579579632207,
+    "MAE_mercato": 9.966517857142858,
+    "MAE_totale": 14.787487533438238,
+    "MAE_totale_mercato": 14.212053571428571
+   },
+   {
+    "mese": "2019-04",
+    "partite": 79,
+    "MAE": 9.785347440672998,
+    "MAE_mercato": 9.683544303797468,
+    "MAE_totale": 14.045838535627354,
+    "MAE_totale_mercato": 14.132911392405063
+   },
+   {
+    "mese": "2019-10",
+    "partite": 52,
+    "MAE": 9.089013328187624,
+    "MAE_mercato": 9.139423076923077,
+    "MAE_totale": 17.83991701945201,
+    "MAE_totale_mercato": 16.129807692307693
+   },
+   {
+    "mese": "2019-11",
+    "partite": 214,
+    "MAE": 9.267525567548082,
+    "MAE_mercato": 9.351635514018692,
+    "MAE_totale": 15.642918744234578,
+    "MAE_totale_mercato": 15.220794392523365
+   },
+   {
+    "mese": "2019-12",
+    "partite": 219,
+    "MAE": 10.20135485334917,
+    "MAE_mercato": 10.058219178082192,
+    "MAE_totale": 14.322277365855077,
+    "MAE_totale_mercato": 14.300228310502282
+   },
+   {
+    "mese": "2020-01",
+    "partite": 222,
+    "MAE": 10.033400665093005,
+    "MAE_mercato": 10.13963963963964,
+    "MAE_totale": 14.46511116652904,
+    "MAE_totale_mercato": 14.14527027027027
+   },
+   {
+    "mese": "2020-02",
+    "partite": 168,
+    "MAE": 10.58637384756715,
+    "MAE_mercato": 10.400297619047619,
+    "MAE_totale": 13.897467170824907,
+    "MAE_totale_mercato": 14.068452380952381
+   },
+   {
+    "mese": "2020-03",
+    "partite": 78,
+    "MAE": 10.301595352967492,
+    "MAE_mercato": 10.166666666666666,
+    "MAE_totale": 16.412376884514515,
+    "MAE_totale_mercato": 16.076923076923077
+   },
+   {
+    "mese": "2020-07",
+    "partite": 8,
+    "MAE": 5.726981027794483,
+    "MAE_mercato": 4.875,
+    "MAE_totale": 29.58531864184406,
+    "MAE_totale_mercato": 30.03125
+   },
+   {
+    "mese": "2020-08",
+    "partite": 80,
+    "MAE": 10.296395873582933,
+    "MAE_mercato": 10.15625,
+    "MAE_totale": 14.827014450424162,
+    "MAE_totale_mercato": 15.509375
+   },
+   {
+    "mese": "2020-12",
+    "partite": 50,
+    "MAE": 14.711036204212485,
+    "MAE_mercato": 13.99,
+    "MAE_totale": 15.355837603721625,
+    "MAE_totale_mercato": 14.26
+   },
+   {
+    "mese": "2021-01",
+    "partite": 222,
+    "MAE": 10.773433095004071,
+    "MAE_mercato": 10.75563063063063,
+    "MAE_totale": 15.643506965904791,
+    "MAE_totale_mercato": 15.468468468468469
+   },
+   {
+    "mese": "2021-02",
+    "partite": 212,
+    "MAE": 10.878311830417537,
+    "MAE_mercato": 10.584905660377359,
+    "MAE_totale": 13.944094322000037,
+    "MAE_totale_mercato": 13.514150943396226
+   },
+   {
+    "mese": "2021-03",
+    "partite": 204,
+    "MAE": 10.41585666823838,
+    "MAE_mercato": 10.395833333333334,
+    "MAE_totale": 14.00044153380075,
+    "MAE_totale_mercato": 13.917892156862745
+   },
+   {
+    "mese": "2021-04",
+    "partite": 240,
+    "MAE": 11.332595844108438,
+    "MAE_mercato": 11.138541666666667,
+    "MAE_totale": 14.610707185280667,
+    "MAE_totale_mercato": 14.308333333333334
+   },
+   {
+    "mese": "2021-05",
+    "partite": 135,
+    "MAE": 9.507940259560506,
+    "MAE_mercato": 9.448148148148148,
+    "MAE_totale": 15.095909282843651,
+    "MAE_totale_mercato": 14.86111111111111
+   },
+   {
+    "mese": "2021-10",
+    "partite": 77,
+    "MAE": 10.115802565414203,
+    "MAE_mercato": 10.084415584415584,
+    "MAE_totale": 16.267003054235662,
+    "MAE_totale_mercato": 16.67207792207792
+   },
+   {
+    "mese": "2021-11",
+    "partite": 225,
+    "MAE": 10.67244273925833,
+    "MAE_mercato": 10.488888888888889,
+    "MAE_totale": 13.992632427500507,
+    "MAE_totale_mercato": 13.74
+   },
+   {
+    "mese": "2021-12",
+    "partite": 209,
+    "MAE": 10.94955928754506,
+    "MAE_mercato": 10.566985645933014,
+    "MAE_totale": 13.892495535397371,
+    "MAE_totale_mercato": 13.770334928229666
+   },
+   {
+    "mese": "2022-01",
+    "partite": 231,
+    "MAE": 10.596310635988697,
+    "MAE_mercato": 10.582251082251082,
+    "MAE_totale": 14.857969092310338,
+    "MAE_totale_mercato": 14.329004329004329
+   },
+   {
+    "mese": "2022-02",
+    "partite": 163,
+    "MAE": 10.616684679955705,
+    "MAE_mercato": 10.50920245398773,
+    "MAE_totale": 14.175279696774862,
+    "MAE_totale_mercato": 13.547546012269938
+   },
+   {
+    "mese": "2022-03",
+    "partite": 229,
+    "MAE": 10.879465379217741,
+    "MAE_mercato": 10.563318777292576,
+    "MAE_totale": 13.966289080964069,
+    "MAE_totale_mercato": 13.671397379912664
+   },
+   {
+    "mese": "2022-04",
+    "partite": 80,
+    "MAE": 11.978740846119083,
+    "MAE_mercato": 11.96875,
+    "MAE_totale": 14.256388263355012,
+    "MAE_totale_mercato": 14.425
+   },
+   {
+    "mese": "2022-10",
+    "partite": 86,
+    "MAE": 10.198675693820103,
+    "MAE_mercato": 10.43313953488372,
+    "MAE_totale": 13.512901652375085,
+    "MAE_totale_mercato": 13.418604651162791
+   },
+   {
+    "mese": "2022-11",
+    "partite": 222,
+    "MAE": 9.806247745655886,
+    "MAE_mercato": 9.47972972972973,
+    "MAE_totale": 14.816263584744128,
+    "MAE_totale_mercato": 14.361486486486486
+   },
+   {
+    "mese": "2022-12",
+    "partite": 222,
+    "MAE": 10.212445684311268,
+    "MAE_mercato": 10.106981981981981,
+    "MAE_totale": 13.851688628048683,
+    "MAE_totale_mercato": 13.702702702702704
+   },
+   {
+    "mese": "2023-01",
+    "partite": 222,
+    "MAE": 9.571982292976037,
+    "MAE_mercato": 9.486486486486486,
+    "MAE_totale": 13.927124767264493,
+    "MAE_totale_mercato": 13.382882882882884
+   },
+   {
+    "mese": "2023-02",
+    "partite": 163,
+    "MAE": 9.542619208905851,
+    "MAE_mercato": 9.377300613496933,
+    "MAE_totale": 15.347692259208978,
+    "MAE_totale_mercato": 15.450920245398773
+   },
+   {
+    "mese": "2023-03",
+    "partite": 229,
+    "MAE": 10.092686765399906,
+    "MAE_mercato": 9.951965065502183,
+    "MAE_totale": 14.431099677761422,
+    "MAE_totale_mercato": 14.135371179039302
+   },
+   {
+    "mese": "2023-04",
+    "partite": 70,
+    "MAE": 10.495695947387063,
+    "MAE_mercato": 10.117857142857142,
+    "MAE_totale": 16.085081397424897,
+    "MAE_totale_mercato": 16.210714285714285
+   },
+   {
+    "mese": "2023-10",
+    "partite": 39,
+    "MAE": 10.078028042812358,
+    "MAE_mercato": 9.711538461538462,
+    "MAE_totale": 13.540212701188384,
+    "MAE_totale_mercato": 13.852564102564102
+   },
+   {
+    "mese": "2023-11",
+    "partite": 219,
+    "MAE": 10.3329923626703,
+    "MAE_mercato": 10.117579908675799,
+    "MAE_totale": 14.646866168634984,
+    "MAE_totale_mercato": 13.931506849315069
+   },
+   {
+    "mese": "2023-12",
+    "partite": 207,
+    "MAE": 10.179562259084767,
+    "MAE_mercato": 10.054347826086957,
+    "MAE_totale": 13.05848166806278,
+    "MAE_totale_mercato": 13.144927536231885
+   },
+   {
+    "mese": "2024-01",
+    "partite": 231,
+    "MAE": 11.18016902291893,
+    "MAE_mercato": 11.297619047619047,
+    "MAE_totale": 17.05551759729876,
+    "MAE_totale_mercato": 16.11904761904762
+   },
+   {
+    "mese": "2024-02",
+    "partite": 174,
+    "MAE": 11.338242975906994,
+    "MAE_mercato": 11.033045977011493,
+    "MAE_totale": 14.74367663942303,
+    "MAE_totale_mercato": 13.724137931034482
+   },
+   {
+    "mese": "2024-03",
+    "partite": 230,
+    "MAE": 10.533607094635673,
+    "MAE_mercato": 10.534782608695652,
+    "MAE_totale": 15.182681816120493,
+    "MAE_totale_mercato": 14.170652173913043
+   },
+   {
+    "mese": "2024-04",
+    "partite": 115,
+    "MAE": 10.74582737388763,
+    "MAE_mercato": 10.419565217391304,
+    "MAE_totale": 14.355147597075803,
+    "MAE_totale_mercato": 14.006521739130434
+   },
+   {
+    "mese": "2024-10",
+    "partite": 55,
+    "MAE": 9.904182681349619,
+    "MAE_mercato": 10.245454545454546,
+    "MAE_totale": 16.244062149127377,
+    "MAE_totale_mercato": 15.7
+   },
+   {
+    "mese": "2024-11",
+    "partite": 221,
+    "MAE": 9.837188788228374,
+    "MAE_mercato": 9.857466063348417,
+    "MAE_totale": 14.815877282524585,
+    "MAE_totale_mercato": 14.7579185520362
+   },
+   {
+    "mese": "2024-12",
+    "partite": 191,
+    "MAE": 10.63807341808492,
+    "MAE_mercato": 10.342931937172775,
+    "MAE_totale": 14.949967218720802,
+    "MAE_totale_mercato": 14.756544502617801
+   },
+   {
+    "mese": "2025-01",
+    "partite": 227,
+    "MAE": 11.81038262329341,
+    "MAE_mercato": 11.504405286343612,
+    "MAE_totale": 13.470996074250388,
+    "MAE_totale_mercato": 13.050660792951541
+   },
+   {
+    "mese": "2025-02",
+    "partite": 176,
+    "MAE": 10.282844183120552,
+    "MAE_mercato": 10.431818181818182,
+    "MAE_totale": 14.245847970605633,
+    "MAE_totale_mercato": 13.835227272727273
+   },
+   {
+    "mese": "2025-03",
+    "partite": 238,
+    "MAE": 10.701771673422245,
+    "MAE_mercato": 10.672268907563025,
+    "MAE_totale": 13.705147186609214,
+    "MAE_totale_mercato": 13.600840336134453
+   },
+   {
+    "mese": "2025-04",
+    "partite": 105,
+    "MAE": 10.470881670682894,
+    "MAE_mercato": 10.004761904761905,
+    "MAE_totale": 14.37367478952914,
+    "MAE_totale_mercato": 14.557142857142857
+   }
+  ],
+  "scarto": [
+   {
+    "col": "m_page_senza",
+    "modello": "Baseline della pagina (v2), senza assenze",
+    "partite": 7747,
+    "MAE": 10.668770944254376,
+    "RMSE": 13.635361966531876,
+    "vs_mercato": 0.3843059900785645,
+    "vs_mercato_lo": 0.31327086826709,
+    "vs_mercato_hi": 0.4539251002418103,
+    "vs_finale": 0.25655453866239025,
+    "vs_finale_lo": 0.19879535435352644,
+    "vs_finale_hi": 0.3155217199169913
+   },
+   {
+    "col": "m_base",
+    "modello": "Baseline ritarato, con injury report",
+    "partite": 7747,
+    "MAE": 10.563692072432772,
+    "RMSE": 13.52255144410929,
+    "vs_mercato": 0.27922711825696256,
+    "vs_mercato_lo": 0.21769672299919213,
+    "vs_mercato_hi": 0.33928710826125635,
+    "vs_finale": 0.1514756668407884,
+    "vs_finale_lo": 0.1003674962195293,
+    "vs_finale_hi": 0.2053719195819218
+   },
+   {
+    "col": "m_elo",
+    "modello": "Elo con margine di vittoria",
+    "partite": 7747,
+    "MAE": 10.76162900972169,
+    "RMSE": 13.747472945153643,
+    "vs_mercato": 0.4771640555458788,
+    "vs_mercato_lo": 0.40023311960053326,
+    "vs_mercato_hi": 0.5540270174415789,
+    "vs_finale": 0.3494126041297046,
+    "vs_finale_lo": 0.28267821306761204,
+    "vs_finale_hi": 0.42097327391106865
+   },
+   {
+    "col": "m_team",
+    "modello": "Rating di squadra (ritmo ed efficienza)",
+    "partite": 7747,
+    "MAE": 10.750861658360387,
+    "RMSE": 13.708561039351292,
+    "vs_mercato": 0.4663967041845758,
+    "vs_mercato_lo": 0.38809651209991136,
+    "vs_mercato_hi": 0.5416525609348537,
+    "vs_finale": 0.33864525276840163,
+    "vs_finale_lo": 0.27459670038343836,
+    "vs_finale_hi": 0.40400452575356294
+   },
+   {
+    "col": "m_gbm",
+    "modello": "LightGBM su squadra e contesto",
+    "partite": 7747,
+    "MAE": 10.6796968336801,
+    "RMSE": 13.663098775669875,
+    "vs_mercato": 0.39523187950428995,
+    "vs_mercato_lo": 0.32140821746800546,
+    "vs_mercato_hi": 0.4674359672449969,
+    "vs_finale": 0.26748042808811584,
+    "vs_finale_lo": 0.20540332945103218,
+    "vs_finale_hi": 0.329589967807029
+   },
+   {
+    "col": "m_players_open",
+    "modello": "Giocatori + minuti, senza injury report",
+    "partite": 7747,
+    "MAE": 10.583186077057789,
+    "RMSE": 13.501902178901174,
+    "vs_mercato": 0.2987211228819789,
+    "vs_mercato_lo": 0.2319583925611816,
+    "vs_mercato_hi": 0.36195140412351196,
+    "vs_finale": 0.1709696714658047,
+    "vs_finale_lo": 0.1230360249295474,
+    "vs_finale_hi": 0.21839106772832892
+   },
+   {
+    "col": "m_players_raw",
+    "modello": "Giocatori + minuti, con injury report",
+    "partite": 7747,
+    "MAE": 10.458330479652686,
+    "RMSE": 13.356067650631703,
+    "vs_mercato": 0.1738655254768762,
+    "vs_mercato_lo": 0.11807818481006997,
+    "vs_mercato_hi": 0.22929225116250282,
+    "vs_finale": 0.04611407406070205,
+    "vs_finale_lo": 0.021137919303502947,
+    "vs_finale_hi": 0.07048044559727114
+   },
+   {
+    "col": "m_players",
+    "modello": "… + contesto (riposo, fine stagione)",
+    "partite": 7747,
+    "MAE": 10.426735913362783,
+    "RMSE": 13.317663584408022,
+    "vs_mercato": 0.14227095918697283,
+    "vs_mercato_lo": 0.08606285450633465,
+    "vs_mercato_hi": 0.1966192073638937,
+    "vs_finale": 0.01451950777079867,
+    "vs_finale_lo": -0.0030655200000997023,
+    "vs_finale_hi": 0.03164911214807777
+   },
+   {
+    "col": "m_final",
+    "modello": "Ensemble finale",
+    "partite": 7747,
+    "MAE": 10.412216405591986,
+    "RMSE": 13.31406247975602,
+    "vs_mercato": 0.12775145141617417,
+    "vs_mercato_lo": 0.0767763915405924,
+    "vs_mercato_hi": 0.1789159375651287
+   },
+   {
+    "col": "mercato",
+    "modello": "Mercato (linea di chiusura)",
+    "partite": 7747,
+    "MAE": 10.28446495417581,
+    "RMSE": 13.20997764657467
+   }
+  ],
+  "totale": [
+   {
+    "col": "t_base",
+    "modello": "Baseline ritarato",
+    "partite": 7747,
+    "MAE": 14.80068848985621,
+    "RMSE": 18.77041208158274,
+    "vs_mercato": 0.5192892385331185,
+    "vs_mercato_lo": 0.42158263627129905,
+    "vs_mercato_hi": 0.6101170242669179,
+    "vs_finale": 0.20744893803893827,
+    "vs_finale_lo": 0.12825559003736303,
+    "vs_finale_hi": 0.2870998340897515
+   },
+   {
+    "col": "t_team",
+    "modello": "Rating di squadra",
+    "partite": 7747,
+    "MAE": 14.82534338712214,
+    "RMSE": 18.82960574090099,
+    "vs_mercato": 0.543944135799049,
+    "vs_mercato_lo": 0.4538383839411098,
+    "vs_mercato_hi": 0.6360257631803585,
+    "vs_finale": 0.23210383530486878,
+    "vs_finale_lo": 0.14751206616376197,
+    "vs_finale_hi": 0.31512424096812125
+   },
+   {
+    "col": "t_gbm",
+    "modello": "LightGBM",
+    "partite": 7747,
+    "MAE": 14.788455395697731,
+    "RMSE": 18.765805545891777,
+    "vs_mercato": 0.5070561443746375,
+    "vs_mercato_lo": 0.40858997830376015,
+    "vs_mercato_hi": 0.6022136972743584,
+    "vs_finale": 0.19521584388045718,
+    "vs_finale_lo": 0.11948794586693552,
+    "vs_finale_hi": 0.27920823672000333
+   },
+   {
+    "col": "t_players_raw",
+    "modello": "Solo giocatori (fase 3)",
+    "partite": 7747,
+    "MAE": 15.594620077654554,
+    "RMSE": 19.83217481152303,
+    "vs_mercato": 1.3132208263314598,
+    "vs_mercato_lo": 1.162830777869009,
+    "vs_mercato_hi": 1.4654997907488205,
+    "vs_finale": 1.0013805258372792,
+    "vs_finale_lo": 0.8657159083352697,
+    "vs_finale_hi": 1.1422108510117295
+   },
+   {
+    "col": "t_final",
+    "modello": "Finale: ritmo di squadra × giocatori disponibili",
+    "partite": 7747,
+    "MAE": 14.593239551817273,
+    "RMSE": 18.490052149789022,
+    "vs_mercato": 0.31184030049418027,
+    "vs_mercato_lo": 0.23511562838909794,
+    "vs_mercato_hi": 0.3900899715290792
+   },
+   {
+    "col": "mercato",
+    "modello": "Mercato (linea di chiusura)",
+    "partite": 7747,
+    "MAE": 14.281399251323093,
+    "RMSE": 18.10921421468487
+   }
+  ],
+  "calibrazione": [
+   {
+    "serie": "modello",
+    "fascia": 0,
+    "p_media": 0.0831106512298845,
+    "vinte": 0.041666666666666664,
+    "partite": 24
+   },
+   {
+    "serie": "modello",
+    "fascia": 1,
+    "p_media": 0.16460575870838506,
+    "vinte": 0.14644351464435146,
+    "partite": 239
+   },
+   {
+    "serie": "modello",
+    "fascia": 2,
+    "p_media": 0.2536819472503976,
+    "vinte": 0.23909249563699825,
+    "partite": 573
+   },
+   {
+    "serie": "modello",
+    "fascia": 3,
+    "p_media": 0.3530215524700784,
+    "vinte": 0.3570691434468524,
+    "partite": 969
+   },
+   {
+    "serie": "modello",
+    "fascia": 4,
+    "p_media": 0.45288033856782833,
+    "vinte": 0.459866220735786,
+    "partite": 1196
+   },
+   {
+    "serie": "modello",
+    "fascia": 5,
+    "p_media": 0.5512706218827729,
+    "vinte": 0.5522788203753352,
+    "partite": 1492
+   },
+   {
+    "serie": "modello",
+    "fascia": 6,
+    "p_media": 0.6495799811978265,
+    "vinte": 0.6644736842105263,
+    "partite": 1368
+   },
+   {
+    "serie": "modello",
+    "fascia": 7,
+    "p_media": 0.7463037721729128,
+    "vinte": 0.7428833792470156,
+    "partite": 1089
+   },
+   {
+    "serie": "modello",
+    "fascia": 8,
+    "p_media": 0.8422151993762309,
+    "vinte": 0.851528384279476,
+    "partite": 687
+   },
+   {
+    "serie": "modello",
+    "fascia": 9,
+    "p_media": 0.9207502010045104,
+    "vinte": 0.9454545454545454,
+    "partite": 110
+   },
+   {
+    "serie": "mercato",
+    "fascia": 0,
+    "p_media": 0.0889720931894471,
+    "vinte": 0.0,
+    "partite": 16
+   },
+   {
+    "serie": "mercato",
+    "fascia": 1,
+    "p_media": 0.1585965420569238,
+    "vinte": 0.165625,
+    "partite": 320
+   },
+   {
+    "serie": "mercato",
+    "fascia": 2,
+    "p_media": 0.2540023433845759,
+    "vinte": 0.22961730449251247,
+    "partite": 601
+   },
+   {
+    "serie": "mercato",
+    "fascia": 3,
+    "p_media": 0.3532018538439158,
+    "vinte": 0.3627450980392157,
+    "partite": 918
+   },
+   {
+    "serie": "mercato",
+    "fascia": 4,
+    "p_media": 0.4473320008215591,
+    "vinte": 0.4365808823529412,
+    "partite": 1088
+   },
+   {
+    "serie": "mercato",
+    "fascia": 5,
+    "p_media": 0.5518037473169518,
+    "vinte": 0.5496894409937888,
+    "partite": 1288
+   },
+   {
+    "serie": "mercato",
+    "fascia": 6,
+    "p_media": 0.6487333363270674,
+    "vinte": 0.646969696969697,
+    "partite": 1320
+   },
+   {
+    "serie": "mercato",
+    "fascia": 7,
+    "p_media": 0.7469545455661987,
+    "vinte": 0.7411467116357504,
+    "partite": 1186
+   },
+   {
+    "serie": "mercato",
+    "fascia": 8,
+    "p_media": 0.8466148148181802,
+    "vinte": 0.8406779661016949,
+    "partite": 885
+   },
+   {
+    "serie": "mercato",
+    "fascia": 9,
+    "p_media": 0.9157648506257418,
+    "vinte": 0.928,
+    "partite": 125
+   }
+  ],
+  "copertura": {
+   "partite": 7647,
+   "LogLoss": 0.7012469012206047,
+   "LogLoss_moneta": 0.6931471805599453,
+   "Brier": 0.25388627085466403,
+   "ECE": 0.04741036725236803,
+   "copertura50": 0.4939976765199432,
+   "copertura80": 0.7908867948883439,
+   "copertura95": 0.9439783141861365
+  },
+  "punti": {
+   "MAE_punti_squadra": 9.053791995465657,
+   "MAE_punti_squadra_mercato": 8.898025041951723
+  },
+  "disaccordo_3": {
+   "partite": 1486,
+   "MAE_modello": 10.787593254338837,
+   "MAE_mercato": 10.378028263795423
+  }
+ },
+ "pesi": {
+  "2018-19": {
+   "costante": -0.5918667973854445,
+   "Giocatori + minuti + contesto": 0.7117211557389849,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.0,
+   "Elo": 0.243471069792842,
+   "LightGBM": 0.0
+  },
+  "2019-20": {
+   "costante": -0.19448915328139804,
+   "Giocatori + minuti + contesto": 0.7318905090481306,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.3484225321596311,
+   "Elo": 0.0,
+   "LightGBM": 0.0
+  },
+  "2020-21": {
+   "costante": -0.2086895397391723,
+   "Giocatori + minuti + contesto": 0.7093722926959167,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.26761653873852187,
+   "Elo": 0.017244314616418364,
+   "LightGBM": 0.04386612303398758
+  },
+  "2021-22": {
+   "costante": -0.47153737373181304,
+   "Giocatori + minuti + contesto": 0.8721336580271205,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.14982060773770725,
+   "Elo": 0.0,
+   "LightGBM": 0.0
+  },
+  "2022-23": {
+   "costante": -0.3224760122013859,
+   "Giocatori + minuti + contesto": 0.8028884443195169,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.23063017267614738,
+   "Elo": 0.0,
+   "LightGBM": 0.0
+  },
+  "2023-24": {
+   "costante": -0.0525589804292456,
+   "Giocatori + minuti + contesto": 0.7270264885817473,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.27634848782282145,
+   "Elo": 0.0,
+   "LightGBM": 0.004142495723859515
+  },
+  "2024-25": {
+   "costante": -0.07364291763762221,
+   "Giocatori + minuti + contesto": 0.782284195437887,
+   "Rating di squadra": 0.0,
+   "Baseline ritarato": 0.2503783530131555,
+   "Elo": 0.0,
+   "LightGBM": 0.0
+  }
+ },
+ "distribuzione": [
+  {
+   "forma": "normale",
+   "LogLoss": 0.6064630971636812,
+   "Brier": 0.2096921231855974,
+   "ECE": 0.009590370845001622,
+   "copertura80": 0.8005679617916613,
+   "copertura95": 0.9415257519039628,
+   "sd_tipica": 13.41330179183643,
+   "effetto_totale": 0.0,
+   "effetto_differenza": 0.0
+  },
+  {
+   "forma": "normale_v",
+   "LogLoss": 0.6065610232415664,
+   "Brier": 0.20972253637393176,
+   "ECE": 0.009939015678813246,
+   "copertura80": 0.7995353039886408,
+   "copertura95": 0.9417839163547179,
+   "sd_tipica": 13.348369573815406,
+   "effetto_totale": 0.384268617252016,
+   "effetto_differenza": 0.00122915989930375
+  },
+  {
+   "forma": "t",
+   "LogLoss": 0.6062986041704345,
+   "Brier": 0.20962264980766074,
+   "ECE": 0.007834217135830907,
+   "copertura80": 0.7908867948883439,
+   "copertura95": 0.9439783141861365,
+   "sd_tipica": 13.414866662953449,
+   "effetto_totale": 0.46495713339547834,
+   "effetto_differenza": -0.008828779440762685,
+   "gradi_liberta": 18.47299235024884
+  },
+  {
+   "forma": "empirica",
+   "LogLoss": 0.6065949750833801,
+   "Brier": 0.2097424629697909,
+   "ECE": 0.005407341468336668,
+   "copertura80": 0.791144959339099,
+   "copertura95": 0.9452691364399122,
+   "sd_tipica": 13.348369573815406,
+   "effetto_totale": 0.384268617252016,
+   "effetto_differenza": 0.00122915989930375
+  }
+ ],
+ "mercato_sviluppo": [
+  {
+   "informazione": "all'apertura (senza injury report)",
+   "partite": 3603,
+   "corr": 0.3569445901300666,
+   "MAE_movimento_naive": 1.5362198168193173,
+   "MAE_movimento_modello": 1.506216819462999,
+   "dMAE": -0.030002997356317906,
+   "dMAE_lo": -0.04690654357976247,
+   "dMAE_hi": -0.014644996943704296,
+   "direzione_partite": 831,
+   "direzione": 0.6823104693140795,
+   "direzione_lo": 0.6510228640192539,
+   "direzione_hi": 0.7135980746089049,
+   "CLV": 0.47765750763252846,
+   "CLV_lo": 0.4075076325284485,
+   "CLV_hi": 0.5501682625589785,
+   "CLV_quota_pos": 0.5045795170691091,
+   "CLV_forte_partite": 846,
+   "CLV_forte": 1.2712765957446808,
+   "CLV_forte_lo": 1.0706190898345154,
+   "CLV_forte_hi": 1.4905585106382977,
+   "beta": 0.16950244232383102
+  },
+  {
+   "informazione": "prima della gara (con injury report)",
+   "partite": 1213,
+   "corr": 0.7551932422283925,
+   "MAE_movimento_naive": 1.910964550700742,
+   "MAE_movimento_modello": 1.5349200788945343,
+   "dMAE": -0.3760444718062077,
+   "dMAE_lo": -0.44265997600452156,
+   "dMAE_hi": -0.3089900177712795,
+   "direzione_partite": 620,
+   "direzione": 0.8290322580645161,
+   "direzione_lo": 0.7983870967741935,
+   "direzione_hi": 0.8596774193548387,
+   "CLV": 1.300906842539159,
+   "CLV_lo": 1.1574608408903544,
+   "CLV_hi": 1.4567188788128607,
+   "CLV_quota_pos": 0.5787304204451772,
+   "CLV_forte_partite": 344,
+   "CLV_forte": 3.2994186046511627,
+   "CLV_forte_lo": 2.9446947674418604,
+   "CLV_forte_hi": 3.697674418604651,
+   "beta": 0.3638704529098904
+  }
+ ]
+}

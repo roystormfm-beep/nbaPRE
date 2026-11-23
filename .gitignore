@@ -2,3 +2,4 @@
 __pycache__/
 data/raw/
 recon/page/index.html
+logs/

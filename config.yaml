@@ -21,3 +21,18 @@ sources:
 qc:
   min_total_points: 120      # sotto questa soglia un punteggio finale è considerato incompleto (esistono partite vere da 136 punti totali)
   minutes_tolerance: 0.5     # minuti di squadra ammessi di scarto rispetto a 240 (+25 per supplementare)
+
+# Scelte di modello fissate sulle sole stagioni di sviluppo (fasi 3-5)
+models:
+  team_ratings: {lam_eff: 5.0, lam_pace: 5.0}           # fase 4: ritmo ed efficienza di squadra
+  context_margin_groups: [base, riposo, fine_stagione]  # fase 4: contesto essenziale sullo scarto
+  context_total_groups: [base]                          # fase 4: solo correzione di livello sul totale
+  elo: {k: 20.0, hca: 70.0, carry: 0.75, per_point: 28.0}   # fase 5
+  gbm: {n_estimators: 200, learning_rate: 0.03, num_leaves: 7}   # fase 5: correzione sui rating di squadra
+  ensemble:
+    margin_components: [m_players, m_team, m_base, m_elo, m_gbm]
+    total_components: [t_players]          # sul totale l'ensemble peggiora: si usa il modello della fase 4
+    hl_seasons: 2.0
+    report_only: true
+    first_season: 2018
+  distribution: {kind: t, window: 4, hl_seasons: 2.0}
