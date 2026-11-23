@@ -69,6 +69,14 @@ def cmd_fetch_remote(args):
     """Scaricamenti da siti esterni (da lanciare su GitHub Actions o sul tuo computer)."""
     seasons = parse_range(args.seasons)
     tasks = ["probe", "espn", "bref"] if args.task == "all" else [args.task]
+    if args.task.startswith("injuries"):
+        from nba.ingest.remote import injuries
+        step = args.task.split("-", 1)[1] if "-" in args.task else "all"
+        log = injuries.run(seasons, step)
+        from nba.config import path
+        (path("external") / "fetch_log.txt").write_text("\n".join(log) + "\n", encoding="utf-8")
+        print("\n".join(log))
+        return
     log = []
     if "probe" in tasks:
         from nba.ingest.remote import probe
@@ -96,7 +104,8 @@ def main(argv=None):
     pq = sub.add_parser("qc", help="controlli di qualità sui dati elaborati")
     pq.set_defaults(func=cmd_qc)
     pr = sub.add_parser("fetch-remote", help="quote e calendario ESPN, BPM Basketball-Reference, prova delle fonti")
-    pr.add_argument("--task", choices=["probe", "espn", "bref", "all"], default="all")
+    pr.add_argument("--task", choices=["probe", "espn", "bref", "all", "injuries-index", "injuries-fetch", "injuries"],
+                    default="all")
     pr.add_argument("--seasons", default="2014-2026", help="es. 2014-2026 oppure 2018,2025")
     pr.add_argument("--no-odds", action="store_true", help="solo calendario e risultati ESPN, senza quote")
     pr.set_defaults(func=cmd_fetch_remote)

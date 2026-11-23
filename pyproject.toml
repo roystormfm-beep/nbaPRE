@@ -15,7 +15,7 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest>=8"]
-remote = ["lxml>=5"]
+remote = ["lxml>=5", "pdfplumber>=0.11"]
 
 [project.scripts]
 nba = "nba.cli:main"
