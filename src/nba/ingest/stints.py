@@ -128,11 +128,17 @@ def build_game(ev: pd.DataFrame, game_id: str, home: str, away: str):
                     pts = 3 if r.is3 else 2
                     cur[side + "pts"] += pts
                     cur[side + "fga"] += 1
+                    if r.is3:
+                        cur[side + "fg3a"] += 1
+                        cur[side + "fg3m"] += 1
                 elif k == "FGX":
                     cur[side + "fga"] += 1
+                    if r.is3:
+                        cur[side + "fg3a"] += 1
                 elif k == "FTM":
                     cur[side + "pts"] += 1
                     cur[side + "fta"] += 1
+                    cur[side + "ftm"] += 1
                 elif k == "FTX":
                     cur[side + "fta"] += 1
                 elif k == "OREB":
@@ -154,7 +160,8 @@ def build_game(ev: pd.DataFrame, game_id: str, home: str, away: str):
 def _new_stint(game_id, p, start, on, home, away):
     return {"game_id": game_id, "period": p, "start": start, "home_ids": tuple(sorted(on[home])),
             "away_ids": tuple(sorted(on[away])), "hpts": 0, "apts": 0, "hfga": 0, "afga": 0, "hfta": 0, "afta": 0,
-            "horeb": 0, "aoreb": 0, "htov": 0, "atov": 0, "changed": False}
+            "horeb": 0, "aoreb": 0, "htov": 0, "atov": 0, "hfg3a": 0, "afg3a": 0, "hfg3m": 0, "afg3m": 0,
+            "hftm": 0, "aftm": 0, "changed": False}
 
 
 def _close(cur, end, stints, psec, home, away):
