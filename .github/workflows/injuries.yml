@@ -1,0 +1,41 @@
+# Injury report ufficiali: una stagione per job, in parallelo (ogni job ha il suo indirizzo e va piano).
+# step = index (trova i PDF giusti per ogni partita) | fetch (li scarica e li legge) | all
+name: injuries
+
+on:
+  workflow_dispatch:
+    inputs:
+      step:
+        description: "index | fetch | all"
+        default: index
+      seasons:
+        description: "elenco JSON di stagioni (anno di inizio)"
+        default: "[2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]"
+
+permissions:
+  contents: write
+
+jobs:
+  season:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      matrix:
+        season: ${{ fromJSON(inputs.seasons) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: Ambiente Python
+        run: uv sync --extra remote --python 3.12
+      - name: Injury report ${{ matrix.season }}
+        run: uv run nba fetch-remote --task "injuries${{ inputs.step == 'all' && '' || format('-{0}', inputs.step) }}" --seasons "${{ matrix.season }}"
+      - name: Salva i dati nel repository
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/external/injury
+          if git diff --cached --quiet; then echo "nessun dato nuovo"; exit 0; fi
+          git commit -m "Injury report ${{ inputs.step }} ${{ matrix.season }}"
+          for i in 1 2 3 4 5 6; do git pull --rebase && git push && break; sleep $((RANDOM % 20 + 5)); done
