@@ -1,0 +1,49 @@
+{
+ "game": "0022600286",
+ "events": [
+  "401910035",
+  "401909288"
+ ],
+ "results": [
+  {
+   "name": "espn_summary_401910035",
+   "status": 200,
+   "bytes": 444772,
+   "type": "application/json;charset=UTF-8"
+  },
+  {
+   "name": "espn_summary_401909288",
+   "status": 200,
+   "bytes": 476157,
+   "type": "application/json;charset=UTF-8"
+  },
+  {
+   "name": "pbpstats_games",
+   "status": 200,
+   "bytes": 57222,
+   "type": "application/json"
+  },
+  {
+   "name": "pbpstats_game_player",
+   "status": 200,
+   "bytes": 143632,
+   "type": "application/json"
+  },
+  {
+   "name": "pbpstats_game_lineup",
+   "status": 200,
+   "bytes": 148180,
+   "type": "application/json"
+  },
+  {
+   "name": "pbpstats_game_lineupopp",
+   "status": 200,
+   "bytes": 148660,
+   "type": "application/json"
+  },
+  {
+   "name": "pbpstats_possessions",
+   "status": null
+  }
+ ]
+}
