@@ -21,6 +21,8 @@ def cmd_ingest(args):
     for s in seasons:
         t0 = time.time()
         r = build(s)
+        from nba.ingest.external import attach
+        r["espn"] = attach(s)          # punteggi, sedi e quote ESPN, se scaricati (data/external/espn)
         print(f"{s}: {r} ({time.time() - t0:.0f}s)", flush=True)
 
 

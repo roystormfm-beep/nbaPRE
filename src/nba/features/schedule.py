@@ -16,6 +16,12 @@ def arenas() -> pd.DataFrame:
 
 
 BUBBLE = {"lat": 28.337, "lon": -81.556, "tz": "America/New_York"}   # Walt Disney World, luglio-agosto 2020
+# Sedi neutre fuori dalle città NBA (dati ESPN: Messico, Europa, finali di Coppa a Las Vegas)
+NEUTRAL_CITIES = {
+    "Mexico City": (19.404, -99.097, "America/Mexico_City"), "Las Vegas": (36.103, -115.178, "America/Los_Angeles"),
+    "London": (51.503, 0.003, "Europe/London"), "Paris": (48.838, 2.378, "Europe/Paris"),
+    "Berlin": (52.507, 13.444, "Europe/Berlin"),
+}
 
 
 def arena_for(a: pd.DataFrame, team: str, season: int) -> pd.Series:
@@ -46,7 +52,14 @@ def team_schedule(games: pd.DataFrame) -> pd.DataFrame:
         neutral = bool(g.get("neutral")) if pd.notna(g.get("neutral", np.nan)) else False
         if g["season"] == 2019 and str(g["date"]) >= "2020-07-30":       # "bolla" di Orlando: campo neutro
             lat, lon, tz, neutral = BUBBLE["lat"], BUBBLE["lon"], BUBBLE["tz"], True
-        # altre sedi neutre (Messico, Europa, finale di Coppa): coordinate da aggiungere con i dati ESPN
+        elif neutral:
+            city = g.get("venue_city")
+            if city in NEUTRAL_CITIES:
+                lat, lon, tz = NEUTRAL_CITIES[city]
+            else:   # campo neutro in un'altra città NBA: uso l'arena di quella città
+                m = a[a.city == city]
+                if len(m):
+                    lat, lon, tz = m.iloc[-1]["lat"], m.iloc[-1]["lon"], m.iloc[-1]["tz"]
         for side in ("home", "away"):
             rows.append({"game_id": g["game_id"], "season": g["season"], "date": g["date"], "team": g[side],
                          "opp": g["away" if side == "home" else "home"], "is_home": side == "home",

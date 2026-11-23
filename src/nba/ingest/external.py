@@ -11,10 +11,21 @@ import pandas as pd
 
 from nba.config import path
 
-# Ordine di preferenza dei fornitori di quote (i più presenti e affidabili prima)
-PROVIDER_ORDER = ["consensus", "DraftKings", "ESPN BET", "Caesars Sportsbook", "Caesars", "MGM", "William Hill",
-                  "Westgate", "FanDuel", "BetMGM", "PointsBet", "Unibet"]
-NOT_BOOKS = {"accuscore", "numberfire", "teamrankings"}   # siti di pronostici, non bookmaker
+# Fornitore "principale" per partita, in ordine di preferenza (nomi normalizzati: minuscolo, senza spazi)
+PROVIDER_ORDER = ["consensus", "pinnaclesports.com", "draftkings", "espnbet", "westgate", "caesarssportsbook",
+                  "caesars", "mgm", "betonline.ag", "bovada.lv", "5dimes.eu", "unibet"]
+# siti di pronostici o fornitori di dati, non bookmaker; "opening" è la linea d'apertura (usata solo come tale)
+NOT_BOOKS = {"accuscore", "numberfire", "teamrankings", "betegy", "fantasy911.com", "betradar", "opening"}
+
+
+def _norm_provider(p) -> str:
+    return str(p or "").lower().replace(" ", "").replace("'", "")
+
+
+def _american_to_prob(ml):
+    if pd.isna(ml) or ml == 0:
+        return np.nan
+    return 100 / (ml + 100) if ml > 0 else -ml / (-ml + 100)
 
 
 def _espn_file(kind: str, s: int):
@@ -56,36 +67,64 @@ def match_espn(games: pd.DataFrame, sb: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(out)
 
 
+def _first(*vals):
+    for v in vals:
+        if v is not None and pd.notna(v):
+            return float(v)
+    return np.nan
+
+
+def _home_spread(r, ph):
+    v = r.get(f"{ph}_home_spread")
+    if (v is None or pd.isna(v)) and pd.notna(r.get(f"{ph}_away_spread")):
+        v = -r[f"{ph}_away_spread"]
+    return v
+
+
 def game_lines(od: pd.DataFrame) -> pd.DataFrame:
-    """Una riga per partita: linea del fornitore preferito, con apertura e chiusura dove disponibili."""
+    """Una riga per partita.
+
+    Chiusura = mediana tra i bookmaker dell'ultima linea pre-partita salvata da ESPN ('close', altrimenti 'current',
+    altrimenti il campo 'spread' che ESPN dà già dal punto di vista della squadra di casa).
+    Le linee "Live Odds" (durante la partita) sono escluse. Apertura = fornitore "Opening" (anni 2014-2016) oppure
+    il campo 'open' dei bookmaker che lo hanno (stagioni recenti).
+    Probabilità di mercato = mediana tra i bookmaker delle probabilità implicite nella moneyline, senza margine."""
     if od is None or od.empty:
         return pd.DataFrame()
-    od = od[~od["provider"].fillna("").str.lower().isin(NOT_BOOKS)].copy()
-    rank = {p.lower(): i for i, p in enumerate(PROVIDER_ORDER)}
-    od["rank"] = od["provider"].fillna("").str.lower().map(rank).fillna(len(rank))
-    od = od.sort_values(["event_id", "rank", "priority"])
-
-    def home_spread(r, ph):
-        v = r.get(f"{ph}_home_spread")
-        if pd.isna(v) and pd.notna(r.get(f"{ph}_away_spread")):
-            v = -r[f"{ph}_away_spread"]
-        return v
-
+    od = od.copy()
+    od["pn"] = od["provider"].map(_norm_provider)
+    live = od["pn"].str.contains("live")
+    opening = od[od["pn"] == "opening"]
+    books = od[~live & ~od["pn"].isin(NOT_BOOKS)].copy()
+    rank = {p: i for i, p in enumerate(PROVIDER_ORDER)}
+    books["rank"] = books["pn"].map(rank).fillna(len(rank))
+    books = books.sort_values(["event_id", "rank"])
     rows = []
-    for eid, grp in od.groupby("event_id", sort=False):
-        r = grp.iloc[0]
-        close_sp = home_spread(r, "close")
-        cur_sp = home_spread(r, "current")
-        # 'spread' in cima all'oggetto ESPN è già dal punto di vista della squadra di casa
-        final_sp = close_sp if pd.notna(close_sp) else (cur_sp if pd.notna(cur_sp) else r.get("spread"))
-        final_tot = next((x for x in (r.get("close_total"), r.get("current_total"), r.get("over_under")) if pd.notna(x)), np.nan)
+    for eid, grp in books.groupby("event_id", sort=False):
+        sp, tot, ph, osp, otot = [], [], [], [], []
+        for _, r in grp.iterrows():
+            sp.append(_first(_home_spread(r, "close"), _home_spread(r, "current"), r.get("spread")))
+            tot.append(_first(r.get("close_total"), r.get("current_total"), r.get("over_under")))
+            mh = _first(r.get("close_home_ml"), r.get("current_home_ml"), r.get("home_ml"))
+            ma = _first(r.get("close_away_ml"), r.get("current_away_ml"), r.get("away_ml"))
+            p_h, p_a = _american_to_prob(mh), _american_to_prob(ma)
+            ph.append(p_h / (p_h + p_a) if pd.notna(p_h) and pd.notna(p_a) else np.nan)
+            osp.append(_first(_home_spread(r, "open")))
+            otot.append(_first(r.get("open_total")))
+        top = grp.iloc[0]
+        o = opening[opening["event_id"] == eid]
+        open_sp = _first(*(o.apply(lambda r: _first(_home_spread(r, "current"), r.get("spread")), axis=1).tolist()
+                           if len(o) else []), np.nanmedian(osp) if np.isfinite(osp).any() else np.nan)
+        open_tot = _first(*(o.apply(lambda r: _first(r.get("current_total"), r.get("over_under")), axis=1).tolist()
+                            if len(o) else []), np.nanmedian(otot) if np.isfinite(otot).any() else np.nan)
+        sp_a, tot_a, ph_a = np.array(sp, float), np.array(tot, float), np.array(ph, float)
         rows.append({
-            "espn_id": eid, "book": r["provider"], "n_books": grp["provider"].nunique(),
-            "open_spread_home": home_spread(r, "open"), "close_spread_home": final_sp,
-            "open_total": r.get("open_total"), "close_total": final_tot,
-            "close_ml_home": next((x for x in (r.get("close_home_ml"), r.get("current_home_ml"), r.get("home_ml")) if pd.notna(x)), np.nan),
-            "close_ml_away": next((x for x in (r.get("close_away_ml"), r.get("current_away_ml"), r.get("away_ml")) if pd.notna(x)), np.nan),
-            "spread_median_books": grp.apply(lambda x: x["spread"], axis=1).median(),
+            "espn_id": eid, "main_book": top["provider"], "n_books": int(np.isfinite(sp_a).sum()),
+            "close_spread_home": float(np.nanmedian(sp_a)) if np.isfinite(sp_a).any() else np.nan,
+            "close_spread_main": sp[0], "spread_range": float(np.nanmax(sp_a) - np.nanmin(sp_a)) if np.isfinite(sp_a).any() else np.nan,
+            "close_total": float(np.nanmedian(tot_a)) if np.isfinite(tot_a).any() else np.nan,
+            "p_home_mkt": float(np.nanmedian(ph_a)) if np.isfinite(ph_a).any() else np.nan,
+            "open_spread_home": open_sp, "open_total": open_tot,
         })
     return pd.DataFrame(rows)
 

@@ -15,6 +15,22 @@ from nba.ingest.stints import build_season
 EXPECTED_GAMES = {2019: 1059, 2020: 1080}   # 2019-20 interrotta dal Covid (con le partite nella "bolla"), 2020-21 da 72
 
 
+def _market(s: int, gg: pd.DataFrame) -> dict:
+    """Copertura e precisione della linea di chiusura (il riferimento da battere)."""
+    p = path("processed") / f"lines_{s}.parquet"
+    if not p.exists():
+        return {}
+    L = pd.read_parquet(p).merge(gg[["hpts", "apts"]], left_on="game_id", right_index=True)
+    m = L["hpts"] - L["apts"]
+    ok = L["close_spread_home"].notna()
+    pm = L["p_home_mkt"]
+    return {"quote_chiusura": float(ok.sum() / len(gg)), "quote_apertura": float(L["open_spread_home"].notna().sum() / len(gg)),
+            "bookmaker_mediana": float(L["n_books"].median()),
+            "mercato_MAE_scarto": round(float((m + L["close_spread_home"])[ok].abs().mean()), 2),
+            "mercato_MAE_totale": round(float(((L["hpts"] + L["apts"]) - L["close_total"]).dropna().abs().mean()), 2),
+            "mercato_Brier": round(float(((pm - (m > 0)) ** 2)[pm.notna()].mean()), 4)}
+
+
 def load(kind: str, seasons) -> pd.DataFrame:
     return pd.concat([pd.read_parquet(path("processed") / f"{kind}_{s}.parquet") for s in seasons], ignore_index=True)
 
@@ -61,6 +77,11 @@ def run_qc() -> dict:
             "sostituzioni_incoerenti": int(is_["issue"].isin(["esce_non_in_campo", "entra_gia_in_campo"]).sum()),
             "giocatore_in_due_squadre": int((dup > 1).sum()),
             "giocatori_senza_nome": int(ps.loc[ps["sec"] > 0, "name"].isna().sum()),
+            "pbp_utilizzabile": float(gg["pbp_ok"].mean()),
+            "espn_abbinate": float(gg["espn_id"].notna().mean()) if "espn_id" in gg else 0.0,
+            "espn_uguale_finale": float(((gg.get("h_espn") == gg["hpts"]) & (gg.get("a_espn") == gg["apts"])).mean())
+            if "h_espn" in gg else 0.0,
+            **_market(s, gg),
             "punti_medi_squadra": round(float((gg["hpts"] + gg["apts"]).mean() / 2), 1),
             "vittorie_casa": round(float((margin > 0).mean()), 3),
             "dev_std_scarto": round(float(margin.std()), 2),
@@ -116,6 +137,14 @@ def _write_md(df: pd.DataFrame, cross: pd.DataFrame, res: dict, out):
                  f"{_pct(r['minuti_squadra_entro_0.5'])} | {_pct(r['tempo_5_contro_5'])} | {r['periodi_con_quintetto_dedotto']} | "
                  f"{r['periodi_quintetto_incompleto_o_eccesso']} | {r['sostituzioni_incoerenti']} | {r['punti_medi_squadra']} | "
                  f"{r['vittorie_casa']} | {r['dev_std_scarto']} |")
+    if "quote_chiusura" in df:
+        L += ["", "## ESPN: punteggi e quote", "",
+              "| Stagione | Partite abbinate | Punteggio ESPN = finale | Play-by-play utilizzabile | Linea di chiusura | Linea d'apertura | Bookmaker (mediana) | Mercato: errore medio scarto | Mercato: errore medio totale | Mercato: Brier |",
+              "|---|---|---|---|---|---|---|---|---|---|"]
+        for _, r in df.iterrows():
+            L.append(f"| {r['stagione']} | {_pct(r['espn_abbinate'])} | {_pct(r['espn_uguale_finale'])} | {_pct(r['pbp_utilizzabile'])} | "
+                     f"{_pct(r['quote_chiusura'])} | {_pct(r['quote_apertura'])} | {r['bookmaker_mediana']:.0f} | "
+                     f"{r['mercato_MAE_scarto']} | {r['mercato_MAE_totale']} | {r['mercato_Brier']} |")
     L += ["", "## Stessa stagione da due fonti indipendenti (NBA Stats v2 contro cdn.nba.com)", ""]
     if len(cross):
         cols = ["stagione", "righe", "minuti_entro_1", "pts_uguali", "ast_uguali", "oreb_uguali", "dreb_uguali", "tov_uguali", "stl_uguali", "blk_uguali"]

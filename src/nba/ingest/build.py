@@ -24,7 +24,7 @@ def events_for(season: int, source: str | None = None) -> tuple[pd.DataFrame, st
     return from_nbastats_v2(pd.read_parquet(raw_file("nbastats", season))), "v2"
 
 
-def consensus_score(g: pd.DataFrame, min_total: int = 150) -> pd.DataFrame:
+def consensus_score(g: pd.DataFrame, min_total: int = 120) -> pd.DataFrame:
     """Punteggio finale: il valore su cui concorda il maggior numero di fonti indipendenti complete.
 
     Fonti: 'ev' (somma dei punti dagli eventi), 'cdn' (campo punteggio di cdn.nba.com), 'stats' (campo punteggio
@@ -50,8 +50,8 @@ def consensus_score(g: pd.DataFrame, min_total: int = 150) -> pd.DataFrame:
         if not votes:
             hs.append(np.nan); as_.append(np.nan); nagree.append(0); nsrc.append(0); chosen.append("")
             continue
-        # a parità di voti preferisco il conteggio dagli eventi (ricostruito azione per azione)
-        best = max(votes.items(), key=lambda kv: (len(kv[1]), "ev" in kv[1]))
+        # a parità di voti preferisco il tabellino ufficiale (ESPN, poi NBA Stats), poi gli eventi
+        best = max(votes.items(), key=lambda kv: (len(kv[1]), "espn" in kv[1], "stats" in kv[1], "ev" in kv[1]))
         hs.append(best[0][0]); as_.append(best[0][1]); nagree.append(len(best[1])); nsrc.append(n)
         chosen.append("+".join(best[1]))
     g["hpts"], g["apts"], g["score_agree"], g["score_sources"], g["score_from"] = hs, as_, nagree, nsrc, chosen

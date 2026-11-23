@@ -19,5 +19,5 @@ sources:
   kinds: [nbastatsv3, nbastats, cdnnba, pbpstats]
 
 qc:
-  min_total_points: 150      # sotto questa soglia un punteggio finale è considerato incompleto
+  min_total_points: 120      # sotto questa soglia un punteggio finale è considerato incompleto (esistono partite vere da 136 punti totali)
   minutes_tolerance: 0.5     # minuti di squadra ammessi di scarto rispetto a 240 (+25 per supplementare)
