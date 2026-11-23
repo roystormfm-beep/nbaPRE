@@ -16,7 +16,8 @@ import pandas as pd
 
 from nba.ingest.injury_pdf import name_key
 
-STATUS_P = {"out": 0.0, "doubtful": 0.08, "questionable": 0.55, "probable": 0.94, "available": 0.99}
+# "available" non cambia la probabilità: chi è in elenco come disponibile si tratta come chi non è in elenco
+STATUS_P = {"out": 0.0, "doubtful": 0.03, "questionable": 0.57, "probable": 0.90}
 DEFAULTS = dict(hl=4.0, recent_n=5, cap=42.0, unlisted_floor=0.0, total=240.0)
 
 
@@ -67,7 +68,7 @@ class MinutesProjector:
             st = {name_key(n): s for n, s in zip(injuries["player_name"], injuries["status"])}
             for i, pid in enumerate(df["player"]):
                 s = st.get(self.key.get(pid, ""))
-                if s:
+                if s and str(s).lower() in self.status_p:
                     df.loc[df.index[i], "listed"] = s
                     df.loc[df.index[i], "p"] = self.status_p.get(str(s).lower(), df["p"].iat[i])
         # chi non era nelle ultime partite ma non è in elenco: probabilmente fuori rotazione o appena rientrato

@@ -35,7 +35,7 @@ def status_probs(prior_seasons: list[int]) -> dict:
     rates = x.groupby("st")["played"].agg(["mean", "size"])
     out = dict(STATUS_P)
     for st, row in rates.iterrows():
-        if st in out and row["size"] >= 30:
+        if st in out and row["size"] >= 20:
             out[st] = float(row["mean"])
     return out
 

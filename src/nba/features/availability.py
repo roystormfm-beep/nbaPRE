@@ -19,6 +19,8 @@ def pregame_reports(season: int) -> pd.DataFrame:
     if not rp.exists() or not nd.exists():
         return pd.DataFrame(columns=["game_id", "team", "player_name", "status", "reason", "report_ts"])
     rep = pd.read_parquet(rp)
+    if rep.empty or "team" not in rep.columns:
+        return pd.DataFrame(columns=["game_id", "team", "player_name", "status", "reason", "report_ts"])
     need = pd.read_csv(nd, dtype={"game_id": str})
     need["game_id"] = need["game_id"].str.zfill(10)
     rep = rep.dropna(subset=["team"])
