@@ -4,6 +4,105 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
+# Fase 6: pipeline dal vivo — completata
+
+*23 novembre 2026, notte. È l'ultima fase del piano: mi fermo qui e aspetto le tue decisioni sui punti in fondo.*
+
+## In sintesi
+
+- **Il modello ora gira da solo, due volte al giorno, su GitHub Actions:**
+  - alle 14:30 UTC (15:30 in Italia, mattina negli Stati Uniti);
+  - alle 22:20 UTC (23:20 in Italia, circa un'ora e mezza prima delle prime partite serali).
+- **A ogni giro il modello:**
+  - aggiorna calendario, partite giocate, quote e l'ultimo injury report;
+  - ricalcola tutto con lo stesso modello valutato nella fase 5;
+  - pubblica `predictions/latest.json` e `predictions/AAAA-MM-GG.json` nel formato della pagina.
+- **I primi pronostici dal vivo sono usciti stasera alle 23:00 italiane**, prima della palla a due: 10 partite del 23/11. Li ho rifatti anche qui in locale e i numeri coincidono al decimale.
+- **Stagione 2026-27 fin qui: il modello tiene il passo dei test.** Le 232 partite già giocate, ricostruite con le sole informazioni precedenti a ciascuna, danno un errore medio sullo scarto di 10,89 contro 10,67 del mercato: +0,22 (IC 95% da −0,04 a +0,48), in linea con il +0,17 del test 2025-26.
+- **Confronto con la pagina:** sulle 26 partite congelate dalla pagina tra il 19 e il 22/11, il nuovo modello sbaglia 7,25 contro 7,60. La differenza (−0,35, IC da −1,10 a +0,42) non è significativa: servono almeno 500 partite.
+
+## Da dove arrivano i dati della stagione in corso
+
+Da GitHub Actions i siti ufficiali NBA (cdn.nba.com, stats.nba.com) non rispondono, quindi uso tre fonti alternative:
+
+| Dato | Fonte | Note |
+|---|---|---|
+| Calendario, risultati, play-by-play, box score | ESPN | Dal play-by-play ricostruisco i quintetti in campo come per le stagioni storiche |
+| Id NBA dei giocatori | pbpstats | Per ogni partita abbino per nome i giocatori ESPN a quelli di pbpstats, così i rating restano continui con le stagioni precedenti |
+| Quote | ESPN | Dal 2024-25 un solo bookmaker (DraftKings) |
+| Injury report | PDF ufficiali NBA | Prima della partita si usa l'ultimo report pubblicato |
+
+**Controlli sulle 248 partite giocate fino al 22/11:**
+- **Punteggi:** il play-by-play torna con il punteggio finale nel 99,6% delle partite. In una (NYK-MIN del 19/11) mancano 2 punti, quindi la escludo dai quintetti.
+- **Quintetti:** 5 contro 5 per il 99,9% del tempo di gioco.
+- **Minuti e punti:** identici al box score ESPN (test automatico su due partite).
+- **Giocatori (id ESPN):**
+  - 473 abbinati tramite pbpstats e 2 per cognome;
+  - 15 tramite i nomi delle stagioni precedenti;
+  - 8 con un id provvisorio: due-vie e giocatori con pochissimi minuti.
+- **Injury report:** coprono 261 partite, cioè tutte quelle giocate più quelle di stasera.
+
+**Tempi di esecuzione:** il primo scaricamento completo ha richiesto 25 minuti. Ogni giro normale richiede circa 3-4 minuti in tutto.
+
+## Cosa contiene ogni pronostico
+
+Il formato è descritto in `predictions/README.md`. Ogni partita ha:
+- **i campi della pagina:** `d`, `a`, `h`, `tip`, `ap`, `hp`, `m`, `p`, `sd`, `outA`, `outH`;
+- **`why`:** i tre fattori principali. La scomposizione completa è in `fattori`, e la somma dà esattamente lo scarto previsto:
+  - fattore campo;
+  - qualità dei giocatori disponibili;
+  - assenze di casa;
+  - assenze degli ospiti;
+  - riposo e calendario;
+  - correzione degli altri modelli dell'ensemble.
+- **`outA` / `outH` (le assenze):** separo le assenze nuove, cioè giocatori che fino a ieri giocavano, ognuna con il suo effetto in punti, da quelle lunghe. Le assenze lunghe sono già nei minuti recenti e quindi non spostano il pronostico.
+- **`mk` e `dmk`:** la linea di mercato al momento del calcolo e la distanza dal modello.
+- **`motivo`:** il codice motivo quando modello e linea differiscono di 3 punti o più, come chiesto nelle lezioni del 18/11. I codici possibili:
+  - `DUBBI`: giocatori importanti in dubbio;
+  - `ASSENZE`: le assenze pesano molto;
+  - `RIPOSO`: forte effetto di riposo o calendario;
+  - `POCHE_PARTITE`: una squadra ha giocato poche partite;
+  - `MODELLI_DIVERSI`: i modelli dell'ensemble non sono d'accordo;
+  - `SCONOSCIUTO`: probabilmente al modello manca un'informazione.
+
+**Esempio di stasera, San Antonio a Sacramento:**
+- **Pronostico:** SAS vince di 11,5 (probabilità 82%), linea SAC +12,5.
+- **I tre fattori:**
+  - qualità dei giocatori disponibili: +16,8 per SAS;
+  - assenze SAS (Wembanyama in dubbio −2,9, Harper out −0,7, Fox in dubbio −0,2): +4,0 per SAC;
+  - fattore campo: +1,8 per SAC.
+
+Una partita già iniziata non viene più riscritta: nel file del giorno resta il pronostico congelato prima della palla a due. Ogni pronostico pubblicato finisce anche in `predictions/registro_2026.csv`, la base per giudicare il modello dal vivo.
+
+## Comandi
+
+| Comando | Cosa fa |
+|---|---|
+| `nba live update` | Scarica i dati e costruisce le tabelle 2026-27 |
+| `nba predict --date AAAA-MM-GG` | Pronostici di un giorno |
+| `nba live compare --page export.json` | Confronto con mercato e pagina |
+
+## Approssimazioni da tenere presenti
+
+- **L'injury report usato è l'ultimo disponibile al momento del giro**, non quello di 45 minuti prima di ogni partita: per le gare delle 19:00 di New York è quello delle 16:45-17:15. Le notizie dell'ultima ora (riposi decisi tardi, soprattutto per le partite della costa ovest) possono mancare. Un terzo giro serale ridurrebbe il problema.
+- **Le partite extra di dicembre** (finestra 4-11 dicembre dopo la fase a gironi della Coppa) entrano da sole appena ESPN le pubblica: il calendario si riscarica a ogni giro.
+- **Le prime partite della stagione non hanno pronostico ricostruito**: il modello giocatori parte dopo la prima settimana. Per questo le partite ricostruite sono 232 su 248.
+- **I pronostici ricostruiti** usano l'injury report di 45 minuti prima della partita, quindi sono un po' più informati di quelli congelati dalla pagina: il confronto sulle 26 partite è solo indicativo.
+
+## Decisioni che spettano a te
+
+1. **Mostrare il nuovo modello nella pagina.** La pagina non può leggere da sola i file su GitHub, perché le pagine artifact bloccano le richieste verso altri siti. La via più semplice è far leggere `predictions/latest.json` all'attività pianificata che già congela i pronostici ("Salvataggio pronostici NBA"), salvarlo in un documento separato del database e mostrarlo nella pagina accanto al modello attuale. Non l'ho fatto: significa modificare la tua pagina e la tua attività pianificata.
+2. **Repository pubblico o privato.** Ti avevo consigliato di renderlo privato, ma la lettura da parte dell'attività pianificata è semplice solo se resta pubblico. Con un repository privato servirebbe un token.
+3. **Un terzo giro serale.** Ad esempio alle 01:30 UTC, per le partite della costa ovest con l'injury report più recente.
+
+## Prossimo passo
+
+Non ci sono altre fasi nel piano. Da qui in avanti:
+- il modello lavora da solo e il registro si riempie;
+- il giudizio vero arriva dopo almeno 500 partite dal vivo, verso inizio febbraio, con `nba live compare` contro mercato e pagina sulle stesse partite.
+
+---
+
 # Fase 5: ensemble, calibrazione, backtest completo — completata
 
 *23 novembre 2026, notte. Mi fermo qui e aspetto il tuo via libera per la fase 6.*

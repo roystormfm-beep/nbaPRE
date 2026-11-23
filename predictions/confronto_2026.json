@@ -1,0 +1,46 @@
+{
+ "ricostruiti": {
+  "partite": 232,
+  "MAE": 10.894064655172413,
+  "Brier": 0.19703066379310344,
+  "vincitori": 0.6939655172413793,
+  "MAE_mercato": 10.672413793103448,
+  "vs_mercato": 0.22165086206896548,
+  "vs_mercato_lo": -0.042203556034482836,
+  "vs_mercato_hi": 0.4806108836206896,
+  "Brier_mercato": 0.19425859051724134
+ },
+ "ricostruiti_baseline": {
+  "partite": 232,
+  "MAE": 10.941491379310344
+ },
+ "pagina": {
+  "partite": 26,
+  "MAE": 7.596153846153846,
+  "Brier": 0.18391780769230767,
+  "vincitori": 0.7692307692307693,
+  "MAE_mercato": 7.115384615384615,
+  "vs_mercato": 0.48076923076923084,
+  "vs_mercato_lo": -0.30778846153846157,
+  "vs_mercato_hi": 1.254038461538461,
+  "Brier_mercato": 0.19289804762637572
+ },
+ "nuovo_stesse_partite": {
+  "partite": 26,
+  "MAE": 7.246538461538463,
+  "Brier": 0.19686461538461542,
+  "vincitori": 0.7692307692307693,
+  "MAE_mercato": 7.115384615384615,
+  "vs_mercato": 0.13115384615384612,
+  "vs_mercato_lo": -0.40275096153846174,
+  "vs_mercato_hi": 0.6471913461538454,
+  "Brier_mercato": 0.19289804762637572
+ },
+ "nuovo_vs_pagina": {
+  "partite": 26,
+  "fonte_nuovo": "ricostruiti",
+  "dMAE": -0.34961538461538477,
+  "lo": -1.1043817307692307,
+  "hi": 0.4166961538461536
+ }
+}
