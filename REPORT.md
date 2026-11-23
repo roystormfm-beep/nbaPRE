@@ -4,6 +4,152 @@ Diario delle fasi, la più recente in cima.
 
 ---
 
+# Fase 5: ensemble, calibrazione, backtest completo — completata
+
+*23 novembre 2026, notte. Mi fermo qui e aspetto il tuo via libera per la fase 6.*
+
+## In sintesi
+
+- **Ho valutato la stagione di test 2025-26 una volta sola, come da protocollo.** Prima ho congelato tutte le scelte: si possono verificare nel commit `370de59`, fatto prima di calcolare qualsiasi numero sul test. Il test comprende 1.214 partite con injury report e linea di chiusura.
+- **Sul test il modello sbaglia lo scarto di 11,06 punti in media, il mercato di 10,89.** Il mercato resta più preciso di 0,17 punti a partita (IC 95% [0,06; 0,29]). Sulle stagioni di sviluppo il distacco era 0,13: il modello tiene fuori campione, senza segni di sovra-adattamento.
+- **Rispetto al modello della pagina (v2) l'errore scende di 0,25 punti a partita** (IC [0,09; 0,42]): 11,06 contro 11,31. È un miglioramento netto e significativo. Il modello arriva quasi al livello del baseline che sa in anticipo chi gioca (10,95), pur usando solo le informazioni disponibili prima della partita.
+- **Totale dei punti: 14,96 contro 14,55 del mercato** (+0,42 [0,22; 0,62]). Il baseline della pagina faceva 15,08.
+- **Nessun vantaggio per le scommesse.**
+  - Contro lo spread di chiusura il modello indovina il 48,1% dei lati (IC [45,2; 50,8]), con un ROI a −110 di −8,2% (IC [−13,5; −3,0]).
+  - Quando modello e mercato differiscono di 3 punti o più, ha ragione più spesso il mercato: è successo sia sul test (224 partite) sia sullo sviluppo (1.486 partite).
+  - È il risultato atteso: battere la linea di chiusura è rarissimo.
+- **Un segnale c'è, ma sulla linea d'apertura.** Dopo l'apertura la linea tende a spostarsi verso il pronostico del modello: in media di 0,39 punti sul test (IC [0,27; 0,51]) e di 0,48 sullo sviluppo. Questo dice che l'apertura è meno precisa della chiusura e che il modello anticipa parte dell'aggiustamento. Non è un guadagno garantito (vedi sotto).
+
+## Test 2025-26: tutte le metriche (1.214 partite)
+
+| Metrica | Modello | Mercato | Differenza [IC 95%] |
+|---|---|---|---|
+| Errore medio sullo scarto | 11,06 | 10,89 | +0,17 [0,06; 0,29] |
+| Errore quadratico medio (RMSE) | 14,07 | 13,91 | |
+| Errore medio sul totale | 14,96 | 14,55 | +0,42 [0,22; 0,62] |
+| Errore medio sui punti di una squadra | 9,39 | 9,16 | |
+| Brier (probabilità di vittoria) | 0,1995 | 0,1942 | +0,0054 [0,0024; 0,0083] |
+| Log loss | 0,583 | 0,570 | +0,013 [0,007; 0,020] |
+| Calibrazione (ECE) | 0,038 | 0,027 | |
+| Vincitori indovinati | 69,8% | 69,4% | |
+| Contro lo spread di chiusura | 583-629 (48,1%) | | |
+| ROI a −110 | −8,2% [−13,5; −3,0] | | |
+
+Per mese, da novembre a marzo il distacco dal mercato va da zero a 0,3 punti; il più grande è ad aprile (11,60 contro 10,96, 96 partite). Fine stagione, riposi e tanking sono difficili da prevedere anche con le variabili della fase 4. I grafici sono nel report HTML (`reports/fase5.html`).
+
+## Ablation: quanto vale ogni pezzo (test 2025-26)
+
+| Modello | Errore medio sullo scarto | vs mercato [IC 95%] |
+|---|---|---|
+| Elo con margine di vittoria | 11,47 | +0,59 [0,36; 0,80] |
+| Rating di squadra (ritmo ed efficienza sui risultati recenti) | 11,42 | +0,53 [0,33; 0,74] |
+| LightGBM su squadra e contesto | 11,38 | +0,49 [0,31; 0,68] |
+| Baseline della pagina (v2), senza assenze | 11,31 | +0,42 [0,22; 0,62] |
+| Baseline ritarato, con injury report | 11,29 | +0,40 [0,23; 0,58] |
+| Giocatori + minuti, senza injury report | 11,26 | +0,37 [0,20; 0,54] |
+| Giocatori + minuti, con injury report | 11,13 | +0,25 [0,10; 0,40] |
+| … + contesto (riposo, fine stagione) | 11,11 | +0,22 [0,07; 0,36] |
+| **Ensemble finale** | **11,06** | **+0,17 [0,05; 0,29]** |
+| Mercato (chiusura) | 10,89 | |
+
+Quanto vale ogni passo, rispetto al precedente:
+- **Rating dei giocatori al posto dei rating di squadra:** −0,16 punti a partita.
+- **Injury report:** −0,12.
+- **Contesto:** −0,02.
+- **Ensemble:** −0,05, significativo sul test (IC [0,006; 0,097]) ma non sullo sviluppo (−0,015, IC [−0,03; +0,003]).
+
+Viaggi, fusi orari, altura, vantaggio campo per squadra e arbitri sono stati misurati in fase 4 sullo sviluppo: effetto nullo, quindi esclusi.
+
+## Ensemble
+
+I pesi si stimano a ogni stagione solo sulle stagioni precedenti, e devono essere positivi o zero. Pesi usati per il 2025-26:
+
+| Componente | Peso |
+|---|---|
+| Giocatori + minuti + contesto | 0,76 |
+| Baseline ritarato con injury report | 0,27 |
+| LightGBM su squadra e contesto | 0,03 |
+| Rating di squadra | 0 |
+| Elo con margine | 0 |
+
+Elo e rating di squadra prendono peso zero: tutto quello che sanno è già contenuto nel modello giocatori e nel baseline. Il baseline invece aggiunge qualcosa, probabilmente perché pesa in modo diverso le assenze e la forma recente.
+
+**Totale:** l'ensemble peggiorava il totale sullo sviluppo (+0,03, IC [0,003; 0,06]). Per il totale resta quindi il modello della fase 4: ritmo di squadra × efficienza dei giocatori disponibili.
+
+## Distribuzione dello scarto e calibrazione
+
+Ho confrontato quattro forme sullo sviluppo:
+
+| Forma | Log loss | ECE | Intervallo all'80% | Intervallo al 95% |
+|---|---|---|---|---|
+| Normale con deviazione standard fissa | 0,6065 | 0,010 | 80,1% | 94,2% |
+| Normale con deviazione standard variabile | 0,6066 | 0,010 | 80,0% | 94,2% |
+| **t di Student con deviazione standard variabile (scelta)** | **0,6063** | **0,008** | **79,1%** | **94,4%** |
+| Residui empirici | 0,6066 | 0,005 | 79,1% | 94,5% |
+
+- **Le quattro forme sono quasi equivalenti.** Ho scelto la t: le code un po' più pesanti (circa 18 gradi di libertà) colgono meglio le partite a senso unico.
+- **L'incertezza dipende dal ritmo, non dalla differenza di forza.** Se il totale atteso cresce del 10%, la deviazione standard dello scarto cresce di circa il 4,5%. Una partita tra squadre molto diverse invece non è più incerta di una equilibrata: l'effetto stimato è zero.
+- **Le probabilità sono già ben calibrate.** Una ricalibrazione in più (Platt) peggiorava la log loss, quindi non la uso. Sul test l'ECE è 0,038 contro 0,027 del mercato.
+- **Sul test il modello è un po' troppo sicuro.** Nel 2025-26 le partite sono state più "larghe" del solito: la deviazione standard prevista era 13,6 contro 14,1 osservata. L'intervallo all'80% ha quindi contenuto il 78,4% delle partite invece dell'80%.
+- **Le probabilità di coprire lo spread di chiusura non servono.** La loro log loss è 0,704, peggio di una moneta (0,693): quando il modello si discosta dalla chiusura, quella differenza non è informazione.
+
+## Il modello e il movimento della linea (modello separato, "consapevole del mercato")
+
+Come richiesto, questo modello è tenuto separato da quello puro. Parte dalla linea d'apertura e stima di quanto si muoverà fino alla chiusura: movimento previsto = β × (pronostico − apertura). Le linee d'apertura esistono solo per 2014-15 → 2016-17 e 2023-24 → 2025-26.
+
+| Campione | Informazione usata | Partite | Direzione del movimento indovinata | CLV medio [IC 95%] | CLV se il disaccordo è ≥ 3 punti |
+|---|---|---|---|---|---|
+| Sviluppo | quella disponibile all'apertura | 3.603 | 68% | +0,48 [0,41; 0,55] | +1,27 (846 partite) |
+| Test | quella disponibile all'apertura | 1.214 | 63% | +0,39 [0,27; 0,51] | +0,77 (310 partite) |
+| Sviluppo | con l'injury report di 45 minuti prima | 1.213 | 83% | +1,30 [1,16; 1,46] | +3,30 (344 partite) |
+| Test | con l'injury report di 45 minuti prima | 1.214 | 76% | +0,84 [0,73; 0,96] | +1,96 (285 partite) |
+
+CLV = di quanti punti la linea si è spostata a favore del lato che il modello avrebbe scelto all'apertura.
+
+- **Il dato onesto è la prima riga di ogni campione.** "Informazione all'apertura" è un'approssimazione: è il modello giocatori senza injury report, con i soli risultati fino al giorno prima. Non so però a che ora ESPN registra la linea d'apertura, quindi il CLV potrebbe essere un po' ottimista.
+- **Sul test la stima di quanto si muoverà la linea è peggiorata** (errore 1,53 contro 1,48 di chi prevede "nessun movimento"). La direzione e il CLV restano invece positivi.
+- **Le righe con l'injury report non sono una strategia praticabile:** all'apertura quell'informazione non c'era. Mostrano quanto del movimento della linea si spiega con le notizie sugli infortuni: molto.
+- **Il CLV con disaccordo ≥ 3 sul test riguarda meno di 500 partite**, quindi per il protocollo è solo indicativo.
+- **Dal 2024-25 ESPN salva un solo bookmaker** (DraftKings). Apertura e chiusura del periodo recente sono quindi quelle di una sola casa.
+
+## Le 50 partite peggiori del test: perché
+
+- **Il tiro da tre:** in 44 delle 50 partite una squadra ha segnato da tre molto sopra o sotto la media della lega (almeno 6 punti di differenza nella direzione dell'errore).
+- **Le partite a senso unico:** 44 su 50 sono finite con 25 punti di scarto o più.
+- **Gli altri motivi sono rari:**
+  - assenze a sorpresa: 5;
+  - giocatori non attesi che hanno giocato molto: 7;
+  - mercato che la vedeva diversamente ed era più vicino: 8.
+- **Il caso peggiore:** Denver, favorita di 1,5 punti, ha vinto a Portland di 54. Rispetto alla media della lega, il tiro da tre ha dato a Denver 24 punti in più che a Portland.
+
+Su tutto il test, togliendo i punti in più o in meno dovuti a tiri da tre e liberi rispetto alla media della lega, l'errore medio scenderebbe da 11,06 a 9,37. Una parte è bravura delle squadre, ma gran parte è la serata al tiro: prima della partita non si può sapere, e infatti la sbaglia anche il mercato. L'elenco completo con i motivi è in `reports/fase5.md` e nel report HTML.
+
+## Inizio stagione
+
+I prior della stagione precedente (BPM e rating) contano soprattutto nelle prime settimane. A ottobre 2025 il modello ha sbagliato meno del mercato (10,74 contro 10,98), ma sono solo 64 partite: troppo poche per concludere. Sullo sviluppo i mesi di ottobre e novembre sono in linea con il resto della stagione.
+
+## Controlli
+
+- **Anti-leakage: 5 test in più** (38 in tutto, tutti verdi):
+  - l'Elo non cambia se si alterano i risultati dal giorno della partita in poi;
+  - LightGBM, i pesi dell'ensemble e la distribuzione di una stagione non cambiano se si alterano i risultati di quella stagione e delle successive;
+  - il movimento previsto della linea non cambia se si alterano le linee di chiusura future.
+- **Numeri principali ricalcolati da zero** a partire dai file, fuori dal codice del report: coincidono. Punti di casa e ospiti sono coerenti con scarto e totale.
+- **Comandi:** `nba report --fase 5 --solo-sviluppo` per i soli numeri di sviluppo; `nba report --fase 5` per tutto, test compreso.
+- **File:**
+  - `reports/fase5.md` e `reports/fase5.html` (grafici: errore per stagione e per mese, calibrazione, importanza delle componenti, pesi);
+  - `reports/fase5_sviluppo.md`, la fotografia dei soli numeri di sviluppo fatta prima del test.
+
+## Prossimo passo: fase 6 (pipeline dal vivo)
+
+1. **Dati della stagione in corso.** Da GitHub Actions cdn.nba.com è bloccato, quindi play-by-play e box score 2026-27 arriveranno da pbpstats o ESPN. Si aggiungono injury report, quote e designazioni arbitrali.
+2. **Pronostici due volte al giorno**, pubblicati in `predictions/latest.json` e `predictions/AAAA-MM-GG.json` nel formato della pagina (`d`, `a`, `h`, `tip`, `ap`, `hp`, `m`, `p`, `sd`, `outA`/`outH`, `why`).
+   - Il campo `why` riporterà i 3 fattori principali.
+   - Le partite in cui il modello si stacca di 3 punti o più dalla linea avranno un codice motivo, come chiesto nelle lezioni del 18/11.
+3. **Confronto affiancato con il modello della pagina** sulle stesse partite. Il giudizio arriverà dopo almeno 500 partite dal vivo.
+
+---
+
 # Fase 4: contesto e totali — completata
 
 *23 novembre 2026, notte. Mi fermo qui e aspetto il tuo via libera per la fase 5.*
