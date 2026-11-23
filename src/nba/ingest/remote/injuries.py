@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import datetime as dt
 import re
+import time
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -42,16 +43,20 @@ def _fmt_time(h24: int, mm: int, new_style: bool) -> str:
     return f"{hh:02d}_{mm:02d}{ap}" if new_style else f"{hh:02d}{ap}"
 
 
-def _slot_candidates(target: pd.Timestamp, hours_back: int = 3) -> list[tuple[str, str]]:
-    """Nomi di file possibili per l'ultimo report <= target, dal più recente: formato a 15' e formato orario."""
-    t = target.floor("15min")
-    out = []
-    for k in range(hours_back * 4 + 1):
-        x = t - pd.Timedelta(minutes=15 * k)
-        d = x.strftime("%Y-%m-%d")
-        if x.minute == 0:
-            out.append((d, _fmt_time(x.hour, 0, False)))
-        out.append((d, _fmt_time(x.hour, x.minute, True)))
+def _slot_candidates(target: pd.Timestamp) -> list[tuple[str, str]]:
+    """Nomi di file possibili per l'ultimo report <= target, in ordine di probabilità.
+
+    Nell'archivio convivono due formati: report orari "05PM" e aggiornamenti a 15 minuti "05_45PM"."""
+    t15 = target.floor("15min")
+    th = target.floor("h")
+    seq = [(t15, True), (th, False), (t15 - pd.Timedelta(minutes=15), True), (t15 - pd.Timedelta(minutes=30), True),
+           (th - pd.Timedelta(hours=1), False), (t15 - pd.Timedelta(minutes=45), True), (th - pd.Timedelta(hours=2), False)]
+    out, seen = [], set()
+    for x, new in seq:
+        k = (x.strftime("%Y-%m-%d"), _fmt_time(x.hour, x.minute, new) if new else _fmt_time(x.hour, 0, False))
+        if k not in seen and (new or x.minute == 0):
+            seen.add(k)
+            out.append(k)
     return out
 
 
@@ -73,14 +78,20 @@ def index(s: int, lead_min: int = 45) -> pd.DataFrame:
         tips = pd.to_datetime(g["tip_utc_espn"], utc=True).dt.tz_convert(ET)
         targets = sorted({(tip - pd.Timedelta(minutes=lead_min)).floor("15min") for tip in tips})
 
-        def probe(target):
+        found = {}
+        canary = None
+        for i, target in enumerate(targets):
+            found[target] = None
             for d, t in _slot_candidates(target):
                 u = PDF.format(d=d, t=t)
                 if _head(u):
-                    return u
-            return None
-
-        found = pmap(probe, targets, workers=4)
+                    found[target] = canary = canary or u
+                    found[target] = u
+                    break
+            # ogni 40 fasce controllo di non essere stato bloccato (un file sicuramente esistente deve rispondere)
+            if canary and i % 40 == 39 and not _head(canary):
+                print(f"  {s}: possibile blocco, attendo 90 s", flush=True)
+                time.sleep(90)
         for target, u in found.items():
             if u:
                 d, t = _parse_name(RX.match(u))
@@ -96,7 +107,7 @@ def index(s: int, lead_min: int = 45) -> pd.DataFrame:
 
 
 def _head(url: str) -> bool:
-    import time
+    time.sleep(0.6)                     # al massimo ~1,5 richieste al secondo: l'archivio blocca chi va più veloce
     for k in range(4):
         try:
             r = _session.head(url, timeout=20, allow_redirects=True)
@@ -122,8 +133,9 @@ def samples(seasons: list[int]) -> list[str]:
         if ix.empty:
             continue
         ix = ix[ix["src"] == "prova"] if (ix["src"] == "prova").any() else ix
-        mid = ix[ix["date"] >= f"{s + 1}-01-10"].head(1)
-        for u in (ix.head(1)["url"].tolist() + mid["url"].tolist()):
+        pick = ix.iloc[[0, len(ix) // 2]] if len(ix) > 1 else ix
+        for u in pick["url"].tolist():
+            time.sleep(1)
             r = get(u, timeout=60)
             if r is not None and r.content[:4] == b"%PDF":
                 name = u.rsplit("/", 1)[1]
