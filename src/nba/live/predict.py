@@ -98,6 +98,7 @@ def run(season: int = 2026, date: str | None = None) -> str:
             info[f"{side}_str_no"] = s_no * k
             info[f"{side}_abs"] = (s_rep - s_no) * k
             outs = []
+            p_no = dict(zip(m_no["player"], m_no["p"])) if len(m_no) else {}
             listed = m_rep[m_rep["listed"].astype(str).str.lower().isin(["out", "doubtful", "questionable"])]
             for p in listed.itertuples():
                 if p.base < 8:
@@ -106,10 +107,11 @@ def run(season: int = 2026, date: str | None = None) -> str:
                 key = mp.key.get(p.player, "")
                 sub = rep_t[rep_t["player_name"].map(name_key) == key]
                 s_i = _strength(mp.project(r.game_id, t, D, sub), net, default_net)
-                outs.append((names.get(p.player, str(p.player)), str(p.listed).lower(), (s_i - s_no) * k, p.base))
+                outs.append((names.get(p.player, str(p.player)), str(p.listed).lower(), (s_i - s_no) * k, p.base,
+                             float(p_no.get(p.player, 0.0))))
             outs.sort(key=lambda o: o[2])
             info[f"{side}_outs"] = outs
-            info[f"{side}_quest"] = any(o[1] in ("questionable", "doubtful") and o[3] >= 20 for o in outs)
+            info[f"{side}_quest"] = any(o[1] in ("questionable", "doubtful") and o[3] >= 20 and o[4] > 0 for o in outs)
             info[f"{side}_gp"] = int(gp.get(t, 0))
             rt = rep_t["report_ts"].iloc[0] if rep_t is not None and len(rep_t) else None
             info["report_ts"] = rt or info.get("report_ts")

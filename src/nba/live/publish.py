@@ -39,10 +39,18 @@ def model_version() -> str:
     return f"{h or 'locale'}-{c}"
 
 
+def _new(outs):
+    """Assenze nuove: giocatori che avevano giocato di recente (le assenze lunghe sono già nei minuti recenti)."""
+    return [o for o in outs if o[4] > 0]
+
+
 def _outs(outs) -> str:
-    parts = []
-    for name, st, eff, base in outs[:4]:
-        parts.append(f"{name} ({LABEL_ST.get(st, st)}) {'-' if eff < 0 else '+'}{_n(eff)}")
+    """Assenze nuove con il loro effetto in punti di scarto per la squadra; poi quelle lunghe, già scontate."""
+    new = sorted(_new(outs), key=lambda o: o[2])
+    old = [o for o in outs if o[4] <= 0]
+    parts = [f"{name} ({LABEL_ST.get(st, st)}) {'-' if eff < 0 else '+'}{_n(eff)}" for name, st, eff, base, _ in new[:4]]
+    if old:
+        parts.append("fuori da tempo, già nei minuti recenti: " + ", ".join(o[0] for o in old[:3]))
     return "; ".join(parts)
 
 
@@ -69,11 +77,14 @@ def _why(r, info) -> tuple[list[str], dict]:
             tags.append(f"{t} senza obiettivi a fine stagione")
         if c.get(f"{side}_late_top"):
             tags.append(f"{t} già sicura del piazzamento")
-    names_h = ", ".join(o[0] for o in info["h_outs"][:3])
-    names_a = ", ".join(o[0] for o in info["a_outs"][:3])
+    names_h = ", ".join(o[0] for o in sorted(_new(info["h_outs"]), key=lambda o: o[2])[:3])
+    names_a = ", ".join(o[0] for o in sorted(_new(info["a_outs"]), key=lambda o: o[2])[:3])
+    # se le assenze favoriscono la squadra stessa, il modello valuta meglio chi entra al loro posto
+    note_h = "; il modello valuta meglio chi li sostituisce" if f["ass_h"] > 0 else ""
+    note_a = "; il modello valuta meglio chi li sostituisce" if f["ass_a"] < 0 else ""
     label = {"campo": "Fattore campo", "roster": "Qualità dei giocatori disponibili",
-             "ass_h": f"Assenze {h}" + (f" ({names_h})" if names_h else ""),
-             "ass_a": f"Assenze {a}" + (f" ({names_a})" if names_a else ""),
+             "ass_h": f"Assenze {h}" + (f" ({names_h}{note_h})" if names_h else ""),
+             "ass_a": f"Assenze {a}" + (f" ({names_a}{note_a})" if names_a else ""),
              "contesto": "Riposo e calendario" + (f" ({'; '.join(tags)})" if tags else ""),
              "altri": "Risultati recenti (altri modelli dell'ensemble)"}
     top = sorted(f.items(), key=lambda kv: -abs(kv[1]))[:3]

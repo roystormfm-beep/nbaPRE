@@ -65,7 +65,7 @@ def run(season: int = 2026, page_file: str | None = None) -> str:
         y = (x["hpts"] - x["apts"]).to_numpy(float)
         out["ricostruiti"] = _metrics(y, x["m_final"].to_numpy(float), x["p_home"].to_numpy(float),
                                       -x["close_spread_home"].to_numpy(float), x["p_home_mkt"].to_numpy(float), rng)
-        out["ricostruiti_baseline"] = _metrics(y, x["m_base"].to_numpy(float), np.full(len(y), 0.5), None, None, rng)
+        out["ricostruiti_baseline"] = {"partite": int(len(y)), "MAE": float(np.abs(y - x["m_base"].to_numpy(float)).mean())}
         lines.append(f"Ricostruiti ({len(x)} partite): errore medio {out['ricostruiti']['MAE']:.2f}, mercato "
                      f"{out['ricostruiti'].get('MAE_mercato') or float('nan'):.2f}; baseline ritarato {out['ricostruiti_baseline']['MAE']:.2f}")
     rf = OUT / f"registro_{season}.csv"
