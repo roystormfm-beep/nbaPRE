@@ -20,8 +20,10 @@ import scipy.sparse as sp
 
 from nba.config import path
 
-DEFAULTS = dict(lam=3000.0, half_life=180.0, window_days=800, luck=True, lam_team=6000.0, team_effect=True,
-                rookie_o=-1.5, rookie_d=-0.5, prior_shrink_min=500.0, prior_scale=0.6, lam_h=1e4)
+# Valori scelti sulle stagioni di sviluppo 2017-18, 2019-20, 2021-22, 2023-24 (vedi REPORT, fase 3).
+# luck=False: la correzione per la fortuna al tiro in questa forma peggiorava i pronostici.
+DEFAULTS = dict(lam=3000.0, half_life=180.0, window_days=800, luck=False, lam_team=6000.0, team_effect=True,
+                rookie_o=-1.5, rookie_d=-0.5, prior_shrink_min=500.0, prior_scale=0.6, lam_h=1e4, box_w=1000.0)
 
 
 def load_stints(seasons: list[int]) -> pd.DataFrame:
@@ -49,6 +51,8 @@ def prev_box_prior(season: int) -> pd.DataFrame:
     if not p.exists():
         return pd.DataFrame(columns=["name_key", "obpm", "dbpm", "mp"])
     b = pd.read_parquet(p)
+    from nba.config import fix_text
+    b["Player"] = b["Player"].map(fix_text)
     multi = b["Team"].astype(str).str.contains("TM") | (b["Team"].astype(str) == "TOT")
     traded = set(b.loc[multi, "Player"])
     b = b[multi | ~b["Player"].isin(traded)].copy()

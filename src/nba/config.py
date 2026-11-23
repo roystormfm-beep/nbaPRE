@@ -41,3 +41,13 @@ TEAM_ALIAS = {"BRK": "BKN", "CHO": "CHA", "PHO": "PHX", "NO": "NOP", "NOH": "NOP
 def team(code: str) -> str:
     c = str(code or "").strip().upper()
     return TEAM_ALIAS.get(c, c)
+
+
+def fix_text(x):
+    """Ripara i nomi letti con la codifica sbagliata (UTF-8 interpretato come Latin-1: 'JokiÄ\x87' -> 'Jokić')."""
+    if not isinstance(x, str):
+        return x
+    try:
+        return x.encode("latin-1").decode("utf-8")
+    except (UnicodeEncodeError, UnicodeDecodeError):
+        return x

@@ -46,6 +46,8 @@ class SeasonInputs:
         if not p.exists():
             return ["Player,Team,G,MP,BPM"]
         b = pd.read_parquet(p)
+        from nba.config import fix_text
+        b["Player"] = b["Player"].map(fix_text)
         b = b[b["Player"].notna() & (b["Player"] != "League Average")]
         multi = b["Team"].astype(str).str.contains("TM") | (b["Team"].astype(str) == "TOT")
         traded = set(b.loc[multi, "Player"])

@@ -21,7 +21,7 @@ def season_table(s: int, kind: str = "advanced") -> pd.DataFrame | None:
     r = get(URL.format(y=s + 1, kind=kind), pause=4.0, timeout=60)
     if r is None:
         return None
-    html = r.text.replace("<!--", "").replace("-->", "")   # alcune tabelle sono dentro commenti HTML
+    html = r.content.decode("utf-8", errors="replace").replace("<!--", "").replace("-->", "")   # alcune tabelle sono dentro commenti HTML
     tables = pd.read_html(io.StringIO(html))
     t = max(tables, key=len)
     t = t[t["Player"] != "Player"].copy()                    # righe di intestazione ripetute
