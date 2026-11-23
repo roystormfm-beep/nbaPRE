@@ -42,26 +42,53 @@ def _fmt_time(h24: int, mm: int, new_style: bool) -> str:
     return f"{hh:02d}_{mm:02d}{ap}" if new_style else f"{hh:02d}{ap}"
 
 
-def index(s: int) -> pd.DataFrame:
+def _slot_candidates(target: pd.Timestamp, hours_back: int = 3) -> list[tuple[str, str]]:
+    """Nomi di file possibili per l'ultimo report <= target, dal più recente: formato a 15' e formato orario."""
+    t = target.floor("15min")
+    out = []
+    for k in range(hours_back * 4 + 1):
+        x = t - pd.Timedelta(minutes=15 * k)
+        d = x.strftime("%Y-%m-%d")
+        if x.minute == 0:
+            out.append((d, _fmt_time(x.hour, 0, False)))
+        out.append((d, _fmt_time(x.hour, x.minute, True)))
+    return out
+
+
+def index(s: int, lead_min: int = 45) -> pd.DataFrame:
+    """Per ogni fascia d'orario di inizio: l'ultimo report pubblicato almeno lead_min minuti prima.
+
+    Le pagine di official.nba.com mostrano solo i report più recenti, quindi per il passato provo direttamente
+    i nomi dei file (orario a 15 minuti o orario pieno), dal più recente all'indietro, fino a 3 ore prima."""
     lab = season_label(s)
-    r = get(PAGE.format(lab=lab), timeout=60)
     rows = []
+    r = get(PAGE.format(lab=lab), timeout=60)
     if r is not None:
         for m in RX.finditer(r.text):
             d, t = _parse_name(m)
             rows.append({"url": m.group(0), "date": d, "time_et": t, "src": "pagina"})
-    df = pd.DataFrame(rows).drop_duplicates("url") if rows else pd.DataFrame(columns=["url", "date", "time_et", "src"])
-    # giorni di partita senza alcun link nella pagina: provo gli orari tipici (vecchio formato orario e nuovo a 15')
     gp = path("processed") / f"games_{s}.parquet"
     if gp.exists():
-        days = sorted(pd.read_parquet(gp, columns=["date"])["date"].dropna().unique())
-        missing = [d for d in days if d not in set(df["date"])]
-        cand = [(d, _fmt_time(h, m, new)) for d in missing for h in range(11, 22) for (m, new) in ((0, False), (0, True), (30, True))]
-        found = pmap(lambda dt_: _head(PDF.format(d=dt_[0], t=dt_[1])), cand, workers=8)
-        extra = [{"url": PDF.format(d=d, t=t), "date": d, "time_et": _parse_name(RX.match(PDF.format(d=d, t=t)))[1], "src": "prova"}
-                 for (d, t), ok in found.items() if ok]
-        if extra:
-            df = pd.concat([df, pd.DataFrame(extra)], ignore_index=True).drop_duplicates("url")
+        g = pd.read_parquet(gp, columns=["date", "tip_utc_espn"]).dropna()
+        tips = pd.to_datetime(g["tip_utc_espn"], utc=True).dt.tz_convert(ET)
+        targets = sorted({(tip - pd.Timedelta(minutes=lead_min)).floor("15min") for tip in tips})
+
+        def probe(target):
+            for d, t in _slot_candidates(target):
+                u = PDF.format(d=d, t=t)
+                if _head(u):
+                    return u
+            return None
+
+        found = pmap(probe, targets, workers=4)
+        for target, u in found.items():
+            if u:
+                d, t = _parse_name(RX.match(u))
+                rows.append({"url": u, "date": d, "time_et": t, "src": "prova", "slot": target.isoformat()})
+    df = pd.DataFrame(rows)
+    if df.empty:
+        df = pd.DataFrame(columns=["url", "date", "time_et", "src"])
+    df = df.drop_duplicates("url")
     df["season"] = s
     df = df.sort_values(["date", "time_et"]).reset_index(drop=True)
     df.to_csv(_out_dir() / f"index_{s}.csv", index=False)
@@ -69,10 +96,18 @@ def index(s: int) -> pd.DataFrame:
 
 
 def _head(url: str) -> bool:
-    try:
-        return _session.head(url, timeout=20, allow_redirects=True).status_code == 200
-    except Exception:  # noqa: BLE001
-        return False
+    import time
+    for k in range(4):
+        try:
+            r = _session.head(url, timeout=20, allow_redirects=True)
+            if r.status_code == 200:
+                return True
+            if r.status_code in (403, 404):
+                return False
+        except Exception:  # noqa: BLE001
+            pass
+        time.sleep(1.5 * (k + 1))
+    return False
 
 
 def samples(seasons: list[int]) -> list[str]:
@@ -86,8 +121,9 @@ def samples(seasons: list[int]) -> list[str]:
         ix = pd.read_csv(f)
         if ix.empty:
             continue
+        ix = ix[ix["src"] == "prova"] if (ix["src"] == "prova").any() else ix
         mid = ix[ix["date"] >= f"{s + 1}-01-10"].head(1)
-        for u in (ix.head(1)["url"].tolist() + mid["url"].tolist() + ix.tail(1)["url"].tolist()):
+        for u in (ix.head(1)["url"].tolist() + mid["url"].tolist()):
             r = get(u, timeout=60)
             if r is not None and r.content[:4] == b"%PDF":
                 name = u.rsplit("/", 1)[1]
