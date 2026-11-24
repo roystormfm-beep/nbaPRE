@@ -1,7 +1,7 @@
 {
  "meta": {
-  "aggiornato": "2026-11-24T06:06:54Z",
-  "modello": "b009c18-b424f5",
+  "aggiornato": "2026-11-24T23:39:52Z",
+  "modello": "f22a961-b424f5",
   "data": "2026-11-24",
   "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
  },
@@ -11,9 +11,9 @@
    "a": "DET",
    "h": "ORL",
    "tip": "2026-11-25T00:00Z",
-   "t": "2026-11-24T06:06:54Z",
+   "t": "2026-11-24T23:39:52Z",
    "src": "dal vivo",
-   "mv": "b009c18-b424f5",
+   "mv": "f22a961-b424f5",
    "ap": 110.6,
    "hp": 107.0,
    "m": -3.6,
@@ -28,15 +28,15 @@
     "Risultati recenti (altri modelli dell'ensemble): +0,4 per DET"
    ],
    "mk": {
-    "sp": 1.5,
-    "tot": 213.5,
-    "ph": 0.457,
+    "sp": -2.5,
+    "tot": 210.5,
+    "ph": 0.562,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-24T06:06:54Z"
+    "at": "2026-11-24T23:39:52Z"
    },
-   "dmk": -2.1,
-   "motivo": null,
-   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "dmk": -6.1,
+   "motivo": "Modello -6,1 rispetto alla linea. SCONOSCIUTO: probabilmente al modello manca un'informazione (notizie, riposi non annunciati)",
+   "injAsOf": "2026-11-24T18:15:00-05:00",
    "fattori": {
     "campo": 1.82,
     "roster": -5.12,
@@ -51,13 +51,13 @@
    "a": "BOS",
    "h": "WAS",
    "tip": "2026-11-25T01:00Z",
-   "t": "2026-11-24T06:06:54Z",
+   "t": "2026-11-24T23:39:52Z",
    "src": "dal vivo",
-   "mv": "b009c18-b424f5",
+   "mv": "f22a961-b424f5",
    "ap": 114.3,
    "hp": 103.2,
-   "m": -11.1,
-   "p": 0.19,
+   "m": -11.0,
+   "p": 0.191,
    "sd": 13.0,
    "tot": 217.5,
    "outA": "Mitchell Robinson (out) +0,4",
@@ -69,18 +69,18 @@
    ],
    "mk": {
     "sp": 10.5,
-    "tot": 217.5,
+    "tot": 218.5,
     "ph": 0.213,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-24T06:06:54Z"
+    "at": "2026-11-24T23:39:52Z"
    },
-   "dmk": -0.6,
+   "dmk": -0.5,
    "motivo": null,
-   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "injAsOf": "2026-11-24T18:30:00-05:00",
    "fattori": {
     "campo": 1.82,
     "roster": -12.91,
-    "ass_h": -0.01,
+    "ass_h": 0.01,
     "ass_a": -0.37,
     "contesto": 0.25,
     "altri": 0.17
@@ -91,9 +91,9 @@
    "a": "DAL",
    "h": "DEN",
    "tip": "2026-11-25T03:00Z",
-   "t": "2026-11-24T06:06:54Z",
+   "t": "2026-11-24T23:39:52Z",
    "src": "dal vivo",
-   "mv": "b009c18-b424f5",
+   "mv": "f22a961-b424f5",
    "ap": 111.3,
    "hp": 121.5,
    "m": 10.3,
@@ -109,14 +109,14 @@
    ],
    "mk": {
     "sp": -8.5,
-    "tot": 232.5,
-    "ph": 0.733,
+    "tot": 234.5,
+    "ph": 0.726,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-24T06:06:54Z"
+    "at": "2026-11-24T23:39:52Z"
    },
    "dmk": 1.8,
    "motivo": null,
-   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "injAsOf": "2026-11-24T18:30:00-05:00",
    "fattori": {
     "campo": 1.82,
     "roster": 8.65,
