@@ -10,9 +10,10 @@ Diario delle fasi, la più recente in cima.
 
 ## In sintesi
 
-- **Il modello ora gira da solo, due volte al giorno, su GitHub Actions:**
-  - alle 14:30 UTC (15:30 in Italia, mattina negli Stati Uniti);
-  - alle 22:20 UTC (23:20 in Italia, circa un'ora e mezza prima delle prime partite serali).
+- **Il modello ora gira da solo, tre volte al giorno, su GitHub Actions** (orari italiani d'inverno):
+  - alle 15:30, mattina negli Stati Uniti;
+  - alle 23:20, circa un'ora e mezza prima delle prime partite serali, con un giro di riserva alle 23:50;
+  - alle 2:30, prima delle partite della costa ovest. Questo terzo giro è stato aggiunto il 24/11.
 - **A ogni giro il modello:**
   - aggiorna calendario, partite giocate, quote e l'ultimo injury report;
   - ricalcola tutto con lo stesso modello valutato nella fase 5;
@@ -84,7 +85,12 @@ Una partita già iniziata non viene più riscritta: nel file del giorno resta il
 
 ## Approssimazioni da tenere presenti
 
-- **L'injury report usato è l'ultimo disponibile al momento del giro**, non quello di 45 minuti prima di ogni partita: per le gare delle 19:00 di New York è quello delle 16:45-17:15. Le notizie dell'ultima ora (riposi decisi tardi, soprattutto per le partite della costa ovest) possono mancare. Un terzo giro serale ridurrebbe il problema.
+- **L'injury report usato è l'ultimo disponibile al momento del giro**, non quello di 45 minuti prima di ogni partita:
+  - per le gare delle 19:00 di New York è quello delle 16:45-17:15;
+  - per le gare della costa ovest, grazie al giro delle 2:30 italiane, è quello delle 20:30 circa.
+
+  Le notizie dell'ultima ora possono comunque mancare.
+- **GitHub può ritardare gli orari automatici.** Il primo giro delle 22:20 UTC del 23/11 è partito alle 06:04 UTC, quasi 8 ore dopo: quella sera sono rimasti i pronostici delle 22:00 UTC, lanciati a mano. Per questo il giro serale ha una riserva 30 minuti dopo. Un giro in ritardo non fa danni: le partite già iniziate restano congelate.
 - **Le partite extra di dicembre** (finestra 4-11 dicembre dopo la fase a gironi della Coppa) entrano da sole appena ESPN le pubblica: il calendario si riscarica a ogni giro.
 - **Le prime partite della stagione non hanno pronostico ricostruito**: il modello giocatori parte dopo la prima settimana. Per questo le partite ricostruite sono 232 su 248.
 - **I pronostici ricostruiti** usano l'injury report di 45 minuti prima della partita, quindi sono un po' più informati di quelli congelati dalla pagina: il confronto sulle 26 partite è solo indicativo.
@@ -93,7 +99,7 @@ Una partita già iniziata non viene più riscritta: nel file del giorno resta il
 
 1. **Mostrare il nuovo modello nella pagina.** La pagina non può leggere da sola i file su GitHub, perché le pagine artifact bloccano le richieste verso altri siti. La via più semplice è far leggere `predictions/latest.json` all'attività pianificata che già congela i pronostici ("Salvataggio pronostici NBA"), salvarlo in un documento separato del database e mostrarlo nella pagina accanto al modello attuale. Non l'ho fatto: significa modificare la tua pagina e la tua attività pianificata.
 2. **Repository pubblico o privato.** Ti avevo consigliato di renderlo privato, ma la lettura da parte dell'attività pianificata è semplice solo se resta pubblico. Con un repository privato servirebbe un token.
-3. **Un terzo giro serale.** Ad esempio alle 01:30 UTC, per le partite della costa ovest con l'injury report più recente.
+3. ~~Un terzo giro serale~~: fatto il 24/11 (01:30 UTC).
 
 ## Prossimo passo
 

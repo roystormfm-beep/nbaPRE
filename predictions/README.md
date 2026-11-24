@@ -1,6 +1,11 @@
 # Pronostici dal vivo (stagione 2026-27)
 
-Questi file sono scritti da GitHub Actions (workflow `live`) due volte al giorno: alle 14:30 e alle 22:20 UTC, cioè la mattina negli Stati Uniti e circa un'ora prima delle prime partite serali. Si possono anche rifare a mano con `nba live update` e poi `nba predict --date AAAA-MM-GG`.
+Questi file sono scritti da GitHub Actions (workflow `live`) tre volte al giorno (UTC):
+- **14:30:** la mattina negli Stati Uniti;
+- **22:20:** circa un'ora e mezza prima delle prime partite serali, con un giro di riserva alle 22:50;
+- **01:30:** prima delle partite della costa ovest.
+
+GitHub può ritardare gli orari automatici: il 23/11 il giro delle 22:20 è partito quasi 8 ore dopo. Per questo c'è il giro di riserva. Si possono anche rifare a mano con `nba live update` e poi `nba predict --date AAAA-MM-GG`.
 
 Sono pronostici a scopo informativo, non consigli di scommessa.
 
