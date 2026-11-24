@@ -1,0 +1,130 @@
+{
+ "meta": {
+  "aggiornato": "2026-11-24T06:06:54Z",
+  "modello": "b009c18-b424f5",
+  "data": "2026-11-24",
+  "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
+ },
+ "g": {
+  "2026-11-24_DET_ORL": {
+   "d": "2026-11-24",
+   "a": "DET",
+   "h": "ORL",
+   "tip": "2026-11-25T00:00Z",
+   "t": "2026-11-24T06:06:54Z",
+   "src": "dal vivo",
+   "mv": "b009c18-b424f5",
+   "ap": 110.6,
+   "hp": 107.0,
+   "m": -3.6,
+   "p": 0.392,
+   "sd": 13.6,
+   "tot": 217.6,
+   "outA": "Duncan Robinson (out) -0,2; fuori da tempo, già nei minuti recenti: Jalen Duren",
+   "outH": "fuori da tempo, già nei minuti recenti: Paolo Banchero",
+   "why": [
+    "Qualità dei giocatori disponibili: +5,1 per DET",
+    "Fattore campo: +1,8 per ORL",
+    "Risultati recenti (altri modelli dell'ensemble): +0,4 per DET"
+   ],
+   "mk": {
+    "sp": 1.5,
+    "tot": 213.5,
+    "ph": 0.457,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-24T06:06:54Z"
+   },
+   "dmk": -2.1,
+   "motivo": null,
+   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "fattori": {
+    "campo": 1.82,
+    "roster": -5.12,
+    "ass_h": 0.0,
+    "ass_a": -0.04,
+    "contesto": 0.18,
+    "altri": -0.4
+   }
+  },
+  "2026-11-24_BOS_WAS": {
+   "d": "2026-11-24",
+   "a": "BOS",
+   "h": "WAS",
+   "tip": "2026-11-25T01:00Z",
+   "t": "2026-11-24T06:06:54Z",
+   "src": "dal vivo",
+   "mv": "b009c18-b424f5",
+   "ap": 114.3,
+   "hp": 103.2,
+   "m": -11.1,
+   "p": 0.19,
+   "sd": 13.0,
+   "tot": 217.5,
+   "outA": "Mitchell Robinson (out) +0,4",
+   "outH": "fuori da tempo, già nei minuti recenti: Justin Champagnie",
+   "why": [
+    "Qualità dei giocatori disponibili: +12,9 per BOS",
+    "Fattore campo: +1,8 per WAS",
+    "Assenze BOS (Mitchell Robinson; il modello valuta meglio chi li sostituisce): +0,4 per BOS"
+   ],
+   "mk": {
+    "sp": 10.5,
+    "tot": 217.5,
+    "ph": 0.213,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-24T06:06:54Z"
+   },
+   "dmk": -0.6,
+   "motivo": null,
+   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "fattori": {
+    "campo": 1.82,
+    "roster": -12.91,
+    "ass_h": -0.01,
+    "ass_a": -0.37,
+    "contesto": 0.25,
+    "altri": 0.17
+   }
+  },
+  "2026-11-24_DAL_DEN": {
+   "d": "2026-11-24",
+   "a": "DAL",
+   "h": "DEN",
+   "tip": "2026-11-25T03:00Z",
+   "t": "2026-11-24T06:06:54Z",
+   "src": "dal vivo",
+   "mv": "b009c18-b424f5",
+   "ap": 111.3,
+   "hp": 121.5,
+   "m": 10.3,
+   "p": 0.785,
+   "sd": 13.5,
+   "tot": 232.8,
+   "outA": "P.J. Washington (in dubbio) +0,1; fuori da tempo, già nei minuti recenti: Sergio de Larrea",
+   "outH": "",
+   "why": [
+    "Qualità dei giocatori disponibili: +8,6 per DEN",
+    "Fattore campo: +1,8 per DEN",
+    "Risultati recenti (altri modelli dell'ensemble): +0,4 per DAL"
+   ],
+   "mk": {
+    "sp": -8.5,
+    "tot": 232.5,
+    "ph": 0.733,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-24T06:06:54Z"
+   },
+   "dmk": 1.8,
+   "motivo": null,
+   "injAsOf": "2026-11-24T01:00:00-05:00",
+   "fattori": {
+    "campo": 1.82,
+    "roster": 8.65,
+    "ass_h": 0.0,
+    "ass_a": -0.07,
+    "contesto": 0.25,
+    "altri": -0.39
+   }
+  }
+ }
+}
