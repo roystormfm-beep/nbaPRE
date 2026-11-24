@@ -18,6 +18,7 @@ Sono pronostici a scopo informativo, non consigli di scommessa.
 | `registro_2026.csv` | Ogni pronostico pubblicato, una riga per partita e per esecuzione: serve a misurare il modello dal vivo |
 | `ricostruiti_2026.csv` | Tutte le partite già giocate, pronosticate a posteriori con le sole informazioni precedenti a ciascuna |
 | `confronto_2026.json` | Confronto con il mercato e con la pagina (`nba live compare`) |
+| `pagina_sync.json` | Le partite di oggi e di ieri nel formato dei documenti `nba/newlog-AAAA-MM` del database della pagina. Un'attività pianificata le copia nella pagina alle 3:13, 16:13 e 00:13 (ora italiana) |
 
 **Una partita già iniziata non viene più riscritta.** Nel file del giorno resta il pronostico congelato prima della palla a due.
 

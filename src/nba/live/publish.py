@@ -114,6 +114,32 @@ def _motivo(r, f, info, mk) -> str | None:
     return f"Modello {'+' if diff > 0 else '-'}{_n(diff)} rispetto alla linea. " + " | ".join(codes)
 
 
+SLIM = ("d", "a", "h", "tip", "t", "src", "mv", "ap", "hp", "m", "p", "sd", "tot", "outA", "outH", "why", "dmk", "motivo",
+        "injAsOf")
+
+
+def slim(r: dict) -> dict:
+    """Riga ridotta per il database della pagina (senza la scomposizione completa dei fattori)."""
+    out = {k: r[k] for k in SLIM if k in r and r[k] is not None}
+    if r.get("mk"):
+        out["mk"] = {k: r["mk"][k] for k in ("sp", "tot", "ph", "src") if r["mk"].get(k) is not None}
+    return out
+
+
+def sync_page(D: str) -> None:
+    """predictions/pagina_sync.json: le partite del giorno D e del giorno prima, già nel formato dei documenti
+    nba/newlog-AAAA-MM del database della pagina (l'attività pianificata le copia con un merge)."""
+    docs = {}
+    for day in (str((pd.Timestamp(D) - pd.Timedelta(days=1)).date()), D):
+        f = OUT / f"{day}.json"
+        if not f.exists():
+            continue
+        for k, r in json.loads(f.read_text()).get("g", {}).items():
+            docs.setdefault(f"nba/newlog-{day[:7]}", {"g": {}})["g"][k] = slim(r)
+    (OUT / "pagina_sync.json").write_text(json.dumps({"generato": pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                                       "giorni": D, "docs": docs}, ensure_ascii=False, separators=(",", ":")))
+
+
 def write(season: int, D: str, x: pd.DataFrame, detail: dict) -> str:
     OUT.mkdir(exist_ok=True)
     now = pd.Timestamp.now(tz="UTC")
@@ -163,6 +189,7 @@ def write(season: int, D: str, x: pd.DataFrame, detail: dict) -> str:
     txt = json.dumps(doc, ensure_ascii=False, indent=1)
     f_day.write_text(txt)
     (OUT / "latest.json").write_text(txt)
+    sync_page(D)
     if reg:
         rf = OUT / f"registro_{season}.csv"
         old = pd.read_csv(rf) if rf.exists() else pd.DataFrame()
