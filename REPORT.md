@@ -97,7 +97,7 @@ Una partita già iniziata non viene più riscritta: nel file del giorno resta il
 
 ## Decisioni che spettano a te
 
-1. **Mostrare il nuovo modello nella pagina.** La pagina non può leggere da sola i file su GitHub, perché le pagine artifact bloccano le richieste verso altri siti. La via più semplice è far leggere `predictions/latest.json` all'attività pianificata che già congela i pronostici ("Salvataggio pronostici NBA"), salvarlo in un documento separato del database e mostrarlo nella pagina accanto al modello attuale. Non l'ho fatto: significa modificare la tua pagina e la tua attività pianificata.
+1. ~~Mostrare il nuovo modello nella pagina~~: fatto il 24/11. Ogni giro scrive anche `predictions/pagina_sync.json` (ieri e oggi, formato della pagina). Una nuova attività pianificata, "Sincronizzazione nuovo modello NBA" (03:13, 16:13 e 00:13 ora italiana, cioè circa 40 minuti dopo ogni giro su GitHub), lo copia nel database della pagina nei documenti `nba/newlog-AAAA-MM`, senza toccare quelli del modello della pagina. La pagina mostra in ogni partita un riquadro "Nuovo modello" (pronostico, punteggio, totale, motivi, assenze considerate) e nella sezione di verifica "Nuovo modello a confronto" (errore e vincitori contro pagina e bookmaker sulle stesse partite). Il registro parte con 51 partite: 38 ricostruite (18-22/11) e 13 dal vivo (23-24/11).
 2. **Repository pubblico o privato.** Ti avevo consigliato di renderlo privato, ma la lettura da parte dell'attività pianificata è semplice solo se resta pubblico. Con un repository privato servirebbe un token.
 3. ~~Un terzo giro serale~~: fatto il 24/11 (01:30 UTC).
 
