@@ -1,7 +1,7 @@
 {
  "meta": {
-  "aggiornato": "2026-11-25T05:05:35Z",
-  "modello": "3d55dfc-b424f5",
+  "aggiornato": "2026-11-25T07:33:39Z",
+  "modello": "cd76ef3-b424f5",
   "data": "2026-11-25",
   "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
  },
@@ -11,13 +11,13 @@
    "a": "MIA",
    "h": "PHI",
    "tip": "2026-11-25T22:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 120.2,
    "hp": 121.0,
-   "m": 0.9,
-   "p": 0.525,
+   "m": 0.8,
+   "p": 0.524,
    "sd": 14.4,
    "tot": 241.2,
    "outA": "Giannis Antetokounmpo (in dubbio) -0,9",
@@ -31,19 +31,19 @@
     "sp": -1.5,
     "tot": 237.5,
     "ph": 0.515,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": -0.6,
+   "dmk": -0.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": -1.68,
-    "ass_h": -0.89,
-    "ass_a": 0.8,
+    "campo": 1.77,
+    "roster": -1.67,
+    "ass_h": -0.88,
+    "ass_a": 0.81,
     "contesto": -0.29,
-    "altri": 1.12
+    "altri": 1.09
    }
   },
   "2026-11-25_CHI_CHA": {
@@ -51,15 +51,15 @@
    "a": "CHI",
    "h": "CHA",
    "tip": "2026-11-26T00:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
-   "ap": 111.5,
+   "mv": "cd76ef3-b424f5",
+   "ap": 111.4,
    "hp": 113.8,
    "m": 2.3,
    "p": 0.57,
    "sd": 13.8,
-   "tot": 225.3,
+   "tot": 225.2,
    "outA": "Norman Powell (out) -0,6; Jalen Smith (in dubbio) -0,3; Jaylin Sellers (out) +0,0; fuori da tempo, già nei minuti recenti: Caleb Wilson, Tobe Awaka",
    "outH": "Ryan Kalkbrenner (molto in dubbio) -0,4; Grayson Allen (in dubbio) +0,0; fuori da tempo, già nei minuti recenti: Dennis Schroder",
    "why": [
@@ -69,17 +69,17 @@
    ],
    "mk": {
     "sp": -3.5,
-    "tot": 221.5,
+    "tot": 222.5,
     "ph": 0.583,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
    "dmk": -1.2,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": -0.71,
+    "campo": 1.77,
+    "roster": -0.68,
     "ass_h": -0.3,
     "ass_a": 1.02,
     "contesto": 0.94,
@@ -91,39 +91,39 @@
    "a": "CLE",
    "h": "NYK",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 110.8,
-   "hp": 114.7,
-   "m": 3.9,
-   "p": 0.617,
+   "hp": 114.6,
+   "m": 3.8,
+   "p": 0.614,
    "sd": 13.7,
    "tot": 225.5,
    "outA": "fuori da tempo, già nei minuti recenti: Evan Mobley",
    "outH": "Karl-Anthony Towns (in dubbio) -0,6; OG Anunoby (out) -0,3; Miles McBride (in dubbio) -0,0; Jordan Clarkson (out) +0,1",
    "why": [
-    "Qualità dei giocatori disponibili: +3,7 per NYK",
+    "Qualità dei giocatori disponibili: +3,6 per NYK",
     "Fattore campo: +1,8 per NYK",
     "Assenze NYK (Karl-Anthony Towns, OG Anunoby, Miles McBride): +0,7 per CLE"
    ],
    "mk": {
     "sp": -3.5,
     "tot": 219.5,
-    "ph": 0.595,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "ph": 0.583,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": 0.4,
+   "dmk": 0.3,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": 3.66,
+    "campo": 1.77,
+    "roster": 3.6,
     "ass_h": -0.68,
     "ass_a": -0.0,
     "contesto": -0.37,
-    "altri": -0.5
+    "altri": -0.51
    }
   },
   "2026-11-25_MIN_OKC": {
@@ -131,13 +131,13 @@
    "a": "MIN",
    "h": "OKC",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 113.3,
    "hp": 111.5,
    "m": -1.8,
-   "p": 0.447,
+   "p": 0.445,
    "sd": 13.9,
    "tot": 224.8,
    "outA": "fuori da tempo, già nei minuti recenti: Jaylen Clark, Anthony Edwards",
@@ -151,19 +151,19 @@
     "sp": -1.5,
     "tot": 223.5,
     "ph": 0.522,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
    "dmk": -3.3,
    "motivo": "Modello -3,3 rispetto alla linea. SCONOSCIUTO: probabilmente al modello manca un'informazione (notizie, riposi non annunciati)",
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": -3.38,
+    "campo": 1.77,
+    "roster": -3.41,
     "ass_h": 1.09,
     "ass_a": -0.0,
     "contesto": -0.91,
-    "altri": -0.37
+    "altri": -0.38
    }
   },
   "2026-11-25_LAC_MEM": {
@@ -171,13 +171,13 @@
    "a": "LAC",
    "h": "MEM",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 112.2,
-   "hp": 120.3,
-   "m": 8.1,
-   "p": 0.731,
+   "hp": 120.2,
+   "m": 8.0,
+   "p": 0.729,
    "sd": 13.6,
    "tot": 232.5,
    "outA": "",
@@ -190,20 +190,20 @@
    "mk": {
     "sp": -6.5,
     "tot": 229.5,
-    "ph": 0.697,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "ph": 0.685,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": 1.6,
+   "dmk": 1.5,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": 5.49,
-    "ass_h": 0.58,
+    "campo": 1.77,
+    "roster": 5.46,
+    "ass_h": 0.59,
     "ass_a": -0.01,
     "contesto": -0.5,
-    "altri": 0.73
+    "altri": 0.69
    }
   },
   "2026-11-25_BKN_MIL": {
@@ -211,15 +211,15 @@
    "a": "BKN",
    "h": "MIL",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 117.3,
-   "hp": 117.1,
+   "hp": 117.0,
    "m": -0.2,
-   "p": 0.495,
+   "p": 0.493,
    "sd": 14.2,
-   "tot": 234.4,
+   "tot": 234.3,
    "outA": "Chaney Johnson (out) +0,1; Nolan Traore (out) +1,0",
    "outH": "",
    "why": [
@@ -229,21 +229,21 @@
    ],
    "mk": {
     "sp": -1.5,
-    "tot": 231.5,
+    "tot": 232.5,
     "ph": 0.506,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
    "dmk": -1.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": -0.59,
+    "campo": 1.77,
+    "roster": -0.62,
     "ass_h": 0.0,
     "ass_a": -1.26,
     "contesto": -0.5,
-    "altri": 0.4
+    "altri": 0.39
    }
   },
   "2026-11-25_PHX_HOU": {
@@ -251,9 +251,9 @@
    "a": "PHX",
    "h": "HOU",
    "tip": "2026-11-26T01:30Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 110.9,
    "hp": 117.6,
    "m": 6.7,
@@ -268,22 +268,22 @@
     "Risultati recenti (altri modelli dell'ensemble): +0,4 per HOU"
    ],
    "mk": {
-    "sp": -9.5,
-    "tot": 224.5,
+    "sp": -8.5,
+    "tot": 223.5,
     "ph": 0.771,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": -2.8,
+   "dmk": -1.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": 4.67,
+    "campo": 1.77,
+    "roster": 4.7,
     "ass_h": 0.0,
     "ass_a": -0.0,
     "contesto": -0.16,
-    "altri": 0.42
+    "altri": 0.43
    }
   },
   "2026-11-25_SAC_GSW": {
@@ -291,13 +291,13 @@
    "a": "SAC",
    "h": "GSW",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 106.9,
    "hp": 113.3,
-   "m": 6.4,
-   "p": 0.689,
+   "m": 6.3,
+   "p": 0.688,
    "sd": 13.4,
    "tot": 220.2,
    "outA": "fuori da tempo, già nei minuti recenti: Jonathan Mogbo",
@@ -311,19 +311,19 @@
     "sp": -5.5,
     "tot": 218.5,
     "ph": 0.679,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": 0.9,
+   "dmk": 0.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": 3.47,
-    "ass_h": 0.9,
+    "campo": 1.77,
+    "roster": 3.48,
+    "ass_h": 0.88,
     "ass_a": 0.0,
     "contesto": -0.02,
-    "altri": 0.23
+    "altri": 0.21
    }
   },
   "2026-11-25_SAS_POR": {
@@ -331,39 +331,39 @@
    "a": "SAS",
    "h": "POR",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T05:05:35Z",
+   "t": "2026-11-25T07:33:39Z",
    "src": "dal vivo",
-   "mv": "3d55dfc-b424f5",
+   "mv": "cd76ef3-b424f5",
    "ap": 111.9,
-   "hp": 113.1,
-   "m": 1.2,
-   "p": 0.536,
+   "hp": 113.0,
+   "m": 1.1,
+   "p": 0.533,
    "sd": 13.9,
    "tot": 225.0,
    "outA": "Victor Wembanyama (in dubbio) -1,7; Dylan Harper (out) -0,5; De'Aaron Fox (in dubbio) -0,1",
    "outH": "fuori da tempo, già nei minuti recenti: Chris Youngblood, Vit Krejci, Ja Morant",
    "why": [
-    "Qualità dei giocatori disponibili: +4,0 per SAS",
+    "Qualità dei giocatori disponibili: +4,1 per SAS",
     "Assenze SAS (Victor Wembanyama, Dylan Harper, De'Aaron Fox): +2,5 per POR",
     "Fattore campo: +1,8 per POR"
    ],
    "mk": {
-    "sp": 3.5,
+    "sp": 2.5,
     "tot": 226.5,
-    "ph": 0.417,
-    "src": "Draft Kings via ESPN",
-    "at": "2026-11-25T05:05:35Z"
+    "ph": 0.428,
+    "src": "DraftKings via ESPN",
+    "at": "2026-11-25T07:33:39Z"
    },
-   "dmk": 4.7,
-   "motivo": "Modello +4,7 rispetto alla linea. DUBBI: giocatori importanti in dubbio, il mercato può sapere di più | MODELLI_DIVERSI: modello giocatori e baseline in disaccordo",
-   "injAsOf": "2026-11-25T00:00:00-05:00",
+   "dmk": 3.6,
+   "motivo": "Modello +3,6 rispetto alla linea. DUBBI: giocatori importanti in dubbio, il mercato può sapere di più | MODELLI_DIVERSI: modello giocatori e baseline in disaccordo",
+   "injAsOf": "2026-11-25T02:30:00-05:00",
    "fattori": {
-    "campo": 1.8,
-    "roster": -4.02,
+    "campo": 1.77,
+    "roster": -4.06,
     "ass_h": -0.0,
     "ass_a": 2.47,
     "contesto": -0.16,
-    "altri": 1.13
+    "altri": 1.09
    }
   }
  }
