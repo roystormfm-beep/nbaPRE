@@ -1,7 +1,7 @@
 {
  "meta": {
-  "aggiornato": "2026-11-25T11:48:32Z",
-  "modello": "2a342ab-b424f5",
+  "aggiornato": "2026-11-25T23:12:38Z",
+  "modello": "0ff1011-b424f5",
   "data": "2026-11-25",
   "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
  },
@@ -51,39 +51,39 @@
    "a": "CHI",
    "h": "CHA",
    "tip": "2026-11-26T00:00Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
-   "ap": 111.4,
-   "hp": 113.8,
-   "m": 2.3,
-   "p": 0.57,
+   "mv": "0ff1011-b424f5",
+   "ap": 110.4,
+   "hp": 113.2,
+   "m": 2.8,
+   "p": 0.585,
    "sd": 13.8,
-   "tot": 225.2,
-   "outA": "Norman Powell (out) -0,6; Jalen Smith (in dubbio) -0,3; Jaylin Sellers (out) +0,0; fuori da tempo, già nei minuti recenti: Caleb Wilson, Tobe Awaka",
-   "outH": "Ryan Kalkbrenner (molto in dubbio) -0,4; Grayson Allen (in dubbio) +0,0; fuori da tempo, già nei minuti recenti: Dennis Schroder",
+   "tot": 223.6,
+   "outA": "Jalen Smith (out) -1,1; Norman Powell (out) -0,6; Jaylin Sellers (out) +0,0; fuori da tempo, già nei minuti recenti: Caleb Wilson, Tobe Awaka",
+   "outH": "Ryan Kalkbrenner (out) -0,4; Grayson Allen (out) -0,0; fuori da tempo, già nei minuti recenti: Dennis Schroder",
    "why": [
+    "Assenze CHI (Jalen Smith, Norman Powell, Jaylin Sellers): +1,9 per CHA",
     "Fattore campo: +1,8 per CHA",
-    "Assenze CHI (Norman Powell, Jalen Smith, Jaylin Sellers): +1,0 per CHA",
     "Riposo e calendario (CHI alla terza partita in 4 notti): +0,9 per CHA"
    ],
    "mk": {
     "sp": -3.5,
-    "tot": 222.5,
-    "ph": 0.583,
+    "tot": 218.5,
+    "ph": 0.617,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": -1.2,
+   "dmk": -0.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -0.68,
-    "ass_h": -0.3,
-    "ass_a": 1.02,
+    "ass_h": -0.46,
+    "ass_a": 1.88,
     "contesto": 0.94,
-    "altri": -0.4
+    "altri": -0.62
    }
   },
   "2026-11-25_CLE_NYK": {
@@ -91,39 +91,39 @@
    "a": "CLE",
    "h": "NYK",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
-   "ap": 110.8,
-   "hp": 114.6,
-   "m": 3.8,
-   "p": 0.614,
+   "mv": "0ff1011-b424f5",
+   "ap": 110.3,
+   "hp": 115.0,
+   "m": 4.7,
+   "p": 0.639,
    "sd": 13.7,
-   "tot": 225.5,
+   "tot": 225.3,
    "outA": "fuori da tempo, già nei minuti recenti: Evan Mobley",
-   "outH": "Karl-Anthony Towns (in dubbio) -0,6; OG Anunoby (out) -0,3; Miles McBride (in dubbio) -0,0; Jordan Clarkson (out) +0,1",
+   "outH": "OG Anunoby (out) -0,3; Miles McBride (out) -0,0; Jordan Clarkson (out) +0,1",
    "why": [
     "Qualità dei giocatori disponibili: +3,6 per NYK",
     "Fattore campo: +1,8 per NYK",
-    "Assenze NYK (Karl-Anthony Towns, OG Anunoby, Miles McBride): +0,7 per CLE"
+    "Risultati recenti (altri modelli dell'ensemble): +0,4 per CLE"
    ],
    "mk": {
-    "sp": -3.5,
-    "tot": 217.5,
-    "ph": 0.583,
+    "sp": -4.5,
+    "tot": 219.5,
+    "ph": 0.617,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": 0.3,
+   "dmk": 0.2,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 3.6,
-    "ass_h": -0.68,
+    "ass_h": 0.04,
     "ass_a": -0.0,
     "contesto": -0.37,
-    "altri": -0.51
+    "altri": -0.38
    }
   },
   "2026-11-25_MIN_OKC": {
@@ -131,9 +131,9 @@
    "a": "MIN",
    "h": "OKC",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
+   "mv": "0ff1011-b424f5",
    "ap": 113.3,
    "hp": 111.5,
    "m": -1.8,
@@ -148,15 +148,15 @@
     "Assenze OKC (Jaylin Williams, Nikola Topic, Aday Mara; il modello valuta meglio chi li sostituisce): +1,1 per OKC"
    ],
    "mk": {
-    "sp": -1.5,
-    "tot": 224.5,
-    "ph": 0.522,
+    "sp": -2.5,
+    "tot": 222.5,
+    "ph": 0.551,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": -3.3,
-   "motivo": "Modello -3,3 rispetto alla linea. SCONOSCIUTO: probabilmente al modello manca un'informazione (notizie, riposi non annunciati)",
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "dmk": -4.3,
+   "motivo": "Modello -4,3 rispetto alla linea. SCONOSCIUTO: probabilmente al modello manca un'informazione (notizie, riposi non annunciati)",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -3.41,
@@ -171,15 +171,15 @@
    "a": "LAC",
    "h": "MEM",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
+   "mv": "0ff1011-b424f5",
    "ap": 112.2,
    "hp": 120.2,
    "m": 8.0,
-   "p": 0.729,
+   "p": 0.728,
    "sd": 13.6,
-   "tot": 232.5,
+   "tot": 232.4,
    "outA": "",
    "outH": "Cameron Boozer (out) +0,3; Jerami Grant (out) +0,3; fuori da tempo, già nei minuti recenti: Scotty Pippen Jr., GG Jackson",
    "why": [
@@ -188,22 +188,22 @@
     "Risultati recenti (altri modelli dell'ensemble): +0,7 per MEM"
    ],
    "mk": {
-    "sp": -6.5,
-    "tot": 229.5,
-    "ph": 0.685,
+    "sp": -7.5,
+    "tot": 227.5,
+    "ph": 0.7,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": 1.5,
+   "dmk": 0.5,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 5.46,
     "ass_h": 0.59,
-    "ass_a": -0.01,
+    "ass_a": -0.02,
     "contesto": -0.5,
-    "altri": 0.69
+    "altri": 0.66
    }
   },
   "2026-11-25_BKN_MIL": {
@@ -211,9 +211,9 @@
    "a": "BKN",
    "h": "MIL",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
+   "mv": "0ff1011-b424f5",
    "ap": 117.3,
    "hp": 117.0,
    "m": -0.2,
@@ -229,14 +229,14 @@
    ],
    "mk": {
     "sp": -1.5,
-    "tot": 233.5,
-    "ph": 0.506,
+    "tot": 234.5,
+    "ph": 0.518,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
    "dmk": -1.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -0.62,
@@ -251,9 +251,9 @@
    "a": "PHX",
    "h": "HOU",
    "tip": "2026-11-26T01:30Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
+   "mv": "0ff1011-b424f5",
    "ap": 110.9,
    "hp": 117.6,
    "m": 6.7,
@@ -270,13 +270,13 @@
    "mk": {
     "sp": -9.5,
     "tot": 222.5,
-    "ph": 0.771,
+    "ph": 0.767,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
    "dmk": -2.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 4.7,
@@ -291,16 +291,16 @@
    "a": "SAC",
    "h": "GSW",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
-   "ap": 106.9,
-   "hp": 113.3,
-   "m": 6.3,
-   "p": 0.688,
+   "mv": "0ff1011-b424f5",
+   "ap": 106.3,
+   "hp": 113.0,
+   "m": 6.7,
+   "p": 0.7,
    "sd": 13.4,
-   "tot": 220.2,
-   "outA": "fuori da tempo, già nei minuti recenti: Jonathan Mogbo",
+   "tot": 219.3,
+   "outA": "Zach LaVine (out) -0,1; fuori da tempo, già nei minuti recenti: Jonathan Mogbo",
    "outH": "Yaxel Lendeborg (in dubbio) +0,7; fuori da tempo, già nei minuti recenti: Stephen Curry, Brandon Williams",
    "why": [
     "Qualità dei giocatori disponibili: +3,5 per GSW",
@@ -308,22 +308,22 @@
     "Assenze GSW (Yaxel Lendeborg; il modello valuta meglio chi li sostituisce): +0,9 per GSW"
    ],
    "mk": {
-    "sp": -5.5,
-    "tot": 217.5,
-    "ph": 0.675,
+    "sp": -7.5,
+    "tot": 215.5,
+    "ph": 0.734,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": 0.8,
+   "dmk": -0.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 3.48,
     "ass_h": 0.88,
-    "ass_a": 0.0,
+    "ass_a": 0.07,
     "contesto": -0.02,
-    "altri": 0.21
+    "altri": 0.56
    }
   },
   "2026-11-25_SAS_POR": {
@@ -331,9 +331,9 @@
    "a": "SAS",
    "h": "POR",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T11:48:32Z",
+   "t": "2026-11-25T23:12:38Z",
    "src": "dal vivo",
-   "mv": "2a342ab-b424f5",
+   "mv": "0ff1011-b424f5",
    "ap": 111.9,
    "hp": 113.0,
    "m": 1.1,
@@ -348,15 +348,15 @@
     "Fattore campo: +1,8 per POR"
    ],
    "mk": {
-    "sp": 2.5,
+    "sp": 3.5,
     "tot": 225.5,
-    "ph": 0.428,
+    "ph": 0.407,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T11:48:32Z"
+    "at": "2026-11-25T23:12:38Z"
    },
-   "dmk": 3.6,
-   "motivo": "Modello +3,6 rispetto alla linea. DUBBI: giocatori importanti in dubbio, il mercato può sapere di più | MODELLI_DIVERSI: modello giocatori e baseline in disaccordo",
-   "injAsOf": "2026-11-25T06:45:00-05:00",
+   "dmk": 4.6,
+   "motivo": "Modello +4,6 rispetto alla linea. DUBBI: giocatori importanti in dubbio, il mercato può sapere di più | MODELLI_DIVERSI: modello giocatori e baseline in disaccordo",
+   "injAsOf": "2026-11-25T18:00:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -4.06,
