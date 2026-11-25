@@ -1,8 +1,10 @@
 # Pipeline dal vivo della stagione in corso: scarica calendario, partite giocate, quote e injury report,
 # ricalcola i pronostici e pubblica predictions/latest.json e predictions/AAAA-MM-GG.json.
-# Dal 25/11 i giri principali li avvia un'attività pianificata di Claude (workflow_dispatch, script
-# tools/avvia_giro.sh) alle 6:47, 17:47 e 20:47 di New York: gli orari automatici di GitHub arrivavano
-# in ritardo di ore o saltavano. Gli orari qui sotto (UTC) restano come riserva.
+# Prepara anche tutti i dati della pagina «Pronostici NBA» (passo «Dati della pagina», src/nba/live/pagina.py).
+# Dal 25/11 i giri principali li avvia l'unica attività pianificata di Claude, «Sincronizzazione NBA»
+# (workflow_dispatch, script tools/avvia_giro.sh) alle 6:47, 17:47 e 20:47 di New York, che poi copia
+# predictions/pagina_sync.json nel database della pagina. Gli orari automatici di GitHub arrivano spesso
+# in ritardo di ore o saltano: quelli qui sotto (UTC) restano come riserva.
 #   14:30  mattina negli USA
 #   22:20  e 22:50  prima delle partite serali (19:00 a New York)
 #   01:30  prima delle partite della costa ovest (22:00 a New York)
@@ -18,7 +20,7 @@ on:
   workflow_dispatch:
     inputs:
       step:
-        description: "update | predict | all"
+        description: "update | predict | pagina | all"
         default: all
       date:
         description: "data USA AAAA-MM-GG da pronosticare (vuoto = oggi)"
@@ -47,6 +49,10 @@ jobs:
         if: ${{ github.event_name == 'schedule' || inputs.step == 'all' || inputs.step == 'predict' }}
         run: |
           if [ -n "${{ inputs.date }}" ]; then uv run nba predict --date "${{ inputs.date }}"; else uv run nba predict; fi
+      - name: Dati della pagina Pronostici NBA
+        # prepara in predictions/pagina_sync.json ("ops") tutto ciò che l'attività di Claude copia nel database della pagina
+        if: ${{ always() && (github.event_name == 'schedule' || inputs.step == 'all' || inputs.step == 'pagina') }}
+        run: uv run nba live pagina
       - name: Salva nel repository
         if: always()
         run: |
@@ -54,6 +60,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A data
           if [ -d predictions ]; then git add -A predictions; fi
+          git add -A pagina/stato
           if git diff --cached --quiet; then echo "niente di nuovo"; exit 0; fi
           git commit -m "Dal vivo: dati e pronostici $(date -u +%Y-%m-%dT%H:%MZ)"
           git checkout -- . 2>/dev/null || true

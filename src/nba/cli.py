@@ -74,6 +74,9 @@ def cmd_live(args):
         live.run(args.season)
     if args.azione in ("predict", "all"):
         cmd_predict(args)
+    if args.azione in ("pagina", "all"):
+        from nba.live import pagina
+        print(pagina.run())
     if args.azione == "compare":
         from nba.live import compare
         print(compare.run(args.season, args.page))
@@ -161,7 +164,7 @@ def main(argv=None):
     sp.add_argument("--season", type=int, default=2026)
     sp.set_defaults(func=cmd_predict)
     pl = sub.add_parser("live", help="pipeline dal vivo: update (scarica e costruisce), predict, compare, all")
-    pl.add_argument("azione", choices=["update", "predict", "compare", "all"])
+    pl.add_argument("azione", choices=["update", "predict", "pagina", "compare", "all"])
     pl.add_argument("--date", help="data USA AAAA-MM-GG (predefinita: oggi a New York)")
     pl.add_argument("--season", type=int, default=2026)
     pl.add_argument("--page", help="compare: file JSON esportato dal registro della pagina (documenti nba/predlog-*)")
