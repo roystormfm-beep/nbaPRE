@@ -11,9 +11,11 @@ Diario delle fasi, la più recente in cima.
 ## In sintesi
 
 - **Il modello ora gira da solo, tre volte al giorno, su GitHub Actions** (orari italiani d'inverno):
-  - alle 15:30, mattina negli Stati Uniti;
-  - alle 23:20, circa un'ora e mezza prima delle prime partite serali, con un giro di riserva alle 23:50;
-  - alle 2:30, prima delle partite della costa ovest. Questo terzo giro è stato aggiunto il 24/11.
+  - alle 12:47, la mattina negli Stati Uniti;
+  - alle 23:47, circa un'ora prima delle prime partite serali;
+  - alle 2:47, prima delle partite della costa ovest.
+
+  Dal 25/11 i giri li avvia un'attività pianificata di Claude, perché gli orari automatici di GitHub arrivavano in ritardo di ore o saltavano (vedi sotto). Gli orari di GitHub restano come riserva.
 - **A ogni giro il modello:**
   - aggiorna calendario, partite giocate, quote e l'ultimo injury report;
   - ricalcola tutto con lo stesso modello valutato nella fase 5;
@@ -90,16 +92,21 @@ Una partita già iniziata non viene più riscritta: nel file del giorno resta il
   - per le gare della costa ovest, grazie al giro delle 2:30 italiane, è quello delle 20:30 circa.
 
   Le notizie dell'ultima ora possono comunque mancare.
-- **GitHub può ritardare gli orari automatici.** Il primo giro delle 22:20 UTC del 23/11 è partito alle 06:04 UTC, quasi 8 ore dopo: quella sera sono rimasti i pronostici delle 22:00 UTC, lanciati a mano. Per questo il giro serale ha una riserva 30 minuti dopo. Un giro in ritardo non fa danni: le partite già iniziate restano congelate.
+- **Gli orari automatici di GitHub non sono affidabili.**
+  - Il 23/11 il giro delle 22:20 UTC è partito alle 06:04 UTC, quasi 8 ore dopo.
+  - Il 24/11 il giro delle 14:30 UTC non è partito; dei due serali (22:20 e 22:50 UTC) ne è partito uno solo, alle 23:34; quello delle 01:30 UTC è partito alle 04:54.
+
+  Per questo dal 25/11 i giri li avvia l'attività pianificata "Giri modello NBA e copia nella pagina" alle 6:47, 17:47 e 20:47 di New York (12:47, 23:47 e 2:47 in Italia), con lo script `tools/avvia_giro.sh`. Appena il giro finisce, la stessa attività copia i pronostici nella pagina. Gli orari di GitHub restano attivi come riserva: un giro in più non fa danni, perché le partite già iniziate restano congelate.
 - **Le partite extra di dicembre** (finestra 4-11 dicembre dopo la fase a gironi della Coppa) entrano da sole appena ESPN le pubblica: il calendario si riscarica a ogni giro.
 - **Le prime partite della stagione non hanno pronostico ricostruito**: il modello giocatori parte dopo la prima settimana. Per questo le partite ricostruite sono 232 su 248.
 - **I pronostici ricostruiti** usano l'injury report di 45 minuti prima della partita, quindi sono un po' più informati di quelli congelati dalla pagina: il confronto sulle 26 partite è solo indicativo.
 
 ## Decisioni che spettano a te
 
-1. ~~Mostrare il nuovo modello nella pagina~~: fatto il 24/11. Ogni giro scrive anche `predictions/pagina_sync.json` (ieri e oggi, formato della pagina). Una nuova attività pianificata, "Sincronizzazione nuovo modello NBA" (03:13, 16:13 e 00:13 ora italiana, cioè circa 40 minuti dopo ogni giro su GitHub), lo copia nel database della pagina nei documenti `nba/newlog-AAAA-MM`, senza toccare quelli del modello della pagina. La pagina mostra in ogni partita un riquadro "Nuovo modello" (pronostico, punteggio, totale, motivi, assenze considerate) e nella sezione di verifica "Nuovo modello a confronto" (errore e vincitori contro pagina e bookmaker sulle stesse partite). Il registro parte con 51 partite: 38 ricostruite (18-22/11) e 13 dal vivo (23-24/11).
+1. ~~Mostrare il nuovo modello nella pagina~~: fatto il 24/11. Ogni giro scrive anche `predictions/pagina_sync.json` (ieri e oggi, formato della pagina). Un'attività pianificata lo copia nel database della pagina, dal 25/11 subito dopo ogni giro (vedi il punto 4), nei documenti `nba/newlog-AAAA-MM`, senza toccare quelli del modello della pagina. La pagina mostra in ogni partita un riquadro "Nuovo modello" (pronostico, punteggio, totale, motivi, assenze considerate) e nella sezione di verifica "Nuovo modello a confronto" (errore e vincitori contro pagina e bookmaker sulle stesse partite). Il registro parte con 51 partite: 38 ricostruite (18-22/11) e 13 dal vivo (23-24/11).
 2. **Repository pubblico o privato.** Ti avevo consigliato di renderlo privato, ma la lettura da parte dell'attività pianificata è semplice solo se resta pubblico. Con un repository privato servirebbe un token.
 3. ~~Un terzo giro serale~~: fatto il 24/11 (01:30 UTC).
+4. ~~Giri avviati da un'attività pianificata invece che dagli orari di GitHub~~: fatto il 25/11. L'attività "Giri modello NBA e copia nella pagina" avvia il giro su GitHub, aspetta che finisca e copia i pronostici nella pagina.
 
 ## Prossimo passo
 
