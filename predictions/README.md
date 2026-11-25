@@ -1,11 +1,13 @@
 # Pronostici dal vivo (stagione 2026-27)
 
-Questi file sono scritti da GitHub Actions (workflow `live`) tre volte al giorno (UTC):
-- **14:30:** la mattina negli Stati Uniti;
-- **22:20:** circa un'ora e mezza prima delle prime partite serali, con un giro di riserva alle 22:50;
-- **01:30:** prima delle partite della costa ovest.
+Questi file sono scritti dal workflow `live` di GitHub Actions. Dal 25/11 i giri li avvia un'attività pianificata di Claude ("Giri modello NBA e copia nella pagina"), perché gli orari automatici di GitHub arrivavano in ritardo di ore o saltavano. Orari, in ora di New York:
+- **6:47:** la mattina, dopo le partite della notte (12:47 in Italia);
+- **17:47:** circa un'ora prima delle prime partite serali (23:47 in Italia);
+- **20:47:** prima delle partite della costa ovest (2:47 in Italia).
 
-GitHub può ritardare gli orari automatici: il 23/11 il giro delle 22:20 è partito quasi 8 ore dopo. Per questo c'è il giro di riserva. Si possono anche rifare a mano con `nba live update` e poi `nba predict --date AAAA-MM-GG`.
+Subito dopo ogni giro la stessa attività copia i pronostici nella pagina. Lo script che usa è `tools/avvia_giro.sh`.
+
+Gli orari automatici di GitHub (14:30, 22:20, 22:50 e 01:30 UTC) restano attivi come riserva. Un giro in più non fa danni: le partite già iniziate restano congelate. Si possono anche rifare a mano con `nba live update` e poi `nba predict --date AAAA-MM-GG`.
 
 Sono pronostici a scopo informativo, non consigli di scommessa.
 
@@ -18,7 +20,7 @@ Sono pronostici a scopo informativo, non consigli di scommessa.
 | `registro_2026.csv` | Ogni pronostico pubblicato, una riga per partita e per esecuzione: serve a misurare il modello dal vivo |
 | `ricostruiti_2026.csv` | Tutte le partite già giocate, pronosticate a posteriori con le sole informazioni precedenti a ciascuna |
 | `confronto_2026.json` | Confronto con il mercato e con la pagina (`nba live compare`) |
-| `pagina_sync.json` | Le partite di oggi e di ieri nel formato dei documenti `nba/newlog-AAAA-MM` del database della pagina. Un'attività pianificata le copia nella pagina alle 3:13, 16:13 e 00:13 (ora italiana) |
+| `pagina_sync.json` | Le partite di oggi e di ieri nel formato dei documenti `nba/newlog-AAAA-MM` del database della pagina. L'attività pianificata le copia nella pagina subito dopo ogni giro |
 
 **Una partita già iniziata non viene più riscritta.** Nel file del giorno resta il pronostico congelato prima della palla a due.
 

@@ -1,10 +1,11 @@
-# Pipeline dal vivo della stagione in corso: tre volte al giorno scarica calendario, partite giocate, quote e
-# injury report, ricalcola i pronostici e pubblica predictions/latest.json e predictions/AAAA-MM-GG.json.
-# Orari (UTC):
-#   14:30  mattina negli USA, dopo le partite della notte
-#   22:20  prima delle partite serali (19:00 a New York), con l'injury report più recente
-#   22:50  riserva del giro serale: GitHub può ritardare gli orari automatici (il 23/11 di quasi 8 ore)
-#   01:30  prima delle partite della costa ovest (22:00 a New York), con il report delle 20:30 circa
+# Pipeline dal vivo della stagione in corso: scarica calendario, partite giocate, quote e injury report,
+# ricalcola i pronostici e pubblica predictions/latest.json e predictions/AAAA-MM-GG.json.
+# Dal 25/11 i giri principali li avvia un'attività pianificata di Claude (workflow_dispatch, script
+# tools/avvia_giro.sh) alle 6:47, 17:47 e 20:47 di New York: gli orari automatici di GitHub arrivavano
+# in ritardo di ore o saltavano. Gli orari qui sotto (UTC) restano come riserva.
+#   14:30  mattina negli USA
+#   22:20  e 22:50  prima delle partite serali (19:00 a New York)
+#   01:30  prima delle partite della costa ovest (22:00 a New York)
 # Un giro in più non fa danni: le partite già iniziate restano congelate.
 name: live
 
