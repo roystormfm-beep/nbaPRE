@@ -409,8 +409,18 @@ def run() -> str:
     seen = {k: v for k, v in seen.items() if not k.startswith("nba/pstats-") or k[-10:] >= keep}
     _save("inviati.json", seen)
 
+    # pronostici congelati: li tengo per 2 giorni e li rispedisco a ogni giro, così un giro di GitHub senza copia
+    # successiva (per esempio un orario automatico di riserva) non perde nulla. Una partita già iniziata non viene
+    # più ricongelata, quindi la riga conservata è l'ultimo pronostico prima della palla a due.
+    cong = _load("congelati.json", {})
     for k, v in (fr.get("merge") or {}).items():
-        ops.append({"op": "merge", "path": k, "data": v})
+        cong.setdefault(k, {}).update(v.get("g") or {})
+    lo = (dt.date.fromisoformat(today) - dt.timedelta(days=1)).isoformat()
+    cong = {k: {g: r for g, r in v.items() if g[:10] >= lo} for k, v in cong.items()}
+    cong = {k: v for k, v in cong.items() if v}
+    _save("congelati.json", cong)
+    for k in sorted(cong):
+        ops.append({"op": "merge", "path": k, "data": {"g": cong[k]}})
     old = json.loads(OUT.read_text()) if OUT.exists() else {}
     for k, v in (old.get("docs") or {}).items():          # pronostici del modello nbaPRE (nba/newlog-AAAA-MM)
         ops.append({"op": "merge", "path": k, "data": v})

@@ -10,6 +10,7 @@ dei dati che il workflow `live` prepara per lei.
 - `stato/injlearn.json`: peso delle assenze imparato dagli errori (fonte di verità; nel database c'è una copia).
 - `stato/injuries.json`, `stato/bref.json`, `stato/pstats.json`: ultimo report infortuni valido, statistiche dei
   giocatori del giorno, statistiche reali delle giornate concluse.
+- `stato/congelati.json`: pronostici congelati di ieri e oggi, rispediti a ogni giro.
 - `stato/inviati.json`: quando è cambiato per l'ultima volta ogni documento (si rispedisce per 26 ore).
 
 Il risultato è `predictions/pagina_sync.json`, campo `ops`: elenco ordinato di operazioni `set`/`merge` sul database
