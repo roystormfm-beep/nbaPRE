@@ -161,8 +161,8 @@ def injuries_rows(today: str) -> tuple[list[str] | None, str]:
                 w = re.search(r"(\d+)\s*(?:-|to)?\s*(\d+)?\s*weeks?", com)
                 if w:
                     ret = (dt.date.fromisoformat(today) + dt.timedelta(weeks=int(w.group(2) or w.group(1)))).isoformat()
-            note = _it(det.get("side") if det.get("side") not in (None, "Not Specified") else None, det.get("type"),
-                       det.get("detail"))[:60] or "—"
+            side = {"left": " (sx)", "right": " (dx)"}.get(str(det.get("side") or "").lower(), "")
+            note = (_it(det.get("type")) + side + (", " + _it(det.get("detail")).lower() if det.get("detail") else ""))[:60] or "—"
             rows.append(f"{tt}|{name}|{status}|{ret}|{note.replace('|', ' ')}")
             teams.add(tt)
     if len(rows) < 10:
