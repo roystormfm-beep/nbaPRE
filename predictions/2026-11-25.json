@@ -1,7 +1,7 @@
 {
  "meta": {
-  "aggiornato": "2026-11-25T10:07:03Z",
-  "modello": "94dd2a9-b424f5",
+  "aggiornato": "2026-11-25T11:48:32Z",
+  "modello": "2a342ab-b424f5",
   "data": "2026-11-25",
   "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
  },
@@ -11,9 +11,9 @@
    "a": "MIA",
    "h": "PHI",
    "tip": "2026-11-25T22:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 120.2,
    "hp": 121.0,
    "m": 0.8,
@@ -29,14 +29,14 @@
    ],
    "mk": {
     "sp": -1.5,
-    "tot": 237.5,
+    "tot": 236.5,
     "ph": 0.515,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": -0.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -1.67,
@@ -51,9 +51,9 @@
    "a": "CHI",
    "h": "CHA",
    "tip": "2026-11-26T00:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 111.4,
    "hp": 113.8,
    "m": 2.3,
@@ -69,14 +69,14 @@
    ],
    "mk": {
     "sp": -3.5,
-    "tot": 221.5,
+    "tot": 222.5,
     "ph": 0.583,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": -1.2,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -0.68,
@@ -91,9 +91,9 @@
    "a": "CLE",
    "h": "NYK",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 110.8,
    "hp": 114.6,
    "m": 3.8,
@@ -109,14 +109,14 @@
    ],
    "mk": {
     "sp": -3.5,
-    "tot": 219.5,
+    "tot": 217.5,
     "ph": 0.583,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": 0.3,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 3.6,
@@ -131,9 +131,9 @@
    "a": "MIN",
    "h": "OKC",
    "tip": "2026-11-26T00:30Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 113.3,
    "hp": 111.5,
    "m": -1.8,
@@ -152,11 +152,11 @@
     "tot": 224.5,
     "ph": 0.522,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": -3.3,
    "motivo": "Modello -3,3 rispetto alla linea. SCONOSCIUTO: probabilmente al modello manca un'informazione (notizie, riposi non annunciati)",
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -3.41,
@@ -171,9 +171,9 @@
    "a": "LAC",
    "h": "MEM",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 112.2,
    "hp": 120.2,
    "m": 8.0,
@@ -192,11 +192,11 @@
     "tot": 229.5,
     "ph": 0.685,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": 1.5,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 5.46,
@@ -211,9 +211,9 @@
    "a": "BKN",
    "h": "MIL",
    "tip": "2026-11-26T01:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 117.3,
    "hp": 117.0,
    "m": -0.2,
@@ -232,11 +232,11 @@
     "tot": 233.5,
     "ph": 0.506,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": -1.7,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -0.62,
@@ -251,9 +251,9 @@
    "a": "PHX",
    "h": "HOU",
    "tip": "2026-11-26T01:30Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 110.9,
    "hp": 117.6,
    "m": 6.7,
@@ -269,14 +269,14 @@
    ],
    "mk": {
     "sp": -9.5,
-    "tot": 223.5,
+    "tot": 222.5,
     "ph": 0.771,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": -2.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 4.7,
@@ -291,9 +291,9 @@
    "a": "SAC",
    "h": "GSW",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 106.9,
    "hp": 113.3,
    "m": 6.3,
@@ -309,14 +309,14 @@
    ],
    "mk": {
     "sp": -5.5,
-    "tot": 218.5,
-    "ph": 0.679,
+    "tot": 217.5,
+    "ph": 0.675,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": 0.8,
    "motivo": null,
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": 3.48,
@@ -331,9 +331,9 @@
    "a": "SAS",
    "h": "POR",
    "tip": "2026-11-26T03:00Z",
-   "t": "2026-11-25T10:07:03Z",
+   "t": "2026-11-25T11:48:32Z",
    "src": "dal vivo",
-   "mv": "94dd2a9-b424f5",
+   "mv": "2a342ab-b424f5",
    "ap": 111.9,
    "hp": 113.0,
    "m": 1.1,
@@ -349,14 +349,14 @@
    ],
    "mk": {
     "sp": 2.5,
-    "tot": 226.5,
+    "tot": 225.5,
     "ph": 0.428,
     "src": "DraftKings via ESPN",
-    "at": "2026-11-25T10:07:03Z"
+    "at": "2026-11-25T11:48:32Z"
    },
    "dmk": 3.6,
    "motivo": "Modello +3,6 rispetto alla linea. DUBBI: giocatori importanti in dubbio, il mercato può sapere di più | MODELLI_DIVERSI: modello giocatori e baseline in disaccordo",
-   "injAsOf": "2026-11-25T05:00:00-05:00",
+   "injAsOf": "2026-11-25T06:45:00-05:00",
    "fattori": {
     "campo": 1.77,
     "roster": -4.06,
