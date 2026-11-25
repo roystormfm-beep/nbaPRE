@@ -985,7 +985,7 @@ details.nout summary { cursor: pointer; font-size: 13px; color: var(--muted); }
   'use strict';
   const M = window.NBAModel;
   const EMB = window.NBA_EMBEDDED;
-  const UPDATE_TIMES = '8:47 e 19:47';
+  const UPDATE_TIMES = '12:47, 23:47 e 2:47';
   let ctx = null, sim = null, rawNow = null, liveState = { status: 'loading', meta: null, asOf: Object.assign({}, EMB.asOf) };
   // registro dei pronostici salvati prima della palla a due (documenti nba/predlog-AAAA-MM)
   let predlog = {}, predlogState = 'loading';
@@ -994,7 +994,7 @@ details.nout summary { cursor: pointer; font-size: 13px; color: var(--muted); }
   let newlog = {}, newlogState = 'loading';
   const NEW_TIMES = '12:47, 23:47 e 2:47';
   function newFor(g) { return newlog[g.d + '_' + g.a + '_' + g.h] || null; }
-  const FREEZE_TIMES = '17:17, 00:17 e 02:17';
+  const FREEZE_TIMES = '12:47, 23:47 e 2:47';
   function frozenFor(g) { return predlog[g.d + '_' + g.a + '_' + g.h] || null; }
   function predlogMonths() {
     const out = [], end = todayET().slice(0, 7); let y = 2026, m = 10;
@@ -1125,8 +1125,8 @@ details.nout summary { cursor: pointer; font-size: 13px; color: var(--muted); }
   }
 
   /* ---------- tasto «Aggiorna dati»: avvia l'attività programmata che aggiorna il database ---------- */
-  const TRIGGER_ID = 'trig_01HvQFr9oAeYYJtBG5sFieiQ', SERVER = 'Claude Code Remote';
-  const MANUAL_NOTE = 'Manual run requested from the page\'s "Aggiorna dati" button. Run every step now, including step 2 (player stats) regardless of the time of day; skip step 2 only if nba/pergame.asOf is already today\'s date. Write nba/meta last.';
+  const TRIGGER_ID = 'trig_01Xa4MUNLLwtfh4fJa1wUefp', SERVER = 'Claude Code Remote';
+  const MANUAL_NOTE = 'Manual run requested from the page\'s "Aggiorna dati" button: run all steps now.';
   const upd = {
     mcp: null, state: 'idle', firedAt: 0, tick: null,
     el() { return { box: document.getElementById('upd'), btn: document.getElementById('btn-upd'), msg: document.getElementById('upd-msg') }; },
@@ -1874,8 +1874,8 @@ details.nout summary { cursor: pointer; font-size: 13px; color: var(--muted); }
       '<h3>Proiezioni dei giocatori</h3><p>Minuti, punti, rimbalzi, assist e triple partono dalle medie stagionali. Se mancano compagni, i minuti si ridistribuiscono sui disponibili. I punti vengono riproporzionati sui punti attesi della squadra in quella partita, quindi tengono conto della difesa avversaria. Le percentuali (per esempio «20+») e la doppia doppia vengono da una distribuzione normale attorno alla proiezione.</p>' +
       '<h3>Simulazione della stagione</h3><p>Le partite rimaste vengono giocate 2.000 volte. In ogni simulazione la forza di ogni squadra viene estratta dalla sua incertezza attuale, più ±' + f1(P.drift) + ' punti di possibile evoluzione da qui ad aprile. Le 2 partite per squadra della NBA Cup ancora da fissare vengono simulate contro una squadra media finché non entrano in calendario.</p>' +
       '<h3>Backtest</h3><p>Le metriche sopra sono calcolate a posteriori ma senza barare: per ogni giornata dal 28 ottobre il modello usa solo le partite giocate prima, compresi pesi e correzioni imparati fino a quel giorno. Anche il rating di partenza è ricostruito per data: i minuti di quest\'anno contano solo per la parte di stagione già giocata, il resto viene dai minuti 2025/26 (la versione precedente usava sempre i minuti di oggi e il backtest risultava troppo ottimista). Le assenze storiche non sono disponibili, quindi il backtest misura solo il modello di squadra.</p>' +
-      '<h3>Aggiornamento</h3><p>A ogni apertura la pagina legge il database e ricalcola tutto. Il database viene aggiornato in automatico ogni giorno alle ' + UPDATE_TIMES + ' (ora italiana) con risultati, statistiche e infortuni. Dati in uso: risultati fino al ' + esc(shortDate(a.results)) + ', statistiche giocatori al ' + esc(shortDate(a.pergame)) + ', infortuni al ' + esc(shortDate(a.injuries)) + '.</p>' +
-      '<h3>Registro dei pronostici</h3><p>Ogni giorno alle ' + FREEZE_TIMES + ' (ora italiana) un\'attività automatica riscarica gli infortuni da ESPN, prende le quote DraftKings pubblicate da ESPN, esegue questo stesso modello e salva nel database il pronostico di ogni partita che non è ancora iniziata. Il salvataggio delle 00:17 sovrascrive quello delle 17:17 per le partite non ancora cominciate, così resta l\'ultimo pronostico prima della palla a due. Dopo l\'inizio il pronostico non cambia più. La scheda Verifica li confronta con i risultati e con le quote; per le partite giocate, la scheda Partite mostra il pronostico salvato invece della ricostruzione del backtest.</p>' +
+      '<h3>Aggiornamento</h3><p>A ogni apertura la pagina legge il database e ricalcola tutto. Il database viene aggiornato in automatico ogni giorno alle ' + UPDATE_TIMES + ' (ora italiana): un giro su GitHub scarica risultati, quote, statistiche (Basketball-Reference) e infortuni (ESPN), fa girare entrambi i modelli e un\'attività di Claude copia tutto qui in un colpo solo. Dati in uso: risultati fino al ' + esc(shortDate(a.results)) + ', statistiche giocatori al ' + esc(shortDate(a.pergame)) + ', infortuni al ' + esc(shortDate(a.injuries)) + '.</p>' +
+      '<h3>Registro dei pronostici</h3><p>Ogni giorno alle ' + FREEZE_TIMES + ' (ora italiana), nel giro su GitHub, questo stesso modello viene eseguito con gli infortuni e le quote DraftKings più recenti di ESPN e il pronostico di ogni partita che inizia entro 20 ore viene salvato nel database. Un giro successivo sovrascrive il precedente solo per le partite non ancora cominciate, così resta l\'ultimo pronostico prima della palla a due. Dopo l\'inizio il pronostico non cambia più. La scheda Verifica li confronta con i risultati e con le quote; per le partite giocate, la scheda Partite mostra il pronostico salvato invece della ricostruzione del backtest.</p>' +
       '<h3>Limiti</h3><ul><li>A metà novembre ogni squadra ha giocato 12-15 partite: i rating sono ancora instabili, e l\'incertezza mostrata ne tiene conto.</li><li>Il modello non conosce scambi, minutaggi decisi dagli allenatori o turni di riposo non annunciati.</li><li>Le date di rientro sono stime dei report infortuni e spesso cambiano.</li><li>I pronostici sono stime statistiche, non consigli di scommessa.</li></ul>' +
       '<h3>Fonti</h3><ul class="src"><li><a href="https://www.basketball-reference.com/leagues/NBA_2027.html">Basketball-Reference</a>: calendario, risultati, statistiche e BPM (2026/27 e 2025/26)</li><li>Loghi delle squadre: ESPN, per uso personale</li><li><a href="https://www.espn.com/nba/injuries">ESPN</a>: report infortuni</li></ul></div></section>';
   }
