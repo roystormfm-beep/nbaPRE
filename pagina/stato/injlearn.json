@@ -4,9 +4,24 @@
  "note": "Stato iniziale ricostruito il 25/11 dai pronostici salvati dal 18/11",
  "nx": 51,
  "pend": {
+  "2026-11-27_BKN_TOR": [
+   6.92,
+   -0.29,
+   1.124
+  ],
   "2026-11-27_MIA_NYK": [
    5.83,
    1.04,
+   1.124
+  ],
+  "2026-11-27_MIL_DET": [
+   13.35,
+   -4.11,
+   1.124
+  ],
+  "2026-11-27_PHI_IND": [
+   -4.98,
+   1.05,
    1.124
   ]
  },
