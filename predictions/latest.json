@@ -1,7 +1,7 @@
 {
  "meta": {
-  "aggiornato": "2026-11-27T22:54:08Z",
-  "modello": "19c9e7b-b424f5",
+  "aggiornato": "2026-11-28T01:48:49Z",
+  "modello": "7767ba3-b424f5",
   "data": "2026-11-27",
   "nota": "Pronostici informativi, non consigli di scommessa. Quando il modello si stacca di 3 punti o più dalla linea, nei test ha avuto ragione più spesso il mercato."
  },
@@ -251,39 +251,39 @@
    "a": "DAL",
    "h": "PHX",
    "tip": "2026-11-28T02:00Z",
-   "t": "2026-11-27T22:54:08Z",
+   "t": "2026-11-28T01:48:49Z",
    "src": "dal vivo",
-   "mv": "19c9e7b-b424f5",
-   "ap": 111.6,
-   "hp": 116.0,
-   "m": 4.4,
-   "p": 0.63,
-   "sd": 13.8,
-   "tot": 227.5,
-   "outA": "Kyrie Irving (in dubbio) -0,5; fuori da tempo, già nei minuti recenti: Sergio de Larrea",
+   "mv": "7767ba3-b424f5",
+   "ap": 110.7,
+   "hp": 116.5,
+   "m": 5.7,
+   "p": 0.669,
+   "sd": 13.6,
+   "tot": 227.2,
+   "outA": "Kyrie Irving (out) -1,7; fuori da tempo, già nei minuti recenti: Sergio de Larrea",
    "outH": "",
    "why": [
     "Qualità dei giocatori disponibili: +2,4 per PHX",
     "Fattore campo: +1,8 per PHX",
-    "Assenze DAL (Kyrie Irving): +0,5 per PHX"
+    "Assenze DAL (Kyrie Irving): +1,6 per PHX"
    ],
    "mk": {
-    "sp": -3.5,
+    "sp": -4.5,
     "tot": 225.5,
-    "ph": 0.572,
+    "ph": 0.61,
     "src": "Draft Kings via ESPN",
-    "at": "2026-11-27T22:54:08Z"
+    "at": "2026-11-28T01:48:49Z"
    },
-   "dmk": 0.9,
+   "dmk": 1.2,
    "motivo": null,
-   "injAsOf": "2026-11-27T17:45:00-05:00",
+   "injAsOf": "2026-11-27T20:15:00-05:00",
    "fattori": {
     "campo": 1.81,
     "roster": 2.39,
-    "ass_h": 0.0,
-    "ass_a": 0.5,
+    "ass_h": -0.0,
+    "ass_a": 1.64,
     "contesto": 0.05,
-    "altri": -0.36
+    "altri": -0.16
    }
   },
   "2026-11-27_LAL_SAS": {
@@ -291,39 +291,39 @@
    "a": "LAL",
    "h": "SAS",
    "tip": "2026-11-28T02:30Z",
-   "t": "2026-11-27T22:54:08Z",
+   "t": "2026-11-28T01:48:49Z",
    "src": "dal vivo",
-   "mv": "19c9e7b-b424f5",
+   "mv": "7767ba3-b424f5",
    "ap": 111.9,
-   "hp": 116.7,
-   "m": 4.8,
-   "p": 0.641,
-   "sd": 13.8,
-   "tot": 228.6,
+   "hp": 117.0,
+   "m": 5.0,
+   "p": 0.649,
+   "sd": 13.7,
+   "tot": 228.9,
    "outA": "",
-   "outH": "De'Aaron Fox (in dubbio) -0,1; Dylan Harper (in dubbio) +0,4",
+   "outH": "",
    "why": [
     "Qualità dei giocatori disponibili: +3,1 per SAS",
     "Fattore campo: +1,8 per SAS",
-    "Assenze SAS (De'Aaron Fox, Dylan Harper; il modello valuta meglio chi li sostituisce): +0,4 per SAS"
+    "Riposo e calendario: +0,3 per LAL"
    ],
    "mk": {
     "sp": -6.5,
     "tot": 226.5,
     "ph": 0.657,
     "src": "Draft Kings via ESPN",
-    "at": "2026-11-27T22:54:08Z"
+    "at": "2026-11-28T01:48:49Z"
    },
-   "dmk": -1.7,
+   "dmk": -1.5,
    "motivo": null,
-   "injAsOf": "2026-11-27T17:45:00-05:00",
+   "injAsOf": "2026-11-27T20:45:00-05:00",
    "fattori": {
     "campo": 1.81,
     "roster": 3.13,
-    "ass_h": 0.39,
+    "ass_h": 0.1,
     "ass_a": -0.0,
     "contesto": -0.33,
-    "altri": -0.26
+    "altri": 0.32
    }
   },
   "2026-11-27_DEN_UTA": {
@@ -331,39 +331,39 @@
    "a": "DEN",
    "h": "UTA",
    "tip": "2026-11-28T02:30Z",
-   "t": "2026-11-27T22:54:08Z",
+   "t": "2026-11-28T01:48:49Z",
    "src": "dal vivo",
-   "mv": "19c9e7b-b424f5",
-   "ap": 121.2,
+   "mv": "7767ba3-b424f5",
+   "ap": 121.6,
    "hp": 111.7,
-   "m": -9.6,
-   "p": 0.232,
+   "m": -9.9,
+   "p": 0.224,
    "sd": 13.5,
-   "tot": 232.9,
+   "tot": 233.2,
    "outA": "Bryce Hopkins (out) +0,2",
-   "outH": "Mo Bamba (in dubbio) -0,1; Jaxson Hayes (in dubbio) -0,0; fuori da tempo, già nei minuti recenti: Jaren Jackson Jr., Lauri Markkanen",
+   "outH": "Mo Bamba (out) -0,3; fuori da tempo, già nei minuti recenti: Jaren Jackson Jr., Lauri Markkanen",
    "why": [
     "Qualità dei giocatori disponibili: +10,7 per DEN",
     "Fattore campo: +1,8 per UTA",
-    "Risultati recenti (altri modelli dell'ensemble): +0,2 per DEN"
+    "Risultati recenti (altri modelli dell'ensemble): +0,4 per DEN"
    ],
    "mk": {
     "sp": 9.5,
     "tot": 232.5,
     "ph": 0.228,
     "src": "Draft Kings via ESPN",
-    "at": "2026-11-27T22:54:08Z"
+    "at": "2026-11-28T01:48:49Z"
    },
-   "dmk": -0.1,
+   "dmk": -0.4,
    "motivo": null,
-   "injAsOf": "2026-11-27T17:45:00-05:00",
+   "injAsOf": "2026-11-27T20:45:00-05:00",
    "fattori": {
     "campo": 1.81,
     "roster": -10.74,
-    "ass_h": -0.11,
+    "ass_h": -0.26,
     "ass_a": -0.19,
     "contesto": -0.12,
-    "altri": -0.21
+    "altri": -0.4
    }
   },
   "2026-11-27_NOP_LAC": {
@@ -371,15 +371,15 @@
    "a": "NOP",
    "h": "LAC",
    "tip": "2026-11-28T02:30Z",
-   "t": "2026-11-27T22:54:08Z",
+   "t": "2026-11-28T01:48:49Z",
    "src": "dal vivo",
-   "mv": "19c9e7b-b424f5",
-   "ap": 114.3,
-   "hp": 116.7,
-   "m": 2.3,
-   "p": 0.569,
+   "mv": "7767ba3-b424f5",
+   "ap": 114.9,
+   "hp": 117.0,
+   "m": 2.1,
+   "p": 0.562,
    "sd": 14.0,
-   "tot": 231.0,
+   "tot": 232.0,
    "outA": "Jaron Pierre Jr. (out) +0,3; fuori da tempo, già nei minuti recenti: Bennedict Mathurin, Dejounte Murray",
    "outH": "",
    "why": [
@@ -389,21 +389,21 @@
    ],
    "mk": {
     "sp": -2.5,
-    "tot": 229.5,
+    "tot": 230.5,
     "ph": 0.551,
     "src": "Draft Kings via ESPN",
-    "at": "2026-11-27T22:54:08Z"
+    "at": "2026-11-28T01:48:49Z"
    },
-   "dmk": -0.2,
+   "dmk": -0.4,
    "motivo": null,
-   "injAsOf": "2026-11-27T17:45:00-05:00",
+   "injAsOf": "2026-11-27T20:45:00-05:00",
    "fattori": {
     "campo": 1.81,
     "roster": 0.96,
-    "ass_h": 0.02,
-    "ass_a": -0.03,
+    "ass_h": 0.07,
+    "ass_a": -0.38,
     "contesto": 0.01,
-    "altri": -0.44
+    "altri": -0.39
    }
   },
   "2026-11-27_GSW_POR": {
@@ -411,9 +411,9 @@
    "a": "GSW",
    "h": "POR",
    "tip": "2026-11-28T02:30Z",
-   "t": "2026-11-27T22:54:08Z",
+   "t": "2026-11-28T01:48:49Z",
    "src": "dal vivo",
-   "mv": "19c9e7b-b424f5",
+   "mv": "7767ba3-b424f5",
    "ap": 107.0,
    "hp": 114.6,
    "m": 7.6,
@@ -428,15 +428,15 @@
     "Assenze POR (Damian Lillard): +1,6 per GSW"
    ],
    "mk": {
-    "sp": -7.5,
-    "tot": 217.5,
-    "ph": 0.718,
+    "sp": -8.5,
+    "tot": 216.5,
+    "ph": 0.734,
     "src": "Draft Kings via ESPN",
-    "at": "2026-11-27T22:54:08Z"
+    "at": "2026-11-28T01:48:49Z"
    },
-   "dmk": 0.1,
+   "dmk": -0.9,
    "motivo": null,
-   "injAsOf": "2026-11-27T17:45:00-05:00",
+   "injAsOf": "2026-11-27T20:45:00-05:00",
    "fattori": {
     "campo": 1.81,
     "roster": 7.62,
